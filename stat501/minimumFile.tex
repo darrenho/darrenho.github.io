@@ -1,0 +1,64 @@
+%Preamble
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+%Ignore for now%%% \usepackage[options]{natbib}
+%Ignore for now%%% \renewcommand{\abstractname}{Not abstract}
+
+\begin{document}
+%Top Matter
+\title{Example}
+\author{Darren Homrighausen}
+\date{\today}
+\maketitle
+
+\begin{abstract}
+This is all so abstract.
+\end{abstract}
+
+\section{Introduction}
+As mentioned in \cite[p.g. 124]{homrighausen2012}...
+as in Figure \ref{fig:greenRed} and in equation \ref{eq:first}
+\section{Overview of new idea}
+This section's content...
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=3in]{example.pdf}
+  \caption{pdf figure.}
+  \label{fig:greenRed}
+\end{figure}
+
+%\begin{figure}[h!]
+%  \centering
+%  \includegraphics[width=0.5\textwidth]{example.eps}
+%  \caption{eps figure.}
+%\end{figure}
+
+\subsection{A bit more indepth}
+This subsection's content...
+
+\begin{equation}
+Y = X\beta
+\label{eq:first}
+\end{equation}
+\subsubsection{Extra minutae}
+This subsubsection's content...
+
+\appendix
+
+\section{Thing that didn't belong in main paper 2}
+i am the very model of a modern major general
+\section{Thing that didn't belong in main paper 2}
+with information vegetable, animal, and mineral
+
+\begin{thebibliography}{9}
+\bibliographystyle{plainnat}
+\bibitem{homrighausen2012}
+  Darren Homrighausen and Christopher R. Genovese
+  \emph{Sequential and resolution-limited inverse problems}.
+  Electronic Journal of Statistics
+  2012
+
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,441 @@
+\documentclass[final]{beamer}
+\usepackage{grffile}
+\mode<presentation>{\usetheme{DMcDp}}
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath,amsthm, amssymb, latexsym}
+\usepackage{pifont}
+\usepackage{array}
+% \usepackage{times}\usefonttheme{professionalfonts}  % obsolete
+% \usefonttheme[onlymath]{serif}
+% \boldmath
+\usepackage[orientation=portrait,size=custom,height=121.92,width=91.44,scale=1.4,debug]{beamerposter}
+% change list indention level
+% \setdefaultleftmargin{3em}{}{}{}{}{}
+
+% \usepackage{snapshot} % will write a .dep file with all dependencies, allows for easy bundling
+
+\usepackage{array,booktabs,tabularx}
+\newcolumntype{Z}{>{\centering\arraybackslash}X} % centered tabularx columns
+\newcommand{\given}{\mbox{ }\vert\mbox{ }}
+\bibliographystyle{jasa}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\E}{\mathbb{E}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\V}{\mathbb{V}}
+\newcommand{\Y}{\mathcal{Y}}
+\newcommand{\bsp}{\boldsymbol{\phi}}
+\DeclareMathOperator*{\argmin}{argmin}
+
+\colorlet{greenstruct}{green!50!black}
+\definecolor{bluemain}{HTML}{0B61A4}
+\definecolor{orangemain}{HTML}{FF9200}
+\definecolor{redmain}{HTML}{FF4900}
+\definecolor{redlight}{HTML}{FF9B73}
+\definecolor{orangelight}{HTML}{FFC373}
+\definecolor{cmugray}{RGB}{104,104,104}
+\definecolor{cmulightgray}{RGB}{238,238,238}
+% \setbeamercolor{block body}{bg=cmulightgray}
+% \setbeamercolor{block title}{bg=greenstruct,fg=white}
+% \setbeamercolor{talktitle}{bg=greenstruct,fg=white}
+% \setbeamercolor{block title alerted}{bg=orangemain}
+% \setbeamercolor{block body alerted}{bg=orangelight}
+% 
+% }
+
+\newcommand{\alg}[1]{\textcolor{greenstruct}{#1}}
+\newcommand{\alo}[1]{\textcolor{orangemain}{#1}}
+\newcommand{\alr}[1]{\textcolor{redmain}{#1}}
+\newcommand{\alb}[1]{\textcolor{bluemain}{#1}}
+
+\newcommand{\tCV}{\widehat{t}}
+\newcommand{\tmax}{t_{\max}}
+\newcommand{\cvriskN}[2]{\hat{R}_{#1}\left( #2\right)}
+\newcommand{\ols}{\hat\beta^0}
+\newcommand{\Zrv}{\mathcal{Z}}
+\newcommand{\GL}{\mathcal{G}}
+\renewcommand{\hat}{\widehat}
+
+\newcommand{\vsp}{\vspace{.2in}}
+\newcommand{\bluebox}{\hspace{1em}\alb{\raisebox{.25ex}{\rule{1ex}{1ex}}}\hspace{1ex}}
+\newcommand{\redbox}{\hspace{1em}\alr{\raisebox{.25ex}{\rule{1ex}{1ex}}}\hspace{1ex}}
+
+\newtheorem{propo}{Proposition}
+\newenvironment{prop}{\begin{propo}}{\end{propo}} 
+
+% \newcolumntype{Va}[1]{>{\centering\arraybackslash} m{.2\linewidth} }
+% \newcolumntype{Vb}[1]{>{\centering\arraybackslash} m{.4\linewidth} }
+
+\def\defgraphUnit#1#2#3#4{%
+  % {mark}{HEIGHT}{WIDTH}{mark}{code}
+  \setbox\csname dhgraph#1\endcsname{\vbox to #2{\hsize=#3\vss\hbox to #3{\hss#4\hss}\vss}}
+}
+
+
+\listfiles
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+\title{The lasso, persistence, and cross-validation}
+% \author{Darren Homrighausen}
+% \institute[CMU Statistics]{Department of Statistics, Carnegie Mellon University}
+\author{Darren Homrighausen$^{\dag}$ \and Daniel J. McDonald$^{\ddag}$}
+\institute{$\dag$Department of Statistics, Colorado State University, Fort Collins\\
+  $\ddag$Department of Statistics, Indiana University, Bloomington
+}
+\date[]{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\newlength{\columnheight}
+\setlength{\columnheight}{105cm}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\begin{document}
+\begin{frame}
+  \begin{columns}
+    \begin{column}{.49\textwidth}
+      \begin{beamercolorbox}[center,wd=\textwidth]{postercolumn}
+        \begin{minipage}[T]{.96\textwidth} 
+          \parbox[t][\columnheight]{\textwidth}{
+            % 
+            \vfill
+            % 
+            %\begin{block}{The Setup}
+              Suppose we have data 
+              \[
+              \mathcal{D}_n = \{(Y_1,X^\top_1,),\ldots,(Y_n,X^\top_n)\}
+              \]
+              \vsp 
+              $X_i  = (X_{i1}, \ldots, X_{ip})^\top \in \mathbb{R}^p$
+              are the features
+
+              \vsp
+              $Y_i \in \mathbb{R}$ are the responses
+              
+              \vsp
+              Use $\mathcal{D}_n$ to choose a function $\hat f$ that
+              can predict $Y$ from $X$ 
+              
+              \vsp
+              The \alo{regression function} is the best
+              predictor
+              \[
+              m(X) = \E[Y|X] = \argmin_f \E\left[(Y - f(X))^2\right]
+              \]
+            %\end{block}
+
+            \vsp
+            
+            \alg{Idea:} Start with \alo{linear} approximation of $m(X)$.  
+           
+            \vsp
+            Choose $\beta \in \mathbb{R}^{p+1}$, form
+            \[
+            \hat f(X) = X_1 \beta_1 + \ldots + X_p \beta_p
+            = X^\top \beta
+            \]
+            
+            \vsp
+            
+            \alr{Important:} This does not assume that $m$ is linear in $X$! 
+            
+            \vsp
+            We need to find a good estimator of $\beta$.           
+            % \end{block}
+            % \vfill
+            %\begin{block}{
+            
+            \vfill
+            \begin{block}{$\ell_1$-regularized regression}
+            
+              Called \alo{lasso} or \alo{basis pursuit}
+              \vsp
+              
+              The estimator satisfies
+              \[
+              \hat\beta_t = \argmin_{\beta}
+              ||\mathbb{Y}-\X\beta||_2^2 \textrm{ subject to }
+              ||\beta||_1 \leq t 
+              \]
+              
+              \vsp
+              Alternatively:
+              \[
+              \hat\beta_\lambda = \argmin_{\beta}
+              ||\mathbb{Y}-\X\beta||_2^2 + \lambda ||\beta||_1 
+              \]
+            \end{block}
+            \vfill
+            \begin{block}{Properties}
+              Suppose \alr{$m(X) = X^\top \beta$:}
+              
+              \vsp
+              \begin{itemize}
+              \item[]\bluebox If $\lambda = o(n)$, then $\hat\beta_{\lambda}
+                \stackrel{\textrm{a.s. }}{\rightarrow} \beta$  
+                \vsp
+              \item[]\bluebox If $\frac{\lambda}{n} \rightarrow a \in
+                (0,\infty)$, then $\hat\beta_{\lambda} \nrightarrow
+                \beta$ in general 
+                \vsp
+              \item[]\bluebox If $\frac{\lambda}{n} \rightarrow \infty$, then
+                $\hat\beta_{\lambda}
+                \stackrel{\textrm{a.s. }}{\rightarrow} 0$ 
+                \vsp
+              \end{itemize}
+              \alr{What if $m(X)$ not linear? What if $p\gg n$?}
+              \vsp
+            \end{block}
+            \vfill
+            % 
+            %\begin{block}{Excess risk}
+                Define $Z^\top = (Y,X^\top)$ to be a new observation
+                (same distribution)
+               
+                \vsp
+                \alo{(Predictive) risk} 
+                \[
+                R(\beta) = \mathbb{E}_{Z} \left[(Y -
+                X^\top \beta)^2\right]
+                \]
+                
+                \vsp
+                \alo{Oracle estimator}
+                \[
+                \beta_t^* = \argmin_{\{\beta:||\beta||_1 \leq t\}} R(\beta)
+                \]
+                
+                \vsp
+                \alo{Excess risk}
+                \[
+                \mathcal{E}(\hat\beta_t,\beta_t^*) = R(\hat\beta_t) - R(\beta_t^*)
+                \]
+                
+                \vsp
+                A procedure is \alo{persistent} if
+                \[
+                \mathcal{E}(\hat\beta_t,\beta_t^*) \stackrel{\textrm{P }}{\rightarrow} 0
+                \]
+            \vsp
+            % 
+            \begin{block}{The best (oracle) linear model}
+              
+              If $t^4 = o \left(\frac{n}{\log n}
+              \right)$, then $\hat\beta_t$ is
+              persistent relative to $\beta^*_t$
+
+              \vsp
+              $\hat\beta_t$ is \alo{not necessarily}
+              persistent if $t^4 \notin o\left(\frac{n}{\log
+                    n} \right)$ 
+              
+              \vsp
+              What if  \alr{choose $t=\hat t$ using $\mathcal{D}_n$}?
+              \vsp
+            \end{block}
+            \vfill
+            
+            
+            Create set of \alo{validation sets} $V_n = \{ v_1 , \ldots, v_{K_n} \}$ 
+            
+            \vsp
+            $\hat\beta_t^{(v)}$ lasso estimator ignoring observations in 
+            $v \subset \{1,\ldots,n\}$
+            \vsp
+            
+            The \alo{cross-validation estimator of the risk} is
+            \vsp
+            \begin{align*}
+              \cvriskN{V_n}{t} & =
+              \cvriskN{V_n}{\hat\beta_t^{(v_1)},\ldots,\hat\beta_t^{(v_{K_n})}}
+              := \frac{1}{K_n} \sum_{v \in V_n}
+              \frac{1}{|v|} \sum_{r \in v} \left(Y_r - X_r^{\top}\hat\beta_t^{(v)}
+              \right)^2
+            \end{align*}
+            
+            \vsp
+            Define
+            \[
+            \tCV := \argmin_{t \in T_n}  \cvriskN{V_n}{t}
+            \] 
+          }
+        \end{minipage}
+      \end{beamercolorbox}
+    \end{column}
+    %  % 
+    %  % 
+    %  % Column 2
+    %  % 
+    %  % 
+      \begin{column}{.49\textwidth}
+        \begin{beamercolorbox}[center,wd=\textwidth]{postercolumn}
+          \begin{minipage}[T]{.96\textwidth} 
+            \parbox[t][\columnheight]{\textwidth}{
+              % 
+              \vfill
+    
+            
+           % \begin{block}{Choosing $T_n$}
+              In practice, need to specify $T_n = [0, \tmax]$
+              
+              \vsp
+              If $\tmax$ is too small, we may exclude good solutions
+              \vsp
+              
+              By definition, $\hat\beta_t  \in \{ \beta : ||\beta||_1 \leq t\}$
+              
+              \vsp
+              This constraint is only binding if
+              \[
+              t < \min_{\eta \in \mathcal{K}} || \ols +
+              \eta||_1 =: t_0,
+              \]
+              where 
+              \vsp
+
+              $\ols := (\mathbb{X}^{\top}\mathbb{X})^\dagger\mathbb{X}^{\top} \mathbb{Y}$ is a least
+              squares solution
+              
+              \vsp
+              $\mathcal{K} := \{a : \mathbb{X}a = 0\}$ is the null space of $\mathbb{X}$
+              \vsp
+              
+              Define $\tmax := ||\ols||_1$
+
+            % 
+            \vfill
+            % 
+            \begin{block}{Conditions}		
+              \begin{itemize}
+              \item[]\alb{C1.}  $
+                \mathbb{E}\left[||\ols||_1^{4}\right] = o(t_n^4)$
+                \vsp
+              \item[]\alb{C2.}  For any cross-validation procedure $V_n$,  
+                there exists a constant $c_n$
+                such that for all $v\neq v' \in V_n$
+                \vsp
+                
+                \bluebox $|v| \geq c_n$
+
+                \vsp
+                \bluebox $v \cap v' = \emptyset$
+                \vsp
+              \item[]\alb{C3.} Let $Z^\top =
+                (Y,X^\top) \sim F_n$.  Then, $(F_n)_{n \geq 1}$ is such
+                that  
+                $\exists C \!<\!\infty$ for all $n$  where 
+                \[
+                \mathbb{E}_{F_n} \left[\max_{0 \leq j,k \leq p} (Z_j Z_k -
+                \mathbb{E}_{F_n} Z_j Z_k )^2\right] \!\leq \!C   
+                \]
+                \vsp
+                % \scriptsize [$F_n$ is a distribution of $\mathbb{R}^{p+1}$]
+              \end{itemize}
+            \end{block}	
+            \vfill
+            \begin{alertblock}{Results}		
+              {\sc \alb{Theorem:}} Suppose  
+              \alb{C1}--\alb{C3} and that $p_n = n^{\alpha}$, $\alpha > 0$.
+              Then, for any $\delta > 0$,
+              \begin{equation*}
+                P(    \mathcal{E}(\hat\beta_{\tCV},\beta^*_{t_n}) >
+                \delta)  = o\left (t_n^2\sqrt{\frac{\log
+                      n}{c_n}}\right). 
+              \end{equation*}
+              \vsp
+              
+              \begin{itemize}
+              \item[]\redbox $c_n \asymp n$ for $K$-fold
+                cross-validation
+                \vsp
+              \item[]\redbox leave-one-out cross-validation has $c_n = 1$
+              \end{itemize}
+            \end{alertblock}
+            \vfill
+            \begin{block}{Properties of $t_n$}
+              The faster $t_n \rightarrow \infty \ldots$
+              \vsp
+
+              \begin{itemize}
+              \item[]\bluebox the less restrictive condition
+                \alb{C1} becomes
+                \vsp
+              \item[]\bluebox $R_n(\beta^*_{t_n})$ shrinks faster
+                \vsp
+              \item[]\bluebox But if $t_n^4 =\Omega(n/\log n)$,
+                  $\hat\beta_{t_n}$ may not be persistent, let alone $\hat\beta_{\tCV}$
+              \end{itemize}
+              
+              \vsp		
+              Can $  \mathbb{E}\left[||\ols||_1^{4}\right] = o(t_n^4)$ if 
+              $t^4_n = o\left(\frac{n}{\log n} \right)$?
+              
+              \vsp
+              {\sc \alg{Examples:}} 
+              
+              Suppose $Y=m(X) + \epsilon$, $m(X)$ bounded, $\E[\epsilon^4]<\infty$
+              \vsp
+              \begin{itemize}
+              \item[]\bluebox $X_i \in \R^p$ are i.i.d sub-Gaussian
+                with independent components
+              
+              \vsp
+              \item[]\bluebox Fixed design, kernel regression satisfying
+                $h^{-1} \phi(1/h)\rightarrow
+                0$ as $h\rightarrow\infty$
+
+                \vsp
+              \item[]\bluebox Orthogonal basis regression
+            \end{itemize}
+            \vsp
+            \end{block}
+            \vfill
+            %\begin{block}{
+            
+            Future work: Similar results for lasso-type estimators
+            % \begin{theorem}
+            \vsp
+            
+            \bluebox $G$ a partition of $\{1,\ldots,p\}$
+            \vsp
+            
+            \bluebox $\GL_u := \{ \beta: \sum_{g\in G} \sqrt{|g|}||\beta_g||_2 \leq
+            u\}$
+            \vsp
+            
+            {\sc \alb{Theorem:}}  Suppose
+            \vsp
+            
+            
+            \bluebox   $\E\left[\left(\sum_{g\in G}
+                ||\ols_g||_2\right)^4\right] = o(u_n^4)$
+            
+            \bluebox  $p_n=n^\alpha$ for   some $\alpha>0$
+            
+            \bluebox $\max_{g\in G} |g|=a_n$
+            
+            \bluebox Conditions \alb{C2} and \alb{C3}
+            
+            \vsp
+            Then, for any $\delta > 0$,
+            \[
+            P_{F_n} \left( \mathcal{E}\left(\hat\beta_{\,\widehat{u}},\beta^*_{u_n} \right) >
+              \delta \right) = o\left( a_n u_n^2\sqrt{ \frac{ \log 
+                  n}{c_n} }\right).
+            \]
+            % \end{theorem}
+            % \end{block}		
+            % 
+            \vfill
+            % 
+          }
+        \end{minipage}
+      \end{beamercolorbox}
+    \end{column}
+  \end{columns}
+\end{frame}
+\end{document}
+

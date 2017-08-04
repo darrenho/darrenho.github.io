@@ -1,0 +1,137 @@
+%Preamble
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb,amsfonts}
+\usepackage[numbers,square]{natbib}
+\usepackage[colorlinks]{hyperref}
+
+
+\newcommand{\B}{{\tt BibTeX}}
+
+
+
+\begin{document}
+%Top Matter
+\title{Latex lecture}
+\author{Darren Homrighausen}
+\date{\today}
+\maketitle
+
+\section{Bibliography}
+There are two main ways to do a bibliography in \LaTeX{}.  I will pejoratively refer to them as the `bad' way and 'good' way\footnote{Feel free to make you're own labels.}.  In either case, the body of your document is the same.  You cite via
+\begin{verbatim}
+As shown in \cite{HomrighausenMcDonald2013}, \ldots
+\end{verbatim}
+which looks like:
+
+As shown in \cite{HomrighausenMcDonald2013}, \ldots
+\subsection{Bad way}
+\begin{verbatim}
+\begin{thebibliography}{99}
+\bibitem{HomrighausenMcDonald2013} 
+Homrighausen, D. and McDonald, D.J.
+\emph{Leave-one-out cross-validation is risk consistent for lasso},
+Machine Learning (2013)
+\end{thebibliography}
+\end{verbatim}
+
+\begin{thebibliography}{99}
+\bibitem{HomrighausenMcDonald2013} 
+Homrighausen, D. and McDonald, D.J.
+\emph{Leave-one-out cross-validation is risk consistent for lasso},
+Machine Learning (2013)
+\end{thebibliography}
+
+\subsubsection{Comments}
+This approach has some major drawbacks:
+\begin{itemize}
+\item You have to have all of your bibitems in the document itself.
+\item It is difficult to change the format of your citations.
+\end{itemize}
+However, it also has one advantage over the good way (I'll say exactly what this is after introducing it).
+
+\subsection{Good way}
+A much better way, overall, of doing bibliographies is via \B.  \B needs three extra ingredients: 
+\begin{itemize}
+\item a `usepackage' statement in the preamble.  
+\item an extra file, referred to as a `dot bib' file (ie: .bib)
+\item `bibliographystyle' and bibliography statements in the footer.
+\end{itemize}
+
+\subsubsection{The usepackage statement}
+Here, you need to add something like
+\begin{verbatim}
+\usepackage[numbers,square]{natbib}
+\end{verbatim}
+to your preamble.  The `natbib' is built into the \LaTeX{} distribution.  
+
+\subsubsection{The .bib file}
+This file contains all the equivalent entries to the bibitem statement from before.  
+However, it is expressed in a different manner to help with formatting.  An example entry looks like:
+\begin{verbatim}
+@article{HomrighausenMcDonald2013a,
+	Author = {Homrighausen, D. and McDonald, D.J.},
+	Title = {Leave-one-out cross-validation is risk consistent for lasso},
+	Journal = {Machine Learning},
+	Year = {2013}}
+\end{verbatim}
+
+For our example, I have created a file `refs.bib' that contains the relevant entries.
+
+\subsubsection{bibliographystyle and bibliography}
+In your footer, you need to add the following:
+\begin{verbatim}
+\bibliographystyle{elsarticle-num-names}
+\bibliography{refs}
+\end{verbatim}
+
+These two statements control the formatting of the bibliography and point to the `.bib' file, respectively. 
+There are other formatting files you can use (journals
+with sometimes give them to you, for instance).  These files are `.bst' files and are the analogue to `.sty' files from \LaTeX{}.
+Remember the `.bib. file is called `refs.bib'.
+
+
+
+\section{Repositories}
+As discussed, we need access to many files to make \LaTeX{} work for academic articles (such as .bib, .bst, .sty, .cls, ...).  We can
+put these files in the directory that contains the .tex file and everything will work fine.  
+
+What if we are writing two papers in different directories?  It would be better if we didn't have two copies of everything (version control...).
+\subsection{Mac OS}
+
+On Mac OS, the directory `texmf' is the ticket.  Add the following folders to your system (Add the appropriate files to the appropriate directories):
+
+\begin{verbatim}
+~/Library/texmf
+~/Library/texmf/tex
+~/Library/texmf/tex/latex
+~/Library/texmf/bibtex
+~/Library/texmf/bibtex/bib
+~/Library/texmf/bibtex/bst
+\end{verbatim}
+
+\subsection{Windows}
+It is my understanding that the equivalent part to MixTeX is via the start menu:
+\begin{enumerate}
+\item Start menu
+\item MixTeX
+\item Maintenance
+\item Settings
+\end{enumerate}
+From here, you can look at the directories in the search tree and add new ones.
+
+\subsection{Dropbox}
+I use several computers.  Dropbox is an easy way to sync them (though there are others).  So, again in the interest of version control, I want only one texmf repository shared among all my computers. Do the following from terminal:
+\begin{enumerate}
+\item kpsewhich texmf.cnf (finds the appropriate file)
+\item emacs /usr/local/texlive/2012/texmf.cnf 
+\item There will be line: `TEXMFHOME = ~/Library/texmf'
+\item change this to: `TEXMFHOME = ~/Library/texmf:NEWDIRECTORY', where NEWDIRECTORY could be ./Dropbox/texmf..
+\end{enumerate}
+
+\section{Miscellaneous}
+Here is truly miscellanea that I though might be helpful:
+\begin{itemize}
+\item- Sometimes your document won't seem to compile.  Try to remove the .aux file and recompile.
+\item \begin{verbatim} \DeclareMathOperator*{\argmin}{argmin} \end{verbatim}
+\end{itemize}
+\end{document}

@@ -1,0 +1,135 @@
+\documentclass{beamer}
+% \usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{caption,amsthm}
+\usepackage{animate}
+
+\usepackage[square,numbers]{natbib}
+\renewcommand{\newblock}{}
+
+\mode<presentation>
+% \setbeameroption{hide notes}
+{
+  \usetheme{Madrid}
+  \definecolor{greenmain}{HTML}{00AF64}
+  \definecolor{brick}{rgb}{.85,.1,.2}
+  \colorlet{greenstruct}{greenmain!87.5!black}
+  \usecolortheme[named=greenstruct]{structure}
+  % Change this in order to make the presentation look
+  % different. Works just like a powerpoint template. 
+  % Have your RA mess around until it looks nice.
+  \setbeamercovered{dynamic}
+
+  \useinnertheme{rectangles}
+  \definecolor{bluemain}{HTML}{0B61A4}
+  \definecolor{orangemain}{HTML}{FF9200}
+  \definecolor{redmain}{HTML}{FF4900}
+  \definecolor{redlight}{HTML}{FF9B73}
+  \definecolor{orangelight}{HTML}{FFC373}
+  \definecolor{cmugray}{RGB}{104,104,104}
+  \definecolor{cmulightgray}{RGB}{238,238,238}
+  \setbeamercolor{block body}{bg=cmulightgray}
+  \setbeamercolor{talktitle}{bg=greenstruct,fg=white}
+  \setbeamercolor{block title alerted}{bg=orangemain}
+  \setbeamercolor{block body alerted}{bg=orangelight}
+
+}
+\renewcommand{\footnoterule}{}
+\renewcommand{\hat}[1]{\widehat{#1}}
+\newcommand{\sourcenum}[3]{$^{\textcolor{bluemain} #1}$\let\thefootnote\relax
+  \footnotetext{\begin{flush#2}\textcolor{bluemain}
+      {\tiny $^{#1}$ #3}\end{flush#2}}} 
+\newcommand{\source}[2]{\let\thefootnote\relax\footnotetext{\begin{flush#1}
+      \textcolor{bluemain}{\tiny Source: #2}\end{flush#1}}}  
+
+\newcommand{\alg}[1]{\textcolor{greenstruct}{#1}}
+\newcommand{\alo}[1]{\textcolor{orangemain}{#1}}
+\newcommand{\alr}[1]{\textcolor{redmain}{#1}}
+\newcommand{\alb}[1]{\textcolor{bluemain}{#1}}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\tCV}{\widehat{t}}
+\newcommand{\tmax}{t_{\max}}
+\newcommand{\cvriskN}[2]{\hat{R}_{#1}\left( #2\right)}
+\newcommand{\ols}{\hat\beta^0}
+\newcommand{\Zrv}{\mathcal{Z}}
+\newcommand{\GL}{\mathcal{G}}
+
+\newcommand{\vsp}{\vspace{.2in}}
+\usefonttheme{serif}
+\setbeamertemplate{blocks}[default]
+\setbeamertemplate{navigation symbols}{}
+\usefonttheme{structuresmallcapsserif}
+
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{footline}{%
+  \raisebox{5pt}{\makebox[\paperwidth]{\hfill\makebox[10pt]{\alg{\scriptsize\insertframenumber\;\;}}}}}
+
+\DeclareMathOperator*{\argmin}{\arg\!\min} % thanks, wikipedia!
+
+\theoremstyle{plain}
+\newtheorem{propo}{Proposition}
+\newenvironment{prop}{\begin{propo}}{\end{propo}} 
+\newtheorem{statModel}{Model}
+\newenvironment{model}{\begin{statModel}}{\end{statModel}} 
+\newtheorem{assump}{Assumptions}
+\newenvironment{assumptions}{\begin{assump}}{\end{assump}} 
+\newtheorem{noteReminder}{Note}
+\newenvironment{notes}{\begin{noteReminder}}{\end{noteReminder}} 
+
+
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\X}{\mathbb{X}}
+\newcommand{\hbeta}{\hat{\beta}}
+\newcommand{\MSE}{\textrm{MSE}} 
+\newcommand{\AMSE}{\textrm{AMSE}} 
+\newcommand{\hbetag}{\hbeta_{\textrm{good}}} 
+\newcommand{\hbetar}[1]{\hat{\beta}_{\textrm{ridge},#1}}
+\renewcommand{\v}{\mathbf{v}}
+\renewcommand{\u}{\mathbf{u}}
+\begin{document}
+
+\title[The lasso and CV]
+{The lasso, persistence, and cross-validation}
+\author[Darren Homrighausen]{Darren Homrighausen}
+\institute[CSU] {Department of Statistics\\Colorado State University}
+\date{}
+
+
+
+\begin{frame}[plain]
+  \begin{beamercolorbox}[leftskip=.4\paperwidth,wd=\paperwidth,sep=.3cm]{talktitle}
+    {\Large \inserttitle}
+  \end{beamercolorbox}
+  \vskip 2em 
+  \insertauthor
+  \vskip 1em {\small \insertinstitute}\\
+  \alo{\tiny http://www.stat.colostate.edu/$\sim$darrenho}
+  \footnotesize
+  \vskip 1em {\tiny Joint work with:}\\
+  \vskip .5em Daniel J. McDonald \\ {\tiny
+   Indiana University, Bloomington}
+  \vskip 1em \insertdate
+  \addtocounter{framenumber}{-1}
+\end{frame}
+
+\begin{frame}
+  \frametitle{The Setup}
+  Suppose we have data 
+  \[
+  \mathcal{D}_n = \{(Y_1,X^\top_1),\ldots,(Y_n,X^\top_n)\}
+  \]
+  where 
+  \begin{itemize}
+  \item $X_i  = (X_{i1}, \ldots, X_{ip})^\top \in \mathbb{R}^p$  are the features (covariates)
+  \item $Y_i \in \mathbb{R}$ are the responses
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[plain]
+  \alg{\huge The lasso}
+  \addtocounter{framenumber}{-1}
+\end{frame}
+
+\end{document}

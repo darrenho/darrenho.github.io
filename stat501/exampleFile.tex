@@ -1,0 +1,95 @@
+\documentclass[11pt]{article}
+\usepackage{amsthm,amsmath,amssymb}
+\usepackage[numbers,square]{natbib}
+\usepackage[colorlinks,citecolor=blue,urlcolor=blue,linkcolor=blue]{hyperref}
+\newcommand{\email}[1]{\href{mailto:#1}{#1}}
+\usepackage[left=1.25in,top=1in,right=1.25in,bottom=1in,nohead]{geometry}
+
+\usepackage{aliascnt}
+\newtheorem{theorem}{Theorem}[section]
+
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\providecommand*{\lemmaautorefname}{Lemma}
+
+\newaliascnt{cor}{theorem}
+\newtheorem{corollary}[cor]{Corollary}
+\aliascntresetthe{cor}
+\providecommand*{\corautorefname}{Corollary}
+
+\newaliascnt{def}{theorem}
+\newtheorem{definition}[def]{Definition}
+\aliascntresetthe{def}
+\providecommand*{\defautorefname}{Definition}
+
+\renewcommand{\hat}[1]{\widehat{#1}}
+% \renewcommand{\eqref}[1]{(\ref{eq:#1})}
+\newcommand{\E}{\mathbb{E}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\ep}{\varepsilon}
+\newcommand{\thetaLOO}{\hat\theta_j^{(i)}(\lambda)}
+\newcommand{\thetaLOOdef}{\sgn(Z_{nj}^{(i)})(|Z_{nj}^{(i)}| - \lambda)_+}
+\newcommand{\thetaEST}{\hat\theta_j(\lambda)}
+\newcommand{\thetaESTdef}{\sgn(Z_{nj})(|Z_{nj}| - \lambda)_+}
+\newcommand{\squaredLOO}{(|Z^{(i)}_{nj}| - \lambda)^2_+}
+\newcommand{\squared}{(|Z_{nj}| - \lambda)^2_+}
+\newcommand{\convP}{\xrightarrow{\mathbb{P}}}
+\newcommand{\op}{o_{\mathbb{P}}}
+\newcommand{\Op}{O_{\mathbb{P}}}
+\newcommand{\lamCV}{\widehat{\lambda}_n}
+\DeclareMathOperator*{\argmin}{argmin} % thanks, wikipedia!
+\DeclareMathOperator*{\sgn}{\textrm{sgn}}
+
+
+\begin{document}
+\title{Title Here}
+
+\author{You\\Department of Statistics\\Colorado State
+  University\\Fort Collins, CO\\\email{you@csu.edu} 
+  \and someone\\Department of Statistics\\Indiana University\\
+  Bloomington, IN 47408\\\email{someone@otherplace.edu}}
+\date{Version: \today}
+
+\maketitle
+
+\begin{abstract}
+abstract
+  \noindent{\bf Keywords:}
+\end{abstract}
+
+ 
+
+
+
+\section{Introduction}
+Since its introduction in the statistical~\citep{Tibshirani1996} and
+
+\begin{equation}
+  Y_{ij} = \theta_j + \sigma W_{ij}.
+  \label{eq:sequenceModel}
+\end{equation} 
+\begin{corollary}
+  [Corollary 2.2 in~\citep{Newey1991}]
+  \label{cor:newey}
+  If $\mathcal{B}$ is a compact metric space with metric $d$, $|\hat{Q}_n(\beta) -
+  \overline{Q}_n(\beta)| = o_\P(1)$ for all $\beta \in \mathcal{B}$, and
+  there exist $B_n$ and $h$ such that $B_n=O_\P(1)$ and for all
+  $\beta',\beta \in \mathcal{B}$, $|\hat{Q}_n(\beta') -
+  \hat{Q}_n(\beta)| \leq B_n h(d(\beta',\beta))$, then $\sup_{\beta \in \mathcal{B}}
+  |\hat{Q}_n(\beta) - \overline{Q}_n(\beta)| = o_\P(1)$.
+\end{corollary}
+
+
+\section{Proofs}
+\label{sec:proofs}
+
+\section{Discussion and future work}
+\label{sec:discussion}
+
+
+\bibliographystyle{elsarticle-num-names}
+\bibliography{exampleFile}
+
+
+\end{document}
