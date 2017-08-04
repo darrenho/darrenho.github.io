@@ -1,0 +1,605 @@
+\documentclass{beamer}
+%\usepackage[usenames,dvipsnames]{xcolor}
+
+\usepackage{_defsAndPackages675notation}
+\usepackage{_defsAndPackages675beamer}
+
+\begin{document}
+
+\title{\alg{Additional topics on the lasso}}
+\subtitle{\classTitle}
+%\author{\alg{Darren Homrighausen, PhD}}
+%\institute{\classTitle}
+\date{}
+
+
+
+\begin{frame}
+\maketitle
+%\titlepage
+%\begin{figure}[h!]
+%  \centering
+%  \includegraphics[width=1in]{....../../figures/CSU_logo2.eps}
+%\end{figure}
+%
+\organization
+%
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{$\ell_1$-regularized regression}
+\smallCapGreen{Reminder}
+Known as 
+\begin{itemize}
+\item `\alg{lasso}' 
+\item `\alg{basis pursuit}' 
+\end{itemize}
+\vsp
+
+The estimator satisfies
+\[
+\hbetal{t} = \argmin_{ ||\beta||_1 \leq t}  ||\mathbb{Y}-\X\beta||_2^2 
+\]
+
+In its corresponding Lagrangian dual form:
+\[
+\hbetal{\lambda} = \argmin_{\beta} ||\mathbb{Y}-\X\beta||_2^2 + \lambda ||\beta||_1
+\]
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Some additional topics}
+\begin{enumerate}
+\item \smallCapGreen{Grids and cross-validation}
+\item \smallCapGreen{Sparse matrices:} In some cases, most of entries in $\X$ are zero and hence
+we can store/manipulate $\X$ much cheaper using \alo{sparse matrices}
+\item \smallCapGreen{Elastic net:} For use when covariates are highly \alo{related} to each other 
+\item \smallCapGreen{Refitted lasso:} A proposal for \alo{reducing} the lasso bias
+\item \smallCapGreen{Scaled sparse regression} 
+\end{enumerate}
+\end{frame}
+
+\transitionSlide{Grids and cross-validation}
+
+\begin{frame}
+\frametitle{Some comments about \alr{glmnet}}
+\script{\smallCapGreen{Note:} This section's examples are in terms of Ridge regression.  There are the same 
+problems with lasso and elastic net.  I just am picking one for simplicity}
+\vsp
+ 
+Some further details
+\begin{itemize}
+\item Note that in this figure:
+\begin{figure}
+  \centering 
+  \includegraphics[width=1in,trim=0 0 0 25,clip] {../figures/ridgeCV} 
+\end{figure}    
+many solutions have \alo{almost} the same CV error
+
+\vsp
+In fact, since CV is a risk estimate, it is \alo{random}
+\item The lower end point of the grid is somewhat arbitrary chosen
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Some comments about \alr{glmnet}}
+The way that \alr{glmnet} works is to 
+\begin{enumerate}
+\item form a \alg{grid} of $\lambda$ values,
+\item find the cross-validation error for each ridge solution on that grid
+\item compute the minimum cross-validated $\lambda$: $\hat\lambda$
+\item report  $\hbetar{\hat\lambda}$ as the final solution 
+\end{enumerate}
+The important piece is that the final solution \alo{depends} on which grid we choose
+
+\vvsp
+The function \alr{cv.glmnet} comes with a \alg{plotting} function
+
+\begin{blockcode}
+ridge.cv = cv.glmnet(x=X,y=Y,alpha=0)
+plot(ridge.cv)
+\end{blockcode}
+\end{frame}
+
+\begin{frame}
+\frametitle{Some comments about \alr{glmnet}}
+\begin{figure}
+  \centering 
+  \includegraphics[width=2in,trim=0 15 0 25,clip] {../figures/ridgeCVbuiltIn} 
+\end{figure}
+\begin{itemize}
+\item The left-most dotted, vertical line occurs at the $CV$ minimum
+\item The right-most dotted, vertical line is the 
+\begin{itemize}
+\item largest value of $\lambda$ ...
+\item such that  the error is within one standard-error of the minimum
+\end{itemize}
+
+\script{the so called \alg{one-standard-error} rule}
+\end{itemize}
+\end{frame}
+
+%
+%
+%\begin{frame}[fragile]
+%\frametitle{Some comments about \alr{glmnet}}
+%Alternatively, you can demand a `significant' amount of CV reduction to discard full model
+%
+%\script{By full model, I mean the model with all covariates}
+%\begin{blockcode}
+%  plot(log(ridge.cv$lambda),ridge.cv$cvm,
+%       xlab='lambda',ylab='CV error',main='Ridge',
+%       type='l',ylim=c(.4,1.2))
+%  lines(log(ridge.cv$lambda),ridge.cv$cvup,col="red",lty=2)
+%  lines(log(ridge.cv$lambda),ridge.cv$cvlo,col="blue",lty=2)  
+%\end{blockcode}
+%
+%\begin{figure}
+%  \centering 
+%  \includegraphics[width=1.9in,trim=0 15 0 25,clip] {../figures/ridgeCVseBars} 
+%\end{figure}
+%
+%\end{frame}
+
+%\begin{frame}[fragile]
+%\frametitle{Some comments about \alr{glmnet}}
+%\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Some comments about \alr{glmnet}}
+Though \alr{glmnet} automatically allocates a grid, it isn't necessary any good
+
+\vsp
+Sometimes...
+\begin{itemize}
+\item  the grid values are too far apart near the minimum
+\item the grid doesn't allow small/large enough $\lambda$ values
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Some comments about \alr{glmnet}}
+\begin{figure}
+  \centering 
+  \includegraphics[width=2in,trim=0 15 0 25,clip] {../figures/ridgeCVbuiltIn} 
+  \caption*{Example of a \alo{bad} minimum: Grid values too far apart}
+\end{figure}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Some comments about \alr{glmnet}}
+
+\begin{figure}
+  \centering 
+  \includegraphics[width=1.9in,trim=0 15 0 25,clip] {../figures/ridgeCVbadMin} 
+    \caption*{Example of a \alo{bad} minimum: Grid values too large}
+\end{figure}
+How to fix it:
+\begin{blockcode}
+ridge.cv   = cv.glmnet(x=X,y=Y,alpha=0)
+min.lambda = min(ridge.cv$lambda)
+lambda.new = seq(min.lambda,min.lambda*.001,length=100)
+ridge.cv   = cv.glmnet(x=X,y=Y,alpha=0,lambda=lambda.new)
+lambda.hat = ridge.cv$lambda[which.min(ridge.cv$cvm)]
+\end{blockcode}
+
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Some comments about \alr{glmnet}}
+New minimum, after moving $\lambda$ grid \alo{smaller}:
+\begin{figure}
+  \centering 
+  \includegraphics[width=1.9in,trim=0 15 0 25,clip] {../figures/ridgeCV} 
+\end{figure}
+\end{frame}
+
+
+
+\transitionSlide{Sparse matrices}
+
+\begin{frame}[fragile]
+\frametitle{Sparse matrices}
+\begin{blockcode}
+load("../data/hiv.rda")
+X = hiv.train$x
+> X[5:12,1:10]
+     p1 p2 p3 p4 p5 p6 p7 p8 p9 p10
+[1,]  0  0  0  0  0  0  0  0  0   0
+[2,]  0  0  0  0  0  0  0  0  0   0
+[3,]  0  0  0  0  0  0  0  0  0   0
+[4,]  0  0  0  0  0  0  0  0  0   0
+[5,]  0  0  0  0  0  0  0  1  0   0
+[6,]  0  0  0  0  0  0  0  0  0   0
+[7,]  1  0  0  0  0  0  0  0  0   0
+[8,]  0  0  0  0  0  0  0  0  0   0
+\end{blockcode}
+\vsp
+
+Many zero entries!
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Sparse matrices}
+All numbers in \alr{R} take up the same \alo{space}
+
+\script{Space in this context means RAM aka memory}
+\begin{blockcode}
+> print(object.size(0),units='auto')
+48 bytes
+> print(object.size(pi),units='auto')
+48 bytes
+\end{blockcode}
+\vsp
+
+\smallCapGreen{Idea:} If we can tell \alr{R} in advance which entries are zero, \alo{it doesn't need to save
+that number}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Sparse matrices}
+This can be accomplished in several ways in \alr{R}
+
+\vsp
+One is with the \alr{Matrix} package
+
+\begin{blockcode}
+library('Matrix')
+
+Xspar = Matrix(X,sparse=T)
+\end{blockcode}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Sparse matrices}
+Let's take a look at the space difference
+\begin{blockcode}
+> print(object.size(X),units='auto')
+1.1 Mb
+> print(object.size(Xspar),units='auto')
+140.7 Kb
+\end{blockcode}
+
+\vsp
+Pretty substantial!  Only \alo{12.1\%} as large
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Sparse matrices}
+Lastly, we can create sparse matrices without having the original matrix $\X$ ever in memory
+
+\vsp
+This is usually done with three vectors of the same length:
+\begin{itemize}
+\item A vector with row numbers
+\item A vector with column numbers
+\item A vector with the entry value
+\end{itemize}
+\begin{blockcode}
+i = c(1,2,2)
+j = c(2,2,3)
+val = c(pi,1.01,100)
+
+sparseMat = sparseMatrix(i = i, j = j, x = val,dims=c(4,4))
+
+regularMat = as(Matrix(sparseMat,sparse=F),'dgeMatrix')
+\end{blockcode}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Sparse matrices}
+\begin{blockcode}
+> print(sparseMat)
+4 x 4 sparse Matrix of class "dgCMatrix"
+                     
+[1,] . 3.141593   . .
+[2,] . 1.010000 100 .
+[3,] . .          . .
+[4,] . .          . .
+> print(regularMat)
+4 x 4 Matrix of class "dgeMatrix"
+     [,1]     [,2] [,3] [,4]
+[1,]    0 3.141593    0    0
+[2,]    0 1.010000  100    0
+[3,]    0 0.000000    0    0
+[4,]    0 0.000000    0    0
+\end{blockcode}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Sparse matrices}
+Sparse matrices `act' like regular (\alg{dense}) matrices
+
+\vsp
+They just only keep track of which entries are non zero and perform the
+operation on these entries
+
+\vsp
+For our purposes, \alr{glmnet} (and other methods) automatically check to see if $\X$ is 
+a sparse matrix object
+
+\vsp
+This can be a substantial speed/storage savings for large, sparse matrices
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{SVD}
+
+%The full SVD takes \alr{$O(\min\{np^2, n^2p \})$}
+The full SVD takes \alr{$O(\min\{n^2p +  p^3 \})$} operations
+
+\script{This can be done with the \alr{svd} function in \alr{R}}
+
+\begin{blockcode}
+svd_out = svd(X,nu=nu,nv=nv)
+U = svd.out$u
+V = svd.out$v
+D = diag(svd.out$d)
+\end{blockcode}
+
+\alr{nu} $\in \{0,n\}$, \alr{nv} $\in \{0,p\}$
+\vsp
+
+\smallCapGreen{Note:} Though the parameters can be set to intermediary values, these are ignored
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{SVD}
+
+Often, we only need a few ($q$) singular values/ vectors
+For this, we can use Krylov subspace techniques in \alr{$O(\min\{npq\})$}
+
+\script{This can be done with the \alr{irlba} package in \alr{R}}
+
+\vsp
+The \alr{irlba} function leverages the sparse matrix data structure
+
+\begin{blockcode}
+svd_out = irlba(X,nu=nu,nv=nv)
+U = svd.out$u
+V = svd.out$v
+D = diag(svd.out$d)
+\end{blockcode}
+
+\alr{nu} $\in [0,n]$, \alr{nv} $\in [0,p]$
+
+
+
+
+\vsp
+\smallCapGreen{Example:}
+The netflix prize dataset was 480,189 rows by 17,770 columns with 100,480,507 non-zero entries
+\vsp
+
+This can be computed in seconds on many computers
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{SVD}
+The \alr{irlba} function comes with additional choices:
+
+\begin{itemize}
+\item \alr{adjust}: With \alr{irlba}, you don't want to just compute $q$ singular vectors if you need $q$, instead
+compute $q + \textrm{adjust}$ to enhance convergence.
+
+\script{More is better, but $5$ is usually fine}
+
+\item \alr{maxit}: \alr{irlba} is iterative by nature.  Check the output object \alr{iter} to make sure the 
+computation didn't terminate based on iterations.  
+\end{itemize}
+\end{frame}
+\transitionSlide{Elastic net}
+
+\begin{frame}[fragile]
+\frametitle{Elastic net}
+The ridge solution is always \alo{unique} and does well when the covariates are highly related to each other:
+\[
+\hat\beta_{ridge,\lambda} = \argmin_{\beta} ||\mathbb{Y}-\X\beta||_2^2 + \lambda ||\beta||_2^2 = (\X^{\top}\X + \lambda I)^{-1} \X^{\top}Y
+\]
+The \alo{lasso} solution
+\[
+\hat\beta_{lasso,\lambda} = \argmin_{\beta} ||\mathbb{Y}-\X\beta||_2^2 + \lambda ||\beta||_1 
+\]
+isn't necessarily unique, but it can do \alo{model selection}
+
+\vsp
+However, it can do poorly at model selection if the covariates are highly related to each other
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Elastic net}
+The \alg{elastic net} was introduced to combine both of these behaviors
+
+\vsp
+It solves
+
+\[
+\hat\beta_{\alpha,\lambda} = \argmin_{\beta} \bigg[ ||\mathbb{Y}-\X\beta||_2^2 + \lambda \left((1-\alpha) ||\beta||_2^2 
++ \alpha ||\beta||_1\right)\bigg]
+\]
+
+We can do the elastic net in \alr{R} with \alr{glmnet}
+\begin{blockcode}
+alpha = 0.5
+out.elasticNet = glmnet(x = X, y = Y, alpha=alpha)
+\end{blockcode}
+\vsp
+
+The parameter \alr{alpha} needs to be set 
+
+\vsp
+There does not exist any convention for this, but CV can be used
+
+\script{You have to write this up yourself, though. Usually, people just play around with different values}
+\end{frame}
+
+\transitionSlide{Refitted lasso}
+
+\begin{frame}[fragile]
+\frametitle{Refitted lasso}
+Since lasso does both
+\begin{itemize}
+\item regularization
+\item model selection
+\end{itemize}
+\vsp
+
+it can produce a solution that produces  \alo{too much bias}
+
+\vsp
+A common approach is to do the following two steps:
+\begin{enumerate}
+\item choose the $\lambda$ via the `one-standard-error rule'
+\item refit the (unregularized) least squares solution on the selected covariates
+\end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Refitted lasso}
+We can do this in \alr{R} via
+\begin{blockcode}
+#Get CV curve
+lasso.cv.glmnet = cv.glmnet(X,Y,alpha=1)
+
+#Get beta hat with one-standard-error rule 
+#       (remove intercept index -> [-1])
+betaHat.temp = coef(lasso.cv.glmnet,s='lambda.1se')[-1] 
+# Identify which covariates are nonzero
+selectedCovs = which(abs(betaHat.temp) > 1e-16)
+
+# Run regular least squares using those covariates
+refitted.lm  = lm(Y~.,data=data.frame(X[,selectedCovs]))
+
+##
+# Output: either predictions or coefficients
+## 
+Yhat.refitted    = predict(refitted.lm,X_0[,selectedCovs])
+betaHat.refitted = refitted.lm$coefficients
+\end{blockcode}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Refitted lasso}
+\smallCapGreen{Important:} Do not attempt to do inference with the reported p-values.  These are absolutely not
+valid!
+
+\vsp
+However, the parameter values are estimates of the effect of that covariate
+\end{frame}
+
+\transitionSlide{Scaled-sparse regression}
+%
+%\begin{frame}[fragile]
+%\frametitle{Scaled-sparse regression}
+%Recently, a new technique for finding the \alo{lasso}
+%solution has be proposed
+%
+%\vsp
+%Essentially, it reduces to the following idea:
+%
+%\begin{itemize}
+%\item The optimally chosen $\lambda$ looks like
+%\[
+%\lambda_* \approx \sigma\sqrt{\frac{n}{\log p}}
+%\]
+%where 
+%\begin{itemize}
+%\item $\log p $ is the natural log of the \# of covariates
+%\item $\sigma$ is the true standard deviation
+%\end{itemize}
+%\item Hence, if we knew $\sigma$, we could form the optimal $\lambda$ 
+%\item If we new the optimal $\lambda = \lambda_*$, then we could estimate the variance via
+%\[
+%\norm{Y - \X \hbetal{\lambda_*}}_2^2
+%\]
+%\end{itemize}
+%\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Scaled-sparse regression}
+Theoretically, the optimal value for $\lambda$ looks like:
+\[
+\lambda = C \sigma\sqrt{\frac{n}{\log(p)}}
+\]
+for some constant $C$.
+
+\begin{itemize}
+\item If we knew the true $\sigma$, we could find an optimal $\lambda$
+
+\item If we knew the optimal $\lambda$, we could find the $\sigma$
+\end{itemize}
+\vsp
+
+This speaks to using an \alg{iterative} approach
+
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Scaled-sparse regression}
+\vsp
+Scaled sparse regression (SSR) jointly estimates the regression coefficients and noise level in a linear model
+
+\vsp
+It alternates between
+\begin{enumerate}
+\item estimating $\sigma$ via 
+\[
+\hat\sigma = \sqrt{\frac{1}{n}\norm{Y - \X \hbetal{\lambda}}_2^2}
+\]
+\item setting 
+
+\[
+\lambda = C\hat\sigma\sqrt{\frac{n}{\log(p)}}
+\]
+\script{$C$ is usually set to something like $1/2$}
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Scaled-sparse regression}
+We can do this in \alr{R} via
+\begin{blockcode}
+library(scalreg)
+lasso.ssr = scalreg(X = X,y = Y,LSE=F)
+> names(lasso.ssr)
+[1] "hsigma"        "coefficients"  "residuals"    
+[4] "fitted.values" "type"          "call" 
+\end{blockcode}
+%\script{ I have a work around for this, but it's a bit beyond the scope of this class}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Scaled-sparse regression}
+Also, the \alr{LSE} parameter indicates if we want to do refitted lasso
+
+\vsp
+Running
+\begin{blockcode}
+lasso.ssr = scalreg(X = X,y = Y,LSE=T)
+\end{blockcode}
+Creates an object \alr{lse}
+\begin{blockcode}
+> names(lasso.ssr)
+[1] "hsigma"        "coefficients"  "residuals"    
+[4] "fitted.values" "type"          "lse"
+\end{blockcode}
+This object has all the relevant information.  For instance predictions
+\begin{blockcode}
+Yhat.ssr.refitted = X_0 %*% lasso.ssr$lse$coefficients
+\end{blockcode}
+
+\end{frame}
+\end{document}

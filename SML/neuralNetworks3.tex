@@ -1,0 +1,1213 @@
+\documentclass[12pt]{beamer}
+%\usepackage[usenames,dvipsnames]{xcolor}
+
+\usepackage{_defsAndPackages577notation}
+\usepackage{_defsAndPackages577beamer}
+
+%\DeclareMathSizes{12}{12}{5}{12}
+\newcommand{\parenthetical}[2]{#1  \scriptstyle \alr{( #2)}}
+\date{}
+
+\begin{document}
+
+\title{\alg{Neural Networks and Deep Learning 3}}
+\subtitle{\classTitle}
+
+\begin{frame}
+\maketitle
+%\titlepage
+%\begin{figure}[h!]
+%  \centering
+%  \includegraphics[width=1in]{.../figures/CSU_logo2.eps}
+%\end{figure}
+%
+\organization
+%
+\end{frame}
+
+
+%\transitionSlide{Representation learning}
+
+\begin{frame}[fragile]
+\frametitle{Overview}
+\alg{Representation learning} is the idea that performance of ML methods is highly dependent on the choice
+of \alo{data representation}
+
+\vsp
+For this reason, much of ML is geared towards transforming the data into the relevant \alo{features} and
+then using these as inputs
+
+\vsp
+This idea is as old as statistics itself, really, 
+
+\script{E.g. Pearson (1901), where PCA was first introduced}
+
+\vsp
+However, the idea is constantly revisited in a variety of fields and contexts
+\end{frame}
+%
+%\begin{frame}[fragile]
+%\frametitle{Overview}
+%Representation learning can be broken up into two philosophies 
+%
+%\begin{itemize}
+%\item \smallCapGreen{Unsupervised:} Here, we use the covariates only\footnote{These methods are called
+%semisupervised when these inputs are used to train a prediction algorithm} to estimate what are hopefully relevant \alo{features} of $p(X)$, the joint distribution of $X$
+%
+%\script{E.g. PCA, Laplacian eigenmaps, clustering, sparse coding, ...}
+%\item \smallCapGreen{Supervised:}  We form feature maps that take into account the nature of the joint distribution
+%$p(X,Y)$
+%
+%\script{E.g. partial least squares, LDA, neural networks, linear regression}
+%\end{itemize}
+%\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Overview}
+Commonly, these learned representations capture `low level' information like overall shape types
+
+\vsp
+Other sharp features, such as images, aren't captured
+
+\vsp
+It is possible to quantify this intuition for PCA at least
+
+\end{frame}
+%
+%\begin{frame}[fragile]
+%\frametitle{Overview}
+%
+%Suppose the signals are the result of $f + \epsilon$, where $\epsilon \sim (0,C)$ is a random field
+%with correlation $C$.  Suppose that $C(x,x') = C(x-x')$
+%
+%\script{That is, the covariance is stationary}
+%
+%\vsp
+%Then the \alo{eigenfunctions} of the operator induced by $C$ are the \alo{fourier basis}
+%
+%\[
+%\int C(x-t) \phi_j(t)dt = c_j \phi_j(x)
+%\]
+%where $\phi_j(x) = e^{-i2\pi x}$
+%
+%\vsp
+%Therefore, when we are getting the first few principal components, we really are getting the \alo{low frequency}
+%part of $f$
+%\[
+%f_j = \int f \phi_j
+%\]
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%\frametitle{Overview}
+%A reasonable trichotomy of representation methods would be
+%\begin{itemize}
+%\item \smallCapGreen{Probabilistic methods:} Presumes to model the joint distribution of $p(X,Z)$, where $Z$
+%are latent variables, and form the \alo{posterior} $p(Z|X)$ 
+%
+%\script{A major example of this approach is \alg{graphical models}}
+%\item \smallCapGreen{Auto-encoders:} Creates a `bottle-neck' in which a nonlinear function is sandwiched between
+%a linear map and its transpose
+%\item \smallCapGreen{Manifold learning:} Posits a lower-dimensional (but possibly nonlinear) manifold which the data live
+%on or near and attempts to estimate it
+%\end{itemize}
+%
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%\frametitle{Overview}
+%Before covering these topics (and deep learning in particular), it will be helpful to cover two special cases
+%
+%\begin{itemize}
+%\item \smallCapGreen{PCA:} Principal components can be phrased as an optimization problem
+%over the \alg{Stiefel} manifold of orthogonal matrices.  This generalizes nicely to a version of deep learning
+%
+%\item \smallCapGreen{Sparse coding:} Leverages the intution that a good basis should allow for the 
+%features to be sparsely decomposable
+%\end{itemize}
+%\end{frame}
+
+\transitionSlide{PCA}
+\begin{frame}[fragile]
+\frametitle{PCA}
+Principal components analysis (PCA) is an (unsupervised) dimension reduction technique
+
+\vsp
+It solves various equivalent optimization problems
+
+\script{Maximize variance, minimize $L_2$ distortions, find closest subspace of a given rank,...}
+
+\vsp
+At its core, we are finding linear combinations of the original (centered) covariates
+\[
+Z_{ij} = \alpha_j^{\top} X_i
+\]
+
+\vsp
+This is expressed via the SVD $\X - \overline{\X} = UDV^{\top}$ as
+\[
+Z = \X V = UD
+\]
+\end{frame}
+
+\transitionSlide{PCA}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Lower dimensional embeddings}
+Suppose we have predictors $x_1$ and $x_2$ 
+\begin{itemize}
+\item We more faithfully preserve the
+structure of the data by keeping $x_1$ and setting $x_2$ to zero than the opposite
+\end{itemize}
+\begin{figure}
+\centering
+\includegraphics[width=2.5in]{../figures/pcaFirstExample4.pdf}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Lower dimensional embeddings}
+An important feature of the previous example that $x_1$ and $x_2$ aren't correlated
+\vsp
+
+What if they are?
+\begin{figure}
+\centering
+\includegraphics[width=2.5in]{../figures/pcaSecondExample1.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Lower dimensional embeddings}
+We \alo{do} lose a lot of structure by setting either $x_1$ or $x_2$ to zero
+
+\vsp
+\begin{figure}
+\centering
+\includegraphics[width=2.5in]{../figures/pcaSecondExample4.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Lower dimensional embeddings}
+There isn't that much structurally different between the examples
+
+\vsp
+One is just a \alo{rotation} of the other
+\begin{figure}
+\centering
+\includegraphics[width=1.7in]{../figures/pcaFirstExample4.pdf}
+\includegraphics[width=1.7in]{../figures/pcaSecondExample4.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Lower dimensional embeddings}
+If we knew how to rotate our data,  then we would be able to preserve more structure
+\begin{figure}
+\centering
+\includegraphics[width=2in]{../figures/pcaFirstExample4.pdf}
+\includegraphics[width=2in]{../figures/pcaSecondExample4.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Lower dimensional embeddings}
+It turns out that \alg{PCA} gives us exactly this rotation.\begin{figure}
+\centering
+\includegraphics[width=1.5in]{../figures/pcaFirstExample4.pdf}
+\includegraphics[width=1.5in]{../figures/pcaSecondExample4.pdf}
+\includegraphics[width=1.5in]{../figures/pcaSecondExamplePCsAndData.pdf}
+\end{figure}
+
+%\emphasis{8cm}{Caveat:}{Both $x_1$ and $x_2$ are \alo{mixed together} inside both PC1 and PC2.  
+%So, this approach doesn't do \alo{variable selection}, it does \alg{dimension reduction}}
+\end{frame}
+
+
+
+\transitionSlide{Digits example}
+
+\begin{frame}[fragile]
+\frametitle{PCA}
+\begin{figure}
+\centering
+\includegraphics[width=1.9in]{../figures/pcaDigitsExamples.pdf}
+\caption*{Source: http://www-stat.stanford.edu/$\sim$tibs/ElemStatLearn/}
+\end{figure}
+
+The data: 658 handwritten \alg{3s} each drawn by a different person
+
+\vsp
+Each image is 16x16 pixels, each taking grayscale values between -1 and 1.
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{PCA}
+Think about each pixel location as a \alo{measurement}
+
+\vsp
+Consider these simple drawings of \alg{3's}.  We convert this to an \alo{observation} in a matrix by
+\alo{unraveling} it along rows
+\begin{columns}[T]
+    \begin{column}{.3\textwidth}
+\begin{tabular}{cc}
+\parbox{.5cm}{$X_1 = $ \vvsp} & \includegraphics[width=.6in]{../figures/2simpleThree}\\
+\parbox{.5cm}{$X_2 = $ \vvsp} &\includegraphics[width=.6in]{../figures/2simpleThree2}
+\end{tabular}
+\end{column}
+    \begin{column}{.7\textwidth}
+\[
+X_1 = [1,1,1,0,0,1,0,1,1,0,0,1,1,1,1]^{\top}
+\]
+
+\[
+X_2 = [1,1,1,0,1,1,0,0,1,0,0,1,1,1,1]^{\top}
+\]
+
+\end{column}
+\end{columns}
+{\scriptsize (Here, let \alo{black} be 1 and \alo{white} be 0)}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{PCA}
+We will consider digits with...
+
+\begin{itemize}
+\item more pixels $(p = 256)$
+\item a continuum of  intensities
+\end{itemize}
+\begin{columns}[T]
+    \begin{column}{.4\textwidth}
+\begin{figure}
+\centering
+\includegraphics[width=1.5in]{../figures/pcaDigitsExamples.pdf}
+\end{figure}
+\end{column}
+    \begin{column}{.2\textwidth}
+    \vvvsp
+    
+    \begin{center}
+Vs.
+\end{center}
+\end{column}
+    \begin{column}{.4\textwidth}
+    \begin{figure}
+\centering
+ \includegraphics[width=.6in]{../figures/2simpleThree}
+\includegraphics[width=.6in]{../figures/2simpleThree2}
+\end{figure}
+\end{column}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{PCA}
+\begin{blockcode}
+threesCenter = scale(threes,scale=FALSE)
+
+svd.out = svd(threesCenter)
+
+pcs    = svd.out$v
+scores = svd.out$u%*%diag(svd.out$d)
+\end{blockcode}
+Or, using prcomp:
+\begin{blockcode}
+out = prcomp(threes,scale=F)
+pcs = out$rot
+scores = out$x
+\end{blockcode}
+\script{Note that here we aren't scaling: the measurements are already on a consistent scale}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{PCA}
+We can plot the scores of the first two principal components versus each other:
+\begin{blockcode}
+plot(scores[,1],scores[,2],xlab = 'PC1',ylab='PC2',
+    main='Plot of First Two PCs')
+\end{blockcode}
+
+\begin{figure}
+\centering
+\includegraphics[width=1.8in]{../figures/pcaDigitsPC1PC2.pdf}
+\caption*{Note: Each circle in this plot represents a hand written `\alg{3}'.}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{PCA}
+\begin{blockcode}
+quantile.vec = c(0.05,0.25,0.5,0.75,0.95)
+quant.score1 = quantile(scores[,1],quantile.vec)
+quant.score2 = quantile(scores[,2],quantile.vec)
+plot(scores[,1],scores[,2],xlab = 'PC1',ylab='PC2')
+for(i in 1:5){
+  abline(h = quant.score2[i])
+  abline(v = quant.score1[i])
+}
+identify(scores[,1],scores[,2],n=25) #to find points
+\end{blockcode}
+\begin{figure}
+\centering
+\includegraphics[width=1.45in]{../figures/pcaDigitsPC1PC2quantiles.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{PCA}
+\begin{blockcode}
+pcs.order = c(73,238,550,82,640,284,84,133,4,322,392,241,
+    554,220,500,247,344,142,405,649,184,149,234,375,176)
+par(mfrow=c(5,5))
+par(mar=c(.2,.2,.2,.2))
+for(i in pcs.order){
+  plot.digit(threes[i,])
+}
+\end{blockcode}
+\begin{figure}
+\centering
+\includegraphics[width=1.68in]{../figures/pcaDigitsPC1PC2quantiles.pdf}
+\includegraphics[width=1.68in]{../figures/pcaDigitsPC1PC2quantilesVertex.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{PCA}
+The \alg{3's} get \alo{lighter} as the location on PC2 increases.  
+
+\vsp
+The \alg{3's} get more \alo{elongated} as
+the location along PC1 increases 
+\begin{figure}
+\centering
+\includegraphics[width=1.8in]{../figures/pcaDigitsPC1PC2quantiles.pdf}
+\includegraphics[width=1.8in]{../figures/pcaDigitsPC1PC2quantilesVertex.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{PCA}
+Each number represents a vector in $\mathbb{R}^{256}$ 
+
+{\scriptsize (as each square is 16x16 pixels)}  
+\vsp
+
+However, hopefully we can \alo{reduce} this number by re-expressing the digits in PC-land
+
+\vsp
+
+{\scriptsize (For instance, the top-right pixel is always \alo{0} and hence that covariate is uninteresting)}
+\begin{figure}
+\centering
+\includegraphics[width=1.5in]{../figures/pcaDigitsPC1PC2quantilesVertex.pdf}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{PCA}
+Lastly, we can also look at the loadings as well:
+
+\begin{columns}[T]
+    \begin{column}{.63\textwidth}
+\begin{figure}
+\centering
+\includegraphics[width=.8in]{../figures/pcaDigitsPCsPlot1.pdf}
+\includegraphics[width=.8in]{../figures/pcaDigitsPCsPlot2.pdf}
+\includegraphics[width=.8in]{../figures/pcaDigitsPCsPlot3.pdf}\\
+\includegraphics[width=.8in]{../figures/pcaDigitsPCsPlot4.pdf}
+\includegraphics[width=.8in]{../figures/pcaDigitsPCsPlot5.pdf}
+\includegraphics[width=.8in]{../figures/pcaDigitsPCsPlot6.pdf}\\
+\includegraphics[width=.8in]{../figures/pcaDigitsPCsPlot7.pdf}
+\includegraphics[width=.8in]{../figures/pcaDigitsPCsPlot8.pdf}
+\includegraphics[width=.8in]{../figures/pcaDigitsPCsPlot9.pdf}
+
+
+\end{figure}    
+\end{column}
+    \begin{column}{.35\textwidth}
+\vvvsp
+
+\begin{itemize}
+\item[1st PC:] Takes a compact \alg{3} and \alo{smears} it out
+\item[2nd PC:] Deletes a portion of the inner part of a \alg{3} and augments the outer (right) part
+\item[3rd PC:] Moves a \alg{3} down and tips it to the right
+\end{itemize}
+
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Reconstruction}
+Using \alo{9} axis dimensions
+\begin{figure}
+\centering
+\includegraphics[width=2in]{../figures/pcaDigitsAddingBasisCanonical1}
+\includegraphics[width=2in]{../figures/pcaDigitsAddingBasisPCA1}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Reconstruction}
+Using \alo{100} axis dimensions
+\begin{figure}
+\centering
+\includegraphics[width=2in]{../figures/pcaDigitsAddingBasisCanonical2}
+\includegraphics[width=2in]{../figures/pcaDigitsAddingBasisPCA2}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Reconstruction}
+Using \alo{225} axis dimensions
+\begin{figure}
+\centering
+\includegraphics[width=2in]{../figures/pcaDigitsAddingBasisCanonical3}
+\includegraphics[width=2in]{../figures/pcaDigitsAddingBasisPCA3}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Reconstruction}
+
+\begin{figure}
+\centering
+\includegraphics[width=1.5in]{../figures/pcaDigitsAddingBasisPCAmeanOnly}
+\end{figure}
+
+This is the \alo{mean} (From centering $\X: \quad (\X - \overline{\X}) = UDV^{\top})$
+
+{\scriptsize (that is, the origin of the PCA axis, or $\overline{\X}$)}\footnotemark
+
+\vsp
+
+\begin{blockcode}
+plot.digit(attributes(digitsCenter)$'scaled:center')
+\end{blockcode}
+\vsp
+
+{\footnotesize $^1$Technically, $\overline{X}_i$ for any $i$}
+\end{frame}
+
+\transitionSlide{Back to deep learning}
+
+
+\begin{frame}[fragile]
+\frametitle{PCA}
+If we want to find the first $K$ principal components,
+the relevant optimization program  is:
+\[
+\min_{\mu,(\lambda_i),V_K} \sum_{i=1}^n \norm{X_i - \mu - V_K \lambda_i}^2
+\]
+
+This representation is important
+\vsp
+
+It shows that we are trying to reconstruct lower dimensional \alo{representations}
+of the covariates
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{PCA}
+\[
+\min_{\mu,(\lambda_i),V_K} \sum_{i=1}^n \norm{X_i - \mu - V_K \lambda_i}^2
+\]
+We can partially optimize for $\mu$ and $(\lambda_i)$ to find
+\begin{itemize}
+\item $\hat\mu = \overline{X}$
+\item $\hat\lambda_i = V_K^{\top}(X_i - \hat \mu)$
+\end{itemize}
+\vsp
+
+We can find
+\[
+\min_{V } \sum_{i=1}^n \norm{(X_i - \hat\mu) - V V^{\top}(X_i - \hat\mu)}^2
+\]
+where $V$ is constrained to be \alo{orthogonal}
+
+\script{This is the so called \alg{Steifel manifold} of rank-$K$ orthogonal matrices}
+\vsp
+
+The solution is given by the singular vectors $V$
+\end{frame}
+%\begin{frame}[fragile]
+%\frametitle{PCA}
+%Principal components can be viewed as coming from all three representation learning paradigms
+%
+%\begin{itemize}
+%\item \smallCapGreen{Probabilistic methods:} The leading eigenvectors of the covariance operator of the 
+%generative model
+%\item \smallCapGreen{Auto-encoders:} It is a \alo{linear} auto-encoder
+%\item \smallCapGreen{Manifold learning:} Characterizing a lower-dimensional region in the covariate space where
+%the data density is peaked
+%\end{itemize}
+%
+%\end{frame}
+%
+
+\transitionSlide{Example: Facial recognition}
+\begin{frame}[fragile]
+\frametitle{Images}
+\begin{itemize}
+\item There are 575 total images
+\item Each image is 92 $\times$ 112 pixels and grey scale
+\item These images come from the Sheffield face database 
+
+\script{See {\tt http://www.face-rec.org/databases/} for this and other databases.  See my rcode
+for how to read the images into \alr{R}}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Faces}
+\begin{figure}
+\centering
+\includegraphics[width=1.5in,trim=30 30 30 50,clip]{../figures/sparseCodeExample1.pdf}
+%\includegraphics[width=1.2in,trim=30 30 30 50,clip]{../figures/sparseCodeExample3.pdf}
+\includegraphics[width=1.5in,trim=30 30 30 50,clip]{../figures/sparseCodeExample5.pdf}
+\includegraphics[width=1.5in,trim=30 30 30 50,clip]{../figures/sparseCodeExample10.pdf} \\
+\includegraphics[width=1.5in,trim=30 30 30 50,clip]{../figures/sparseCodeExample50.pdf}
+%\includegraphics[width=1.2in,trim=30 30 30 50,clip]{../figures/sparseCodeExample100.pdf} 
+\includegraphics[width=1.5in,trim=30 30 30 50,clip]{../figures/sparseCodeExample200.pdf}
+\includegraphics[width=1.5in,trim=30 30 30 50,clip]{../figures/sparseCodeExample201.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Faces}
+Regardless of how you formulate the optimization problem for PCA, it can be done in \alr{R} by:
+\begin{blockcode}
+svd.out   = svd(scale(X,scale=F))
+pc.basis  = svd.out$v
+pc.scores = X %*% pc.basis
+\end{blockcode}
+\vsp
+
+Let's apply this to the faces
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Faces: PC basis}
+\begin{figure}
+\centering
+\includegraphics[width=2.5in]{../figures/spectralFaceOnly.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Faces: PC projections}
+\[
+\textrm{Varying levels of $K$:} \quad \tilde{\X} = \sum_{k=1}^K d_k u_k v_k^{\top} + \overline{\X}
+\]
+\begin{figure}
+\centering
+\includegraphics[width=2.5in]{../figures/realFaceOnly.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Faces: PC projections and basis}
+\begin{figure}
+\centering
+\includegraphics[width=3in]{../figures/spectralFaceAndRealFace.pdf}
+\end{figure}
+\end{frame}
+
+
+%\transitionSlide{Sparse coding}
+%\begin{frame}[fragile]
+%\frametitle{Sparse coding}
+%From the same neurological background as neural nets, sparse coding was supposed
+%to represent the workings of the mammalian visual-cortex 
+%
+%\script{See Olshausen, Field (1997) for the original ({\scriptsize unreadable}) paper and Marial et al. (2009) for
+%a more SML take}
+%
+%\vsp
+%The idea is that we have adapted to certain types of images (such as forests) and can view
+%them using only a \alo{few neurons}
+%
+%\vsp
+%\smallCapGreen{Mathematically:} We possess (or have learned) a \alo{basis} of neurons that permits
+%certain types of images to be expressed \alo{sparsely}
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%\frametitle{Sparse coding}
+%We can represent the full image (\alo{left}) on a computer using $92 \times 112 = 10304$ numbers
+%
+%\begin{figure}
+%\centering
+%\includegraphics[width=2.2in,trim=30 30 30 50,clip]{../figures/sparseCodeExample1.pdf}
+%\includegraphics[width=2.2in,trim=30 30 30 50,clip]{../figures/sparseCodeExampleEar.pdf}
+%\end{figure}
+%
+%It is reasonable to assume that we can represent this image meaningfully using far less information
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%\frametitle{Sparse coding}
+%The underlying presumption is that for $X \in \R^p$, suppose there is a \alg{dictionary} $\Phi$
+%such that
+%\[
+%X = \Phi\alpha
+%\]
+%\script{Let's ignore noise for now}
+%
+%\vsp
+%Furthermore, presume that $\alpha$ is \alo{sparse} in the sense of having few non-zero coefficients
+%
+%\vsp
+%Lastly, the dictionary $\Phi \in \R^{p \times K}$ is such that $K > p$ and composed of \alg{atoms} $\phi_K$
+%
+%\script{The statement $K > p$ is known as \alg{overcomplete}}
+%\end{frame}
+%
+%
+%\begin{frame}[fragile]
+%\frametitle{Sparse coding}
+%Operationally, we take the idea of \alg{basis pursuit} and convert it to generating a basis that can
+%sparsely represent the signals we wish to decompose
+%
+%\vsp
+%\smallCapGreen{Basis pursuit:} This is effectively the lasso, but with the `covariates' being some
+%sort of basis.  Let $\Phi = [\phi_1,\ldots,\phi_k]$ be such a matrix
+%
+%\script{An example would be $\phi_1,\ldots,\phi_n$ being a wavelet basis, and $\phi_{n+1},\ldots,\phi_{2n}$
+%being a Fourier basis}
+%
+%\vsp
+%Then, for a response $Y$ (typically a signal such as an image)
+%\[
+%\min_{\alpha} \norm{Y - \Phi\alpha}_2^2 + \lambda \norm{\alpha}_1
+%\]
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%\frametitle{Sparse coding}
+%Using the deviation-type inequalities, a tuning parameter $\lambda$ can be set
+%\[
+%\lambda_* = \sigma\sqrt{2\log(K)}
+%\]
+%\script{Assuming the basis elements are $\ell_2$ normalized}
+%\vsp 
+%
+%\smallCapGreen{Motivation:} If $\Phi$ is orthogonal and $\tilde{Y} = \Phi^{\top}Y$ and
+%\[
+%\hat{\alpha}_\lambda = \textrm{sgn}(\tilde{Y})(|\tilde{Y}| - \lambda)_+ \parenthetical{\quad}{\textrm{Interpreted component-wise}}
+%\]
+%
+%Now, under certain assumptions about the noise, this is a normal means problem and $\hat{\alpha}_\lambda$
+%is the solution to the lasso Lagrangian
+%
+%\vsp
+%The series of papers by Donoho, Johnstone on wavelets  imply that the $\lambda_*$ choice is an optimal asymptotic MSE
+%choice of the tuning parameter
+%
+%\script{even when $\Phi$ is overcomplete}
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%\frametitle{Sparse coding}
+%\alg{Sparse coding} takes this idea and \alo{learns} the basis $\Phi$ as well
+%
+%\vsp
+%Now, the problem is
+%\begin{align*}
+%& \min_{\Phi,\alpha\in\R^{k \times n}} \sum_{i=1}^n(\norm{X_i - \Phi\alpha_i}_2^2 + \lambda\norm{\alpha_i})\\
+%\textrm{subject to } & \norm{\Phi} \leq c
+%\end{align*}
+%
+%A natural approach to this problem is to alternate between solving for $\alpha$ and $\Phi$
+%
+%\script{Both of these optimizations are constrained}
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%\frametitle{Sparse coding algorithm}
+%A stochastic gradient descent approach tends to work well, where a random $X_i$ is drawn,
+%and the optimization is done with this example only
+%
+%\vsp
+%This alternation-based approach consists of
+%\begin{itemize}
+%\item \smallCapGreen{Easy:} Find $\alpha$.  This consists of doing a lasso-type solve.  Usually this is done 
+%with a homotopy-type algorthm such as \alr{lars}
+%\item \smallCapGreen{Hard:} Find $\Phi$. This depends on the nature of the constraint.  There are varying methods
+%for this
+%
+%\script{See Lee et al. (2007) for efficient algorithms based on the Lagrange dual.  For online approaches that 
+%don't involve matrix inversion see  Marial et al. (2009)}
+%\end{itemize}
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%\frametitle{Sparse coding algorithm (online)}
+%To solve for $\Phi$, a classical, fast approach is a \alg{projected first-order stochastic gradient descent} method
+%\[
+%D_t = \Pi\left[ D_{t-1} - \frac{\rho}{t} \nabla_\Phi \sum_{i=1}^n\norm{X_i - \Phi\alpha_i}_2^2 \right]
+%\]
+%where
+%\begin{align*}
+% \nabla_\Phi \sum_{i=1}^n\norm{X_i - \Phi\alpha_i}_2^2 
+% & = 
+% \nabla_\Phi \left( \tr(\Phi^{\top}\Phi A) -  \tr(\Phi^{\top} B)\right) \\
+% & = 
+% 2\Phi A + B
+%\end{align*}
+%where $A =\sum_{i=1}^n  \alpha_i\alpha_i^{\top}$ and $B = \sum_{i=1}^n  X_i\alpha_i^{\top}$
+%\end{frame}
+%\begin{frame}[fragile]
+%\frametitle{Sparse coding algorithm}
+%\begin{figure}
+%\centering
+%\includegraphics[width=2.8in]{../figures/sparseCodeAlg.pdf}
+%\end{figure}
+%\end{frame}
+%
+%
+%
+%\begin{frame}[fragile]
+%\frametitle{Sparse coding: Images}
+%\begin{figure}
+%\centering
+%\includegraphics[width=3.3in]{../figures/sparseCodeFace.pdf}
+%\end{figure}
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%\frametitle{Sparse coding: Images}
+%Some comments:
+%\begin{itemize}
+%
+%\item See \alr{\tt http://www.cs.tau.ac.il/$\sim$wolf/ytfaces/} for a database of unaligned faces
+%\item I got this panel of faces from \alr{\tt http://charles.cadieu.us/?p=184}.  
+%
+%\script{See the website and Olshausen et al. (2009) for details}
+%
+%\end{itemize}
+%
+%\end{frame}
+
+\transitionSlide{Deep learning}
+
+\begin{frame}[fragile]
+\frametitle{Deep learning: Overview}
+Neural networks are models for supervised learning
+
+\vsp
+Linear combinations of features are fed through nonlinear functions repeatedly
+
+\vsp
+At the top layer, the resulting latent factor is fed into a linear/logistic regression
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Deep learning: Overview}
+Deep learning is a new idea that has generated renewed interest in neural networks
+ 
+ \vsp
+ Here, we wish to learn a hierarchy of features one level at a time, using 
+ \begin{enumerate}
+ \item  unsupervised feature learning to learn a new transformation at each level
+ \item which gets composed with the previously learned transformations
+ \end{enumerate}
+ 
+
+\vsp
+The top layer (which would be the output) is used to initialize a  (supervised) neural network 
+
+
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Deep learning: Overview}
+
+
+\vsp
+Traditionally, a neural net is fit to all \alo{labelled} data in one operation, with weights
+randomly chosen near zero
+
+\vsp
+Due to the nonconvexity of the objective function, the final solution can get `caught' in poor local minima
+
+\vsp
+\alo{Deep learning} seeks to find a good starting value, while allowing for:
+
+\begin{itemize}
+\item  ...modeling the joint distribution of the covariates separately
+\item  ...use of unlabeled data (including the test covariates)
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Examples of unlabeled data}
+\begin{itemize}
+\item \smallCapGreen{Emails:} For labelling \alb{spam} or \alb{not spam}, we might have a large number
+of emails where the label is known that we'd like to use somehow for classification
+\item \smallCapGreen{Images:} For labelling \alb{face} or  \alb{not face}, we could have a huge number of
+images which we don't know the content
+
+\script{For instance, all the frames of all the videos on youtube}
+
+\end{itemize}
+If we are trying to estimate the \alo{Bayes' rule}, it tends to rely on a \alo{conditional distribution}
+
+\vsp
+\[
+\P(Y | X) = \frac{\P(X,Y)}{\alr{\P(X)}} 
+\]
+We can use \alo{unlabeled} data to get a better estimate of $\alr{\P(X)}$
+
+\script{And hence the Bayes' rule}
+\end{frame}
+%
+%\begin{frame}[fragile]
+%\frametitle{Auto-encoders}
+%In neural networks the idea of a \alg{auto encoder} generalizes the ideas of PCA and sparse coding by
+%\begin{itemize}
+%\item Using multiple hidden layers, leading to a hierarchy of dictionaries
+%
+%\script{As PCA is linear, composing multiple layers adds no generality. Sparse coding provides
+%only 1 layer between covariates and the representation}
+%\item applying the encoding models to local patches of an image, commonly with weight sharing where
+%constraint weights are enforced to be equal across an image
+%
+%\script{This is the so-called convolutional neural network framework}
+%\end{itemize}
+%
+%\end{frame}
+
+\transitionSlide{Auto-encoders}
+\begin{frame}[fragile]
+\frametitle{Auto-encoders}
+An \alg{auto-encoder} generalizes PCA by specifying
+
+\vsp
+
+\begin{itemize}
+\item \smallCapGreen{Feature-extracting function:} This function $h: \R^p \rightarrow \R^K$ 
+maps the covariates to a new representation
+and is also known as the \alg{encoder} 
+\item \smallCapGreen{Reconstruction function:} This 
+function\footnote{I've labeled this function
+$h^{-1}$ to be suggestive, but I don't mean that $h^{-1}(h(x)) = x$} 
+$h^{-1}: \R^K \rightarrow \R^p$ 
+is also known as the \alg{decoder} and it maps the
+representation back into the original space
+\end{itemize}
+\vsp
+
+\smallCapGreen{Goal:} Optimize any free parameters in the encoder/decoder pair that minimizes reconstruction
+error
+
+\end{frame}
+%
+%\begin{frame}[fragile]
+%\frametitle{Auto-encoders}
+%Of course this means some sort of implicit or explicit constraint need be imposed to not learn the identity 
+%function
+%
+%\vsp
+%This comes about via a combination of
+%\begin{itemize}
+%\item ... Regularization
+%
+%\script{Usually called a regularized auto-encoder}
+%\item ... Dimensional constraint
+%
+%\script{Usually called a classical auto-encoder}
+%\end{itemize}
+%All flavors essentially reduce to solving the following optimization problem (perhaps with constraints)
+%\[
+%\min \sum_{i=1}^n \ell(X_i, h^{-1} h(X_i))
+%\]
+%\end{frame}
+
+
+%%% STOPPED HERE!! 
+
+\begin{frame}[fragile]
+\frametitle{Auto-encoder}
+Let $W \in \R^{p \times K}$ (with $K < p$) be a matrix of weights
+
+\vsp
+Linear combinations of  $X$ are fed through a function $\sigma$
+\[
+h(X) = \sigma(W^{\top}X)\in \R^K
+\]
+
+\vsp
+The \alo{output layer} is then modeled as a linear combination of these inputs\footnote{There is no restriction that
+the same matrix to be used in $h$ and $h^{-1}$.  Keeping them the same is known as \alg{weight-tying}}
+\[
+h^{-1}(h(X)) = Wh(X) = W\sigma(W^{\top}X) \in \R^p
+\]
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Deep learning}
+\smallCapGreen{Reminder} Given inputs $X_1,\ldots,X_n$, the PCA  problem
+\[
+\min_{(\lambda_i),V_K} \sum_{i=1}^n \norm{X_i  - V_K \lambda_i}^2
+\]
+\script{Note I've implictly subtracted of the mean}
+\vsp
+
+More general autoencoder:  weight matrix $W$ is estimated by solving the (non convex) optimization problem:
+\[
+\min_{W \in \R^{p\times K}} \sum_{i=1}^n \norm{X_i -Wh(X_i)}^2
+=
+\min_{W \in \R^{p\times K}} \sum_{i=1}^n \norm{X_i -W\sigma(W^{\top} X_i)}^2
+\]
+
+\script{If $\sigma(X) \equiv X$, then we've recovered the PCA program}
+
+
+\end{frame}
+%
+%\begin{frame}[fragile]
+%\frametitle{Deep learning}
+%\script{In the sense that we've recovered the same subspace}
+%
+%\vsp
+%For
+%
+%\end{frame}
+%
+%
+%
+%
+%
+%
+%\begin{frame}[fragile]
+%\frametitle{Deep learning}
+%The framework is determined by the relative sizes of $K$ and $p$
+%\begin{itemize}
+%\item If $K < p$, 
+%the rank constraint provides a \alo{bottleneck} in the network that forces the learning of structure
+%
+%\script{e.g. PCA}
+%\item If $K > p$, the representation is overcomplete and some regularization is needed
+%
+%\script{e.g. sparse coding}
+%
+%Regularization comes about in several ways
+%\begin{itemize}
+%\item Adding a regularization term on the \alo{parameters} to the objective function
+%\item Corrupting the inputs before auto-encoding and comparing to uncorrupted inputs 
+%
+%\script{This is known as a \alg{denoising auto-encoder}}
+%\item Adding a regularization term on the \alo{Jacobian} of the encoder to the objective function
+%
+%\script{This is known as a \alg{contractive auto-encoder}}
+%\end{itemize}
+%\end{itemize}
+%\end{frame}
+%
+\begin{frame}[fragile]
+\frametitle{Deep learning schematic}
+An autoencoder might look like:
+\begin{figure}
+\centering
+\includegraphics[width=2.3in]{../figures/deepLearningRob.pdf}
+\end{figure}
+\end{frame}
+
+%
+%\begin{frame}[fragile]
+%\frametitle{Deep learning}
+%Modern deep learning generalize the previous definition in several ways
+%
+%\script{See Le, Ranzato, Monga, Devin, Chen, Dean, Ng (2012) for details}
+%\begin{itemize}
+%\item They use multiple hidden layers, leading to a hierarchy of dictionaries
+%\item Include nonlinearities that can be computed faster (such as $\sigma(x) = x_+$
+%\item The encoding is applied to local patches of images (or signals) and these patches might
+%be forced to have the same weights, imposing \alg{weight-sharing} or a \alo{convolutional} structure
+%\end{itemize}
+%\end{frame}
+\begin{frame}[fragile]
+\frametitle{Neural networks: Representations}
+\smallCapGreen{Important:} Neural networks themselves create (supervised) representations
+
+\vsp
+Compare:
+\[
+\alpha^{\top}X \Leftrightarrow W^{\top}X
+\]
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Neural networks: Representations}
+Return to the US crime data
+
+\vsp
+Run a \alg{single layer, two hidden unit neural network} 
+
+\script{with sigmoid activation function}
+
+\begin{blockcode}
+Y = subset(UScrime,select=y,drop=T)
+X = scale(subset(UScrime,select=-y))
+X = as.data.frame(X)
+names(X) = names(subset(UScrime,select=-y))
+model.out = as.formula(paste("Y ~ ",paste(names(X),
+                       collapse='+')))
+nn.out = neuralnet(model.out,data=UScrime, hidden=2, 
+                   threshold=0.01,rep=1)
+
+W = nn.out$weights[[1]][[1]]
+plot(W[-1,],type='n',xlab='W_1',ylab='W_2')
+text(W[-1,],names(X),cex=.75)
+\end{blockcode}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Neural networks: Representations}
+The interpretation is that each latent variable $Z_k = \sigma(\alpha_k^{\top}X)$ is
+a \alo{neuron} that is tuned to detect a particular type of structure
+
+\vsp
+Covariates that  ``positive'' signs in the representations indicate the neuron is ``tuned''
+to that signal-type
+
+\vsp
+Note that this isn't  a derivative or importance-based interpretation
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{Neural networks: Representations}
+\begin{columns}
+\begin{column}{2.4in}
+\includegraphics[width=2.3in]{../figures/NNweightsCrime3}
+\end{column}
+\begin{column}{3in}
+\begin{blockcode}
+
+M:  % males aged 14-24.
+So: indicator for a Southern state.
+Ed: mean years of schooling.
+Po1: police  1960.
+Po2:  police 1959.
+LF:  labor force participation rate.
+M.F: # of males per 1000 females.
+Pop: state population.
+NW: # of non-whites per 1000 people.
+U1:  unemployment rate of urban males 14-24.
+U2: unemployment rate of urban males 35-39.
+GDP: gross domestic product per head.
+Ineq: income inequality.
+Prob: probability of imprisonment.
+Time: average time served in state prisons.
+\end{blockcode}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Neural networks: Representations}
+\includegraphics[width=1.75in]{../figures/NNweightsCrime3}
+\includegraphics[width=1.75in]{../figures/NNweightsCrime2}\\
+\includegraphics[width=1.75in]{../figures/NNweightsCrime}
+\includegraphics[width=1.75in]{../figures/NNweightsCrime4}\\
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Deep learning}
+The following is a brief overview of NNs from some researchers at Google
+
+\script{Le, Ranzato, Monga, Devin, Chen, Dean, Ng (2012)}
+
+\vsp
+It has about 1 billion trainable parameters and uses advanced parallelism to make computation feasible
+
+\vsp
+It also uses a decoupled encoder-decoder pair, plus regularization and a linear activation
+
+\script{This means that we write the representation as $W_OW_I^{\top}X$, where $W_O \neq W_I$}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Deep learning: Data}
+\begin{figure}
+\centering
+\includegraphics[width=4.5in]{../figures/googleYoutube.pdf}
+\end{figure}
+\end{frame}
+%\begin{frame}[fragile]
+%\frametitle{Deep learning}
+%
+%\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Deep learning schematic}
+A representation of their implementation
+\begin{figure}
+\centering
+\includegraphics[width=2.3in]{../figures/lePaperDiagram.pdf}
+\end{figure}
+\end{frame}
+
+%\begin{frame}[fragile]
+%\frametitle{Deep learning}
+%This has three important ingredients
+%\begin{itemize}
+%\item \smallCapGreen{Local receptive fields:} Grab each patch in input image and transform into feature in second
+%layer
+%
+%\script{If convolutional or weight-sharing these maps will all have the same weights}
+%\item \smallCapGreen{Pooling:} To achieve invariance to local structures, take the $\sqrt{ (\cdot)^2}$ of its inputs
+%\item \smallCapGreen{Local contrast normalization:} This locally standardizes each neuron and is usually interpreted as measure
+%of \alo{fitness}
+%
+%\script{It is motivated by computational neuroscience models (e.g. Pinto, Cox, DiCarlo (2008) and has been shown empirically to improve results (Jarrett et al (2009))}
+%\end{itemize}
+%\end{frame}
+%
+\begin{frame}[fragile]
+\frametitle{Deep learning results}
+If we look at every neuron (that is, hidden unit) in the network and take the output for a given body of test images
+
+\vsp
+Maximize the classification rate of taking the $\textrm{sign}(\cdot)$, they find:
+\begin{figure}
+\centering
+\includegraphics[width=2.3in]{../figures/deepLearningHist.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Deep learning results}
+The test images with maximum activation of that optimal neuron
+\begin{figure}
+\centering
+\includegraphics[width=2.3in]{../figures/deepLearningFaces.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Deep learning results}
+Finding the pixel wise maximizing input:
+\begin{figure}
+\centering
+\includegraphics[width=2.3in]{../figures/deepLearningOptFace.pdf}
+\end{figure}
+\end{frame}
+
+\end{document}

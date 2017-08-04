@@ -1,0 +1,872 @@
+\documentclass[12pt]{beamer}
+%\usepackage[usenames,dvipsnames]{xcolor}
+
+\usepackage{_defsAndPackages577notation}
+\usepackage{_defsAndPackages577beamer}
+
+%\DeclareMathSizes{12}{12}{5}{12}
+\newcommand{\parenthetical}[2]{#1  \scriptstyle \alr{( #2)}}
+\begin{document}
+
+\title{\alg{Support vector machines and kernelization}}
+\subtitle{\classTitle}
+%\author{\alg{Darren Homrighausen, PhD}}
+%\institute{\classTitle}
+\date{}
+
+
+
+\begin{frame}
+\maketitle
+%\titlepage
+%\begin{figure}[h!]
+%  \centering
+%  \includegraphics[width=1in]{.../figures/CSU_logo2.eps}
+%\end{figure}
+%
+\organization
+%
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Kernel methods}
+\smallCapGreen{Intuition:}
+Many methods have linear decision boundaries
+
+\vsp
+We know that sometimes this isn't sufficient to represent data
+
+\vvsp
+\smallCapGreen{Example:} Sometimes we need to included a polynomial effect or a log transform
+in multiple regression
+
+\vvvsp
+Sometimes, a \alo{linear} boundary, but in a different space makes all the difference..
+\vfill
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Optimal separating hyperplane}
+\smallCapGreen{Reminder:}
+The Wolfe dual, which gets maximized over $\alpha$, produces the \alo{optimal separating
+hyperplane}
+\[
+\textrm{Wolf dual}  = 	\sum_{i=1}^n\alpha_i - \frac{1}{2}\sum_{i=1}^n\sum_{k=1}^n\alpha_i\alpha_kY_iY_k\alr{X_i^{\top}X_k}
+\]
+\script{this is all subject to $\alpha_i \geq 0$}
+
+\vsp
+A similar result holds after the introduction of slack variables
+
+\script{e.g. \alo{support vector classifiers}}
+
+\vsp
+\smallCapGreen{Important:} The features only enter  via
+\[
+\alr{X^{\top}X'} = \alr{\langle X,X' \rangle}
+\]
+\end{frame}
+
+\begin{frame}
+\frametitle{(Kernel) ridge regression}
+\smallCapGreen{Reminder:}
+Suppose we want to predict at $X$, then 
+\[
+\hat{f}(X) = X^{\top}\hbetar{\lambda} =  X^{\top}\X^{\top}( \X\X^{\top} + \lambda I)^{-1}Y
+\]
+Also,
+\[
+\X\X^{\top} = 
+\begin{bmatrix}
+\langle X_1, X_1 \rangle & \langle X_1, X_2 \rangle & \cdots & \langle X_1, X_n \rangle \\
+& \vdots && \\
+\langle X_n, X_1 \rangle & \langle X_n, X_2 \rangle & \cdots & \langle X_n, X_n \rangle
+\end{bmatrix}
+\]
+and
+\[
+X^{\top}\X^{\top} = [\langle X, X_1 \rangle,  \langle X, X_2 \rangle, \cdots, \langle X, X_n \rangle]
+\]
+
+\vsp
+Again, we have the covariates enter only as
+\[
+\alr{\langle X,X' \rangle} = \alr{X^{\top}X'}
+\]
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Logistic regression: transformations}
+Let's look at the \alb{default} data in ``Introduction to Statistical Learning''
+
+\vsp
+In particular, we will look at \alb{default} status as a function of \alb{balance} and \alb{income}
+\begin{figure}
+\centering
+\includegraphics[width=2.05in]{../figures/classLogisticKernelFirstPlot.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Logistic regression: transformations}
+\begin{blockcode}
+out.glm  = glm(default~balance + income,family='binomial')
+\end{blockcode}
+\begin{figure}
+\centering
+\includegraphics[width=2.05in]{../figures/classLogisticKernelLinear}
+\end{figure}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Logistic regression: transformations}
+\begin{blockcode}
+out.glm  = glm(default~balance + income + 
+                 I(income^2),family='binomial')
+\end{blockcode}
+\begin{figure}
+\centering
+\includegraphics[width=2.05in]{../figures/classLogisticKernelQuad}
+\end{figure}
+\smallCapGreen{Conclusion:} A \alo{Linear} rule in a transformed space can have a \alo{nonlinear} 
+boundary in the original features
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Logistic regression: transformations}
+\smallCapGreen{Reminder:} The logistic model: untransformed
+\begin{align*}
+\textrm{logit}(\P(Y = 1 | X))  
+& = 
+\beta_0 + \beta^{\top}X \\
+& = 
+\beta_0 + \beta_1\textrm{balance} +\beta_2\textrm{income}  
+\end{align*}
+\vsp
+
+The decision boundary is the hyperplane $\{X : \beta_0 + \beta^{\top} X = 0\}$
+
+\vsp
+This is \alo{linear} in the feature space 
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Logistic regression: transformations}
+
+Adding the polynomial transformation $\Phi(X) = (x_1,x_2,x_2^2)$:
+\begin{align*}
+\textrm{logit}(\P(Y = 1 | X))  
+& = 
+\beta_0 + \beta^{\top}\Phi(X) \\
+& = 
+\beta_0 + \beta_1\textrm{balance} +\beta_2\textrm{income}   + \beta_3\textrm{income}^2  
+\end{align*}
+
+Decision boundary is still a hyperplane $\{X \!:\! \beta_0 + \beta^{\top} \Phi(X) = 0\}$
+
+\vsp
+This is \alo{nonlinear} in the feature space!
+
+\begin{figure}
+\centering
+\includegraphics[width=1.75in]{../figures/classLogisticKernelLinear}
+\includegraphics[width=1.75in]{../figures/classLogisticKernelQuad}
+\end{figure}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Logistic regression: transformations}
+Of course, as we include more transformations,
+
+\begin{itemize}
+\item We need to choose the transformations \alo{manually}
+\item \alo{Computations} can become difficult if we aren't careful
+
+\script{\smallCapGreen{Example:} Solving the least squares problem takes something like $np^2$ computations}
+
+\item We need to \alo{regularize} to prevent overfitting
+\end{itemize}
+
+\vsp
+
+Can we form them in an automated fashion?
+\end{frame}
+%%%%%%%%%%%%%
+
+%\begin{frame}
+%\frametitle{Logistic regression with transformations}
+%If we return to step \alb{4.} from the SVM outline:
+%
+%\vsp
+%``Substitute these conditions back into \alo{primal} Langrangian 
+%
+%$\longrightarrow$ \alo{dual} Lagrangian''
+%
+%\vsp
+%We get that this dual Lagrangian is:
+%\[
+%\ell_D(\gamma) = \sum_i \gamma_i - \frac{1}{2}\sum_i \sum_{i'} \gamma_i \gamma_{i'} Y_i Y_{i'} \alr{X_i^{\top}X_{i'}}
+%\]
+%with side conditions: $\gamma_i \in [0,C]$ and $\gamma^{\top}Y = 0$
+%
+%\vsp
+%The term $\alr{X_i^{\top}X_{i'}} = \langle X_i, X_{i'} \rangle$ is an \alo{inner product}
+%
+%\vsp
+%SVMs therefore depend on the covariates via an inner product only
+%
+%\vsp
+%This leaves them ripe for a \alo{kernel method}
+%\end{frame}
+
+\transitionSlide{Kernel Methods}
+
+%\begin{frame}
+%\frametitle{Three related methods}
+%The following are seemingly disparate methods
+%\begin{itemize}
+%\item \smallCapGreen{Smoothness penalization:} Regularizing a loss functions with a penalty on smoothness 
+%
+%\script{Example: Kernel SVM}
+%\item \smallCapGreen{Feature creation:} Imposing a \alo{feature mapping} $\Phi: \R^p \rightarrow \mathcal{A}$
+%thus creating new features e.g. via polynomials or interactions
+%
+%\script{Example: Regression splines or polynomial regression}
+%\item \smallCapGreen{Gaussian processes:} Modeling the regression function as a Gaussian process
+%with a given mean and covariance
+%
+%\script{Example: Gaussian process regression}
+%\end{itemize}
+%\vsp
+%
+%It turns out these concepts are all the same and each forms a \alg{reproducing kernel Hilbert space} (RKHS)
+%
+%\script{Many of these ideas are in Wahba (1990).  It was introduced to the ML community in Vapnik et al. (1996)
+%and summarized in a nice review paper in Hofmann et al. (2008)}
+%\end{frame}
+
+%\begin{frame}
+%\frametitle{Kernel methods}
+%
+%\script{This means $\int\int k(x,y)f(x)f(y) dxdy > 0$}
+%
+%\vsp
+%To be concrete, think of $\mathcal{A} = \R^p$
+%
+%\script{However, any set of objects will do as long as an \alo{inner product} can be defined}
+%
+%\vsp
+%Let's consider the space of functions generated by the completion of
+%\[
+%\mathcal{H}_k = \{k(\cdot,y): y \in \R^p\}
+%\]
+%\script{This loosely speaking all functions of the form $f(x) = \sum_{j=1}^J \alpha_j k(x,y_j)$}
+%\end{frame}
+
+\begin{frame}
+\frametitle{Nonnegative definite matrices}
+Let $A \in \R^{p \times p}$ be a symmetric, nonnegative definite matrix:
+\[
+z^{\top}Az \geq 0 \textrm{ for all } z \; \textrm{ and } \; A^{\top} = A
+\]
+
+Then, $A$ has an eigenvalue expansion
+\[
+A = UDU^{\top} = \sum_{j=1}^p d_j u_j u_j^{\top}
+\]
+where $d_j \geq 0$
+
+\vsp
+\smallCapGreen{Observation:} Each such $A$, generates a new \alg{inner product}
+\[
+\langle z, z' \rangle = z^{\top}z'  = z^{\top} \underbrace{\alr{I}}_{\textrm{Identity}} z'
+\]
+\[
+\langle z, z' \rangle_A = z^{\top}A z'
+\]
+
+\script{If we enforce $A$ to be positive definite, then $\langle z, z \rangle_A = ||z||_A^2$ is a norm}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Nonnegative definite matrices}
+
+Suppose $A_i^j$ is the $(i,j)$ entry in $A$, and $A_i$ is the $i^{th}$ row
+\[
+Az = 
+\begin{bmatrix}
+A_1^{\top} \\
+\vdots \\
+A_p^{\top}
+\end{bmatrix}
+z
+=
+\begin{bmatrix}
+A_1^{\top}z \\
+\vdots\\
+A_p^{\top}z
+\end{bmatrix}
+\]
+\smallCapGreen{Note:} Multiplication by $A$ is really taking \alo{inner products} with its rows.
+\vsp
+
+Hence, $A_i$ is called the (multiplication) \alg{kernel} of matrix $A$
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Kernel methods}
+$k:\mathcal{X}\times\mathcal{X} \rightarrow \R$ is a 
+\alg{symmetric, nonnegative definite} kernel
+
+\vsp
+
+
+\vsp
+Write the eigenvalue expansion of $k$ as
+\[
+k(X,X') = \sum_{j=1}^\infty \theta_j \phi_j(X)\phi_j(X')
+\]
+with
+
+\begin{itemize}
+\item $\theta_j \geq 0 \parenthetical{\qquad}{\textrm{nonnegative definite}}$
+\item $\norm{(\theta_j)_{j=1}^\infty}_2  = \sum_{j=1}^\infty \theta_j^2 < \infty$
+\item The $\phi_j$ are orthogonal \alg{eigenfunctions}: $\int \phi_j \phi_{j'} = \delta_{j,j'}$
+\end{itemize}
+\script{This is called \alg{Mercer's theorem}, and such a $k$ is called a \alg{Mercer} kernel}
+%We can write any $f \in \mathcal{H}_k$ with two constraints
+%\begin{itemize}
+%\item $f(x) = \sum_{j=1}^\infty f_j \phi_j(x)$
+%\item $\langle f, f \rangle_{\mathcal{H}_k} = \norm{f}_{\mathcal{H}_k}^2 = \sum_{j=1}^\infty f_j^2/\theta_j < \infty$
+%\end{itemize}
+\end{frame}
+
+
+%\begin{frame}
+%\frametitle{Kernel methods via regularization}
+%
+%\[
+%\hat{f}(x) = \sum_{i=1}^n \beta_i \alr{k(x,x_i)}
+%\]
+%The terms $\alr{k(x,x_i)}$ are the \alg{representers}, as
+%\[
+%\langle k(\cdot,x_i), f \rangle_{\mathcal{H}_k} = f(x_i)
+%\]
+%and $\mathcal{H}_k$ is called a \alg{reproducing kernel Hilbert space} (RKHS) as
+%\[
+%\langle k(\cdot,x_i),k(\cdot,x_{i'}) \rangle_{\mathcal{H}_k} = k(x_i,x_{i'})
+%\]
+%\end{frame}
+%
+%\begin{frame}
+%\frametitle{Kernel methods via regularization}
+%Due to these properties, we can write the optimization problem as
+%\[
+%\min_{\beta} \hat\P \ell_{\mathbf{K}\beta} + \lambda \beta^{\top} \mathbf{K}\beta
+%\]
+%where $\mathbf{K} = [k(x_i,x_{i'})]$
+%
+%\vsp
+%This provides a prescription for forming an incredibly rich suite of estimators:
+%
+%\vsp
+%Choose a
+%\begin{itemize}
+%\item kernel $k$
+%\item loss function $\ell$
+%\end{itemize}
+%and then minimize
+%\end{frame}
+
+%%%%%\begin{frame}
+%%%%%\frametitle{Kernel methods via regularization: Example}
+%%%%%Suppose that $\ell_{\mathbf{K}\beta}(Z) = (Y - \mathbf{K}\beta)^2$
+%%%%%
+%%%%%\vsp
+%%%%%Then:
+%%%%%\[
+%%%%%\hat{\beta} = \argmin_{\beta} \hat\P \ell_{\mathbf{K}\beta} + \lambda \beta^{\top} \mathbf{K}\beta = (\mathbf{K} + \lambda I)^{-1}Y
+%%%%%\]
+%%%%%and
+%%%%%\[
+%%%%%\hat{f} = \mathbf{K}\hat\beta = \mathbf{K}(\mathbf{K} + \lambda I)^{-1}Y = (\lambda\mathbf{K}^{-1} + I)^{-1}Y
+%%%%%\]
+%%%%%are the \alo{fitted values}
+%%%%%
+%%%%%\script{This should be compared with the notes on ridge regression}
+%%%%%\end{frame}
+
+\begin{frame}
+\frametitle{Kernel: Example}
+Back to polynomial terms/interactions:
+
+\vsp
+Form
+\[
+k_d(X,X') = (X^{\top}X' + 1)^d 
+\]
+
+\vsp
+$k_d$ has $M = {p + d \choose d}$ eigenfunctions
+
+\vsp These \alo{span} the space of polynomials in $\R^{p}$ with degree $d$
+\end{frame}
+\begin{frame}
+\frametitle{Kernel: Example}
+
+\smallCapGreen{Example:} Let $d = p = 2 \Rightarrow M = 6$ and
+\begin{align*}
+k(u,v) & = 1 + 2u_1v_1 + 2u_2v_2 + u_1^2v_1^2 + u_2^2v_2^2 + 2u_1u_2v_1v_2  \\
+& = 
+\sum_{k = 1}^M \Phi_k(u) \Phi_k(v) \\
+& = 
+ \Phi(u)^{\top} \Phi(v) \\
+& =
+\langle \Phi(u) , \Phi(v) \rangle
+\end{align*}
+where
+\[
+\Phi(v)^{\top}  = (1, \sqrt{2}v_1,\sqrt{2}v_2,v_1^2,v_2^2,\sqrt{2}v_1v_2)
+\]
+\vsp
+
+\smallCapGreen{Important:} These equalities are \alo{everything} that makes kernelization work!
+\end{frame}
+
+\begin{frame}
+\frametitle{Kernel: Conclusion}
+Let's recap:
+\begin{align*}
+k(u,v) & = 1 + 2u_1v_1 + 2u_2v_2 + u_1^2v_1^2 + u_2^2v_2^2 + 2u_1u_2v_1v_2  \\
+& =
+\langle \Phi(u) , \Phi(v) \rangle
+\end{align*}
+
+\begin{itemize}
+\item Some methods only involve features via inner products $X^{\top}X' = \langle X, X'\rangle$
+
+\script{We've explicitly seen two: ridge regression and support vector classifiers}
+\item If we make transformations of $X$ to $\Phi(X)$, the procedure depends on 
+$\Phi(X)^{\top}\Phi(X') = \langle \Phi(X), \Phi(X')\rangle$
+\item \smallCapGreen{Crucial:} We can compute this inner product via the kernel:
+\[
+k(X,X') = \langle \Phi(X), \Phi(X')\rangle
+\]
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Kernel: Conclusion}
+Instead of creating a very high dimensional object via transformations,
+choose a kernel $k$
+
+\vsp
+Now, the only thing left to do is form the \alo{outer product} of kernel evaluations
+
+\[
+\mathbb{K} = [k(X_i,X_{i'})]_{1\leq i,i'\leq n}
+\]
+\begin{blockcode}
+x = c(1,2,3)# n = 3
+k = function(x,y){ return(x + y + x*y)}
+> outer(x,x,k)
+     [,1] [,2] [,3]
+[1,]    3    5    7
+[2,]    5    8   11
+[3,]    7   11   15
+\end{blockcode}
+\end{frame}
+%
+%\begin{frame}
+%\frametitle{Kernel methods: Summary}
+%From this example, we see that we could have generated this same RKHS via:
+%\begin{itemize}
+%\item Specifying the eigenfunctions (or another set of functions with the same span) and projecting
+%\item Defining the kernel $k$ explicitly and minimizing
+%\item Forming the \alo{feature map} $\Phi$ directly and implicitly defining $k(x,y) = \langle\Phi(x),\Phi(y)\rangle$
+%\end{itemize}
+%This last technique corresponds to \alg{kernelization}, where inner products in the original covariate
+%space are replaced with inner products of \alo{features}
+%\end{frame}
+\transitionSlide{(Kernel) SVMs}
+
+\begin{frame}
+\frametitle{Kernel SVM}
+\smallCapGreen{Recall:}
+\[
+\frac{1}{2}\norm{\beta}_2^2 - \sum_{i=1}^n\alpha_i[Y_i(X_i^{\top}\beta + \beta_0) - 1]
+\]
+Derivatives with respect to $\beta$ and $\beta_0$ imply:
+
+\begin{itemize}
+\item $\beta = \sum_{i=1}^n \alpha_i Y_iX_i$
+\item $0 = \sum_{i=1}^n \alpha_i Y_i$
+\end{itemize}
+Write the solution function
+\[
+h(X) = \beta_0 + \beta^{\top}X = \beta_0 + \sum_{i=1}^n\alpha_iY_iX_i^{\top}X
+\]
+\alg{Kernelize} the support vector classifier $\Rightarrow$ \alg{support vector machine (SVM)}:
+\[
+h(X) = \beta_0 + \sum_{i=1}^n\alpha_iY_ik(X_i,X)
+\]
+%\vsp
+%\script{Side note: $\beta_0$ can found by solving $Y_if(X_i) = 1$ for any correctly classified
+%training observation}
+
+\end{frame}
+%
+%Substituting into the \alo{Lagrangian}:
+%\[
+%\textrm{Wolf dual}  = 	\sum_{i=1}^n\alpha_i - \frac{1}{2}\sum_{i=1}^n\sum_{k=1}^n\alpha_i\alpha_kY_iY_kX_i^{\top}X_k
+%\]
+%\script{this is all subject to $\alpha_i \geq 0$}
+%
+%\vsp
+%We want to \alo{maximize} $\textrm{Wolf dual}$
+%\end{frame}
+
+
+\begin{frame}
+\frametitle{General kernel machines}
+After specifying a kernel function, it 
+can be shown that many procedures have a solution of the form
+\[
+\hat{f}(X) = \sum_{i=1}^n \gamma_i k(X,X_i)
+\]
+For some $\gamma_1,\ldots,\gamma_n$
+
+\vsp
+Also, this is equivalent to performing the method in the space given by
+the \alo{eigenfunctions} of $k$
+\[
+k(u,v) = \sum_{j=1}^\infty \theta_j \phi_j(u)\phi_j(v)
+\]
+
+\vsp
+Also, (the) \alg{feature map} is
+\[
+\Phi = [\phi_1,\ldots,\phi_p,\ldots]
+\]
+\end{frame}
+%
+%
+%\begin{frame}
+%\frametitle{Kernel SVM: A reminder}
+%The dual Lagrangian is:
+%\[
+%\ell_D(\gamma) = \sum_i \gamma_i - \frac{1}{2}\sum_i \sum_{i'} \gamma_i \gamma_{i'} Y_i Y_{i'} \alr{X_i^{\top}X_{i'}}
+%\]
+%with side conditions: $\gamma_i \in [0,C]$ and $\gamma^{\top}Y = 0$
+%
+%\vsp
+%Let's replace the term $\alr{X_i^{\top}X_{i'}} = \langle X_i, X_{i'} \rangle$ with
+%$\langle \Phi(X_i), \Phi(X_{i'}) \rangle$
+%
+%\end{frame}
+%
+
+
+
+\begin{frame}
+\frametitle{Kernel SVMs}
+Hence (and luckily) specifying $\Phi$ itself unnecessary, 
+
+\script{Luckily, as many kernels have difficult to compute eigenfunctions}
+
+\vsp
+We need only define the \alo{kernel} that is symmetric, positive definite
+
+\vsp
+Some common choices for SVMs:
+\begin{itemize}
+\item \smallCapGreen{Polynomial:} $k(x,y) = (1 + x^{\top}y)^d$
+\item \smallCapGreen{Radial basis:} $k(x,y) = e^{-\tau \norm{x-y}_{b}^b}$
+
+\script{For example, $b = 2$ and $\tau = 1/(2\sigma^{2})$ is (proportional to) the Gaussian density}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Kernel SVMs: Summary}
+\alo{Reminder:} the solution form for SVM is
+\[
+\beta = \sum_{i=1}^n \alpha_i Y_i X_i
+\]
+Kernelized, this is
+\[
+\beta = \sum_{i=1}^n \alpha_i Y_i \Phi(X_i)
+\]
+
+Therefore, the induced hyperplane is:
+\begin{align*}
+h(X) = \Phi(X)^{\top} \beta + \beta_0 
+& = 
+\sum_{i=1}^n \alpha_i Y_i \langle \Phi(X), \Phi(X_i) \rangle + \beta_0\\
+& = 
+\sum_{i=1}^n \alpha_i Y_i k(X,X_i)  + \beta_0
+\end{align*}
+
+The final classification is still $\hat g(X) = \textrm{sgn}(\hat{h}(X))$ 
+
+
+\end{frame}
+
+\transitionSlide{SVMs via penalization}
+
+\begin{frame}
+\frametitle{SVMs via penalization}
+\smallCapGreen{Note:}  SVMs can be derived from \alo{penalized loss} methods
+
+\vsp
+The support vector classifier optimization problem:
+\[
+\min_{\beta_0,\beta} \frac{1}{2}\norm{\beta}_2^2 + \lambda\sum \xi_i \; \textrm{ subject to}
+\]
+\[
+Y_ih(X_i) \geq 1  - \xi_i, \xi_i \geq 0, , \textrm{ for each } i
+\]
+
+
+\vsp
+Writing $h(X) = \Phi(X)^{\top} \beta + \beta_0$, consider
+\[
+\min_{\beta,\beta_0} \sum_{i=1}^n [ 1 - Y_i h(X_i)]_+ + \tau\norm{\beta}_2^2 
+\]
+
+These optimization problems are the same! 
+
+\script{With the relation: $2\lambda = 1/\tau$}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{SVMs via penalization}
+The \alo{loss} part is the \alg{hinge loss function}
+\[
+\ell(X,Y) = [ 1 - Y h(X)]_+
+\]
+
+The hinge loss approximates the zero-one loss function underlying
+classification
+
+\vsp
+It has one major advantage, however: \alo{convexity}
+\end{frame}
+\begin{frame}
+\frametitle{Surrogate losses: convex relaxation}
+Looking at
+\[
+\min_{\beta,\beta_0} \sum_{i=1}^n [ 1 - Y_i h(X_i)]_+ + \tau\norm{\beta}_2^2 
+\]
+It is tempting to minimize (analogous to linear regression)
+\[
+\sum_{i=1}^n \mathbf{1}(Y_i \neq \hat{g}(X_i)) + \tau\norm{\beta}_2^2 
+\]
+However, this is \alo{nonconvex} (in $u = h(X)Y$)
+
+\vvsp
+A common trick is to approximate the \alo{nonconvex} objective with a convex one
+
+\script{This is known as \alg{convex relaxation} with a \alg{surrogate loss function}}
+\end{frame}
+
+\begin{frame}
+\frametitle{Surrogate losses}
+
+\smallCapGreen{Idea:} We can use a \alg{surrogate} loss that mimics this function while still being
+convex
+
+\vsp
+It turns out we have already done that! (twice)
+\begin{itemize}
+\item  \smallCapGreen{Hinge:} $[ 1 - Y h(X)]_+$
+\item  \smallCapGreen{Logistic:} $\log(1 + e^{-Y h(X)})$
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Surrogate losses}
+\begin{figure}
+\centering
+\includegraphics[width=4in]{../figures/surrogate.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{SVMs in practice}
+\smallCapGreen{General functions:} The basic SVM functions are in the C++ library \alr{libsvm} 
+\vsp
+
+\smallCapGreen{R package:} The \alr{R} package \alr{e1071} calls \alr{libsvm} 
+\vsp
+
+\smallCapGreen{Path algorithm:} \alr{{\tt svmpath}}
+\vsp
+
+For a nice comparison of these approaches, see ``Support vector machines in \alr{R}''
+
+\script{{\tt http://www.jstatsoft.org/v15/i09/paper}}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{SVM example}
+\begin{blockcode}
+tune.out = tune(svm,Y~.,data=dat,kernel="linear",
+        ranges=list(cost=c(0.001, 0.01, 0.1, 1,5,10,100)))
+\end{blockcode}
+\begin{figure}
+\centering
+\includegraphics[width=2.05in]{../figures/svmISLRcode5.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{SVM example}
+\begin{blockcode}
+tune.out = tune(svm,Y~.,data=dat,kernel="radial",
+        gamma=c(1,2),
+        ranges=list(cost=c(0.001, 0.01, 0.1, 1,5,10,100)))
+\end{blockcode}
+\begin{figure}
+\centering
+\includegraphics[width=2.05in]{../figures/svmISLRcode6.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{SVM example}
+\begin{blockcode}
+tune.out = tune(svm,Y~.,data=dat,kernel="polynomial",
+        degree=c(3,5,10),
+        ranges=list(cost=c(0.001, 0.01, 0.1, 1,5,10,100)))
+\end{blockcode}
+\begin{figure}
+\centering
+\includegraphics[width=2.05in]{../figures/svmISLRcode7.pdf}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{SVM example}
+\begin{figure}
+\centering
+\includegraphics[width=1.65in]{../figures/svmISLRcode5.pdf}
+\includegraphics[width=1.65in]{../figures/svmISLRcode6.pdf}
+\includegraphics[width=1.65in]{../figures/svmISLRcode7.pdf}
+\end{figure}
+\end{frame}
+
+%
+%
+%\begin{frame}[fragile]
+%\frametitle{SVM example}
+%\begin{blockcode}
+%tune.out=tune(svm,default~.,data=Default[,c(1,3,4)],
+%              kernel="radial",gamma=c(1,5),
+%              ranges=list(cost=c(1,10,100)))
+%\end{blockcode}
+%\begin{figure}
+%\centering
+%\includegraphics[width=2.05in]{../figures/classLogisticKernelFirstPlot.pdf}
+%\end{figure}
+%\end{frame}
+
+
+\transitionSlide{Multiclass classification}
+
+\begin{frame}
+\frametitle{Multiclass SVMs}
+Sometimes, it becomes necessary to do multiclass classification
+
+\vsp
+There are two main approaches:
+
+\begin{itemize}
+\item One-versus-one
+\item One-vesus-all
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Multiclass SVMs: One-versus-one}
+Here, for $G$ possible classes, we run $G(G-1)/2$ possible
+pairwise classifications 
+
+\vsp
+For a given test point $X$, we find $\hat{g}_k(X)$ for $k = 1,\ldots, G(G-1)/2$ fits
+
+\vsp
+The result is a vector $\hat{G} \in \R^G$ with the total number of times $X$ was assigned to each class
+
+\vsp
+We report $\hat{g}(X) = \argmax_g \hat{G}$
+
+\vsp
+This approach uses all the class information, but can be  slow
+\end{frame}
+
+\begin{frame}
+\frametitle{Multiclass SVMs: One-vesus-all}
+Here, we fit only $G$ SVMs by respectively collapsing over all size $G-1$ subsets of $\{1,\ldots,G\}$
+
+\script{This is compared with $G(G-1)/2$ comparisons for one-versus-one}
+\vsp
+Take all $\hat{h}_g(X)$ for $g=1,\ldots,G$, where class $g$ is coded 1 and ``the rest'' is coded -1
+
+\vsp
+Assign $\hat{g}(X) = \argmax_g \hat{h}_g(X)$
+\vfill
+
+\vvvsp
+\script{Note that these strategies can be applied to any classifier}
+\end{frame}
+%\frametitle{Sensitivity and Specificity}
+%Now, we can compare doing classification by rounding the Linear Regression model
+%to rounding the GLM.  
+%
+%\vsp
+%We need two concepts:
+%\vsp
+%
+%\emphasis{8cm}{Sensitivity:} {Classifying a person as a `default' given that they 
+%defaulted (this is like correctly rejecting the null hypothesis, i.e. power)}
+%\emphasis{8cm}{Specificity:}{Classifying a person as `no default' given that they did not default 
+%(this is like \textbf{not} committing a type I error)}
+%
+%\begin{table}
+%\begin{tabular}{l|p{1.8cm}p{1.8cm}p{1.8cm}}
+%& Training Error & Training Sensitivity & Training Specificity \\
+%\hline
+%Linear Reg. & 0.033 & 0.000 & 1.000 \\
+%GLM & 0.027 & 0.300 & 0.995
+%\end{tabular}
+%\end{table}
+%\end{frame}
+%
+%
+%\begin{frame}[fragile]
+%\frametitle{More than two levels to the response}
+%You can use logistic regression when your response has more than two levels.  There are two
+%cases:
+%
+%\vsp
+%
+%\emphasis{7.3cm}{Unordered response:}{Called \alg{multinomial logistic regression}.  Essentially, you fit logistic regressions for each level versus  a reference level (examples: \alb{eye color} or \alb{political preference})}
+%\emphasis{7.3cm}{Ordered Response:  } {These are \alg{common slopes} or 
+%\alg{proportional odds model} (examples: \alb{how strongly do you agree with a statement} or \alb{number of malformed limbs in
+%an experiment with mice})}
+%\end{frame}
+%
+%
+\end{document}

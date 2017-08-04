@@ -1,0 +1,622 @@
+\documentclass[12pt]{beamer}
+%\usepackage[usenames,dvipsnames]{xcolor}
+
+\usepackage{_defsAndPackages675notation}
+\usepackage{_defsAndPackages675beamer}
+
+%\DeclareMathSizes{12}{12}{5}{12}
+\newcommand{\parenthetical}[2]{#1  \scriptstyle \alr{( #2)}}
+\begin{document}
+
+\title{\alg{Boosting 1}}
+\subtitle{\classTitle}
+%\author{\alg{Darren Homrighausen, PhD}}
+%\institute{\classTitle}
+\date{}
+
+
+
+\begin{frame}
+\maketitle
+
+\organization
+%
+\end{frame}
+
+
+%
+%\begin{frame}[fragile]
+%\frametitle{Motivation}
+%\alo{Reminder:}
+%We are attempting to make a classifier $\hat{g}$ such that
+%\[
+%R(\hat{g}) = \P(\hat{g}(X) \neq Y | \data) \approx \inf_{g} R(g) = \P(\min\{\eta(X),1-\eta(X)\}) 
+%\]
+%\script{The \alo{Bayes' risk}}
+%
+%where $\eta(x)  = \P(Y = 1 | X=x)$
+%
+%\vsp
+%The infimum is achieved by $g^*(x) = g(2\eta(x) - 1)$, where
+%\[
+%g(x) 
+%= 
+%\begin{cases}
+%1 & \textrm{ if } x > 0 \\
+%-1 & \textrm{ if } x \leq 0 \\
+%\end{cases}
+%\]
+%\alg{Boosting} seeks to generate a \alo{linear combination} of base classifiers
+%\end{frame}
+%\begin{frame}[fragile]
+%\frametitle{Motivation}
+%%\smallCapGreen{Motivation:} 
+%Create a committee of classifiers that combines many \alg{weak} classifiers 
+%
+%\vsp
+%Letting
+%\[
+%\hat{R}(g) = \frac{1}{n} \sum_{i=1}^n \mathbf{1}_{Y_i \neq g(x)}(X_i)
+%\]
+%with prediction risk
+%\[
+%R(g) = \E_{Z} \mathbf{1}(Y \neq g(X))
+%\]
+%
+%A weak classifier is a $g$ such that $R(g)$ is only slightly better than \alo{random guessing}
+%
+%\script{These are the weak learners}
+%\end{frame}
+
+%page 410, 361,353(),341
+
+\begin{frame}[fragile]
+\frametitle{Boosting overview}
+\smallCapGreen{Recall:} Bagging is a procedure for taking a low bias, high variance procedure
+and (potentially) reducing its risk via averaging
+
+\vsp
+\alg{Boosting} has a similar philosophy: take a poor classifier and improve it
+
+%\script{Boosting can be readily applied to regression problems as well.  We will focus on classifiication}
+
+\vsp
+However, \alg{boosting} is useful for the \alo{opposite} situation: a classifier that has high bias but low variance!
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Boosting overview}
+A direct contrast:
+\vsp
+
+\begin{itemize}
+\item  \smallCapGreen{Bagging:} aggregates over many \alo{independent} bootstrap draws
+\item  \smallCapGreen{Boosting:} finds the observations that are poorly classified, up weights these observations, and then trains 
+a new classifier
+\end{itemize}
+\end{frame}
+
+\transitionSlide{Boosting for Regression}
+
+\begin{frame}[fragile]
+\frametitle{Boosting for regression}
+There are \alo{three} main ingredients to boosting:
+\vsp
+
+\begin{itemize}
+\item A \alg{base learner} $\hat{f}$
+
+\script{This $\hat{f}$ will commonly have some parameters determining its complexity.  
+These are commonly set at very low complexity values}
+\item A \alg{learning rate} $\lambda$
+\item The \alg{number} of base learners $B$
+
+\script{This will act a bit like the number of iterations for random forest.  However, the details
+are quite different}
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{Boosting regression trees}
+A classic example of a \alo{base learner} is (regression) trees
+
+\vsp
+\smallCapGreen{Recall:} Trees tend to have a low bias but high variance. This makes them well-suited 
+for boosting
+
+\vsp
+Before discussing \alg{boosting} further, it is instructive to examine a basic implementation
+
+\script{We will get to motivation and classification later}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Boosting regression trees}
+Set $\hat f \equiv 0$ and $R = Y \in R^n$
+
+\vsp
+Fix the tree complexity $M$ and learning rate $\lambda$
+
+\script{Small values of $M$ are used, such as $M \in \{1,\ldots,8\}$, where $M$ is the number 
+of splits}
+
+\vsp
+For $b = 1, \ldots, B$, do: 
+\begin{enumerate}
+\item Fit $\hat f_b$ with $M+1$ regions to $\tilde{\data} = \{ (X_1, R_1),\ldots,(X_n,R_n)\}$
+\item Update: $\hat f \leftarrow \hat f + \lambda \hat{f}_b$
+\item Update: $R \leftarrow R - \hat{f}$
+\end{enumerate}
+\smallCapGreen{Output:} 
+\[
+\hat{f} = \sum_{b=1}^B \lambda \hat{f}_b
+\]
+This is an \alg{additive} model
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Boosting trees}
+In general
+\begin{itemize}
+\item A smaller $\lambda$ means a larger required $B$
+\item Too large of $\lambda$ means we take too long of steps, leading to poor solutions
+
+\script{\smallCapGreen{Recall:} gradient descent}
+\end{itemize}
+\vsp
+
+In practice, 
+\begin{itemize}
+\item $B$ is set via cross-validation or other risk estimate
+
+\script{Boosting is largely insensitive to overfitting by choosing $B$ too large}
+\item $\lambda$ is set at a small level, say $\lambda = 0.01$
+\end{itemize}
+
+\vsp
+As for the additive model part...
+\end{frame}
+\transitionSlide{Curse of dimensionality and local averaging}
+
+\begin{frame}[fragile]
+\frametitle{From linear to nonlinear models}
+\smallCapGreen{Goal:} Develop a prediction function $\hat{f}: \R^p \rightarrow \R$
+for predicting $Y$ given an $X$
+
+\vsp
+Commonly, $\hat{f}(X) = X^{\top}\beta$ 
+
+\script{Constrained linear regression}
+
+\vsp
+This greatly simplifies algorithms, while not sacrificing too much flexibility
+
+\vsp
+However, sometimes directly modeling the nonlinearity is more natural
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Prediction via local averaging}
+The fundamental quantities of interest we have been modeling are the
+\alo{Bayes' rules}
+\[
+\E [Y | X]  \quad \textrm{ or } \quad \argmax_g \P(Y = g | X)
+\]
+
+\vsp
+We know how to estimate expectations:  if $Y_1,Y_2,\ldots,Y_n$ all have expectation $\mu$, then
+\[
+\hat\mu = \frac{1}{n}\sum_{i=1}^n Y_i
+\]
+is an intuitive estimator of $\mu$
+
+{\scriptsize (and a reasonable prediction of a new $Y$)}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Prediction via local averaging}
+Similarly, we can estimate
+$\E [Y | X]$ with $\data$:
+\[
+\hat f(X) = \frac{1}{n_X}\sum_{i=1}^{n_X} Y_i\mathbf{1}(X_i = X)
+\]
+where $n_X = \sum_{i=1}^n \mathbf{1}(X_i = X)$.
+
+{\scriptsize (In words: we are taking an average of all the observations $Y_i$ such that $X_i = X$.  This is all conditional expectation
+really is)}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Prediction via local averaging}
+\emphasis{8cm}{There is a \alo{problem}:}{There generally aren't any $X_i$ at $X$!}
+
+Suppose we relax the constraint $X_i = X$ a bit
+and include points that are \alb{close enough} instead
+
+\vsp
+Again, suppose we have data $(X_1,Y_1), (X_2,Y_2), \ldots, (X_n,Y_n)$
+\[
+\hat f(X) = \frac{1}{n_X}\sum_{i=1}^{n_X} Y_i\mathbf{1}( ||X_i - X|| \leq t)
+\]
+where $n_X = \sum_{i=1}^n \mathbf{1}( ||X_i - X|| \leq t)$.
+
+\vsp
+Here, $t$ quantifies the notion of \alo{closeness}
+
+\script{In fact, it is a tuning parameter}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Prediction via local averaging}
+\begin{figure}
+\centering
+\includegraphics[width=3in]{../figures/classification_KNNmotivation2.pdf}
+\caption{$t = 0.25$}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Prediction via local averaging}
+\begin{figure}
+\centering
+\includegraphics[width=3in]{../figures/classification_KNNmotivation3.pdf}
+\caption{$t = 0.1$}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Prediction via local averaging}
+\begin{figure}
+\centering
+\includegraphics[width=3in]{../figures/classification_KNNmotivation4.pdf}
+\caption{$t = 0.01$}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Prediction via local averaging}
+\begin{figure}
+\centering
+\includegraphics[width=3in]{../figures/classification_KNNmotivation5.pdf}
+\caption{$t = 0.0001$}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{From linear to nonlinear models}
+\smallCapGreen{Question:} Why don't we always fit such a flexible model?
+\vsp
+
+\smallCapGreen{Answer:} This works great if $p$ is small 
+
+\script{and the specification of nearness is good}
+
+\vsp
+However, as $p$ gets large
+\begin{itemize}
+\item \alo{nothing} is nearby
+\item \alo{all} points are on the boundary
+
+\script{Hence, predictions are generally extrapolations}
+\end{itemize}
+\vsp
+
+These aspects make up (part) of the \alg{curse of dimensionality}
+
+%\script{First usage: Bellman (1968) in the context of dynamic programming}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Curse of dimensionality}
+Fix the dimension $p$
+
+\script{Assume $p$ is even to ignore unimportant digressions}
+
+\vsp
+Let $S$ be a hypersphere with radius $r$
+
+\vsp
+Let $C$ be a hypercube with side length $2r$
+
+\vsp
+Then, the volume of $S$ and $C$ are, respectively
+\[
+V_S = \frac{r^{p}\pi^{p/2}}{(p/2)!} \textrm{ and } V_C = (2r)^p
+\]
+\script{Interesting observation: this means for $r < 1/2$ the volume of the hypercube 
+goes to 0, but the diagonal length is always
+$\propto\sqrt{p}$.  Hence, the hypercube gets quite `spiky' and is actually horribly jagged.  Regardless of radius, the
+hypersphere's volume goes to zero quickly.}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Curse of dimensionality}
+Hence, the ratio of the volumes of a circumscribed hypersphere by a hypercube is
+\[
+\frac{V_C}{V_S} =  \frac{(2r)^p\cdot (p/2)!}{r^{p}\pi^{p/2}} = \frac{2^p\cdot (p/2)!}{\pi^{p/2}}  = \left(\frac{4}{\pi}\right)^d d!
+\]
+where $d = p/2$
+
+\vsp
+\smallCapGreen{Observation:} This ratio of volumes is increasing \alo{really} fast.  This means that all of the volume
+of a hypercube is near the corners.  Also, this is independent of the radius.
+\end{frame}
+
+\transitionSlide{Additive models}
+
+\begin{frame}[fragile]
+\frametitle{Additive models}
+We can find a combination of linear models and nonlinear models that provides flexibility
+while shielding us somewhat from the dimension problem
+
+\vsp
+Write
+\[
+f(X) = f_1(x_1) + \cdots + f_p(x_p) = \sum_{j=1}^p f_j(x_j)
+\]
+
+\vsp
+Estimation of such a function is not much more complicated than a fully linear model (as all inputs enter
+separately)
+
+\vsp
+The algorithmic approach is known as \alg{backfitting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Additive models (for regression)}
+Additive models are usually phrased using the \alo{population level} expectation
+
+\script{These get replaced with empirical versions}
+
+\vsp
+The update is a Gauss-Seidel-type update
+
+\script{The Gauss-Seidel method is an iterative scheme for solving linear, square systems}
+
+\vsp
+This is for $j=1,\ldots,p,1,\ldots,p,1\ldots$:
+\[
+f_j(x_j) \leftarrow \E\left[ Y - \sum_{k\neq j} f_k(x_k)| x_j\right]
+\]
+
+\vsp
+Under fairly general conditions, this converges to $\E[Y | X]$
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Additive models (for regression)}
+Backfitting for additive models is roughly as follows:
+
+\vsp
+Choose a univariate nonparametric smoother $\mathcal{S}$ and form all marginal fits $\hat{f}_j$
+
+\script{Commonly a cubic smoothing spline}
+
+\vsp
+Iterate over $j$ until convergence:
+\begin{enumerate}
+\item Define the residuals $R_i = Y_i - \sum_{k \neq j} \hat{f}_k(X_{i}^k)$
+\item Smooth the residuals $\hat{f}_j = \mathcal{S}(R)$
+\item Center $\hat{f}_j \leftarrow \hat{f}_j - n^{-1}\sum_{i=1}^n \hat{f}_j(X_{i}^j)$
+\end{enumerate}
+Report
+\[
+\hat{f}(X) = \overline{Y} + \hat{f}_1(x_1)+\cdots+ \hat{f}_p(x_p)
+\]
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Fitting additive models \alr{R}}
+\begin{blockcode}
+library(gam)
+x   = seq(0,2*pi,length=10)
+xx = expand.grid(x,x)
+X1 = xx[,1]
+X2 = xx[,2]
+
+Y =  sin(xx[,1]) - (xx[,2] - pi)^2 + rnorm(nrow(xx),0,.1)
+sim = data.frame(X1=X1,X2=X2,Y=Y)
+
+out = gam(Y~s(X1,3)+s(X2,3),data=sim)
+\end{blockcode}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Additive models: Simulation}
+\begin{figure}
+\centering
+\includegraphics[width=2.3in]{../figures/GAMregressionSimAspect1.pdf}
+\includegraphics[width=2.3in]{../figures/GAMregressionSimAspect2.pdf}
+\end{figure}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Additive models: Simulation results}
+\begin{figure}
+\centering
+\includegraphics[width=2.3in]{../figures/GAMregressionResultsAspect1.pdf}
+\includegraphics[width=2.3in]{../figures/GAMregressionResultsAspect2.pdf}
+\end{figure}
+\script{These are the fitted values only.  Red squares: GAM, Blue triangles:  multiple linear regression}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{\smallCapGreen{Detour:} Plotting 3d in \alr{R}}
+\begin{blockcode}
+out = scatterplot3d(X1,X2,Y,pch=16,type='n')
+xyz = out$xyz.convert(X1,X2,out.pred)
+points(xyz,col='red',pch=15)
+xyz = out$xyz.convert(X1,X2,out.pred.lm)
+points(xyz,col='blue',pch=17)
+\end{blockcode}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Additive models (for regression)}
+More generally, we can consider each function in the sum to be a function of \alo{all} input variables
+
+\vsp
+\smallCapGreen{Example:}  $f_b(X) = f_b(x_b)$
+
+\script{That is, the function only depends on one component of $X$}
+
+\vsp
+The resulting model would be
+\[
+\sum_{b=1}^B f_b(X)
+\]
+How can we fit this?
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{(Functional) Gradient descent}
+Let $\ell(f,Y)$ be a loss function and $R$ be the risk
+
+\vsp
+\smallCapGreen{Example:} $\ell(f,Y) = (f(X) - Y)^2$ and $R(f) = \P \ell(f,Y)$
+
+\vsp
+Out goal is to minimize $R(f)$ over $f$.  
+
+\vsp
+\smallCapGreen{Example:} For squared error loss, the \alo{minimizer} is $\P Y|X$
+
+\vsp
+How about in general?
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{(Functional) Gradient descent}
+Form the gradient:
+\[
+g = \frac{\partial R}{\partial f}  = \P \frac{\partial \ell(f,Y)}{\partial f}
+\]
+\vsp
+
+For $b = 1,\ldots,B$
+\[
+f_b = f_{b-1} - \lambda g\bigg|_{f = f_{b-1}}
+\]
+
+\vsp
+It can be shown that by taking $B$ large enough, $f_B \rightarrow \P Y | X$
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{(Functional) Gradient descent}
+The previously written algorithm isn't usable with data 
+
+\script{We need to estimate $\P$}
+
+\vsp
+If we instead use
+\[
+\hat{g}(X_i) = \frac{\partial \ell(f(X_i),Y_i)}{\partial f}
+\]
+for $i = 1,\ldots, n$
+\vsp
+
+This procedure both \alo{overfits} and is only \alo{defined} at the observed $X_i$
+%And:
+%\[
+%\hat{f}_b = \hat{f}_{b-1} - \lambda \hat{g}\bigg|_{f = \hat{f}_{b-1}}
+%\]
+%
+%\vsp
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{(Functional) Gradient descent}
+A way of preventing the overfitting is to \alg{restrict} the subspace of functions we are looking at
+
+\vsp
+Let $\F$ be a class of functions
+
+\vsp
+After forming $\hat{g}$, we \alg{restrict} it via projection to be in $\F$
+
+\script{This grabs the element of $\F$ most parallel to $\hat{g}$}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{(Functional) Gradient descent}
+A data-based algorithm is now:
+For $b = 1, \ldots, B$, do: 
+\begin{enumerate}
+\item $R_i \leftarrow - \hat{g}(X_i)\bigg|_{f = \hat{f}_{b-1}} = \frac{\partial \ell(f(X_i),Y_i)}{\partial f}\bigg|_{f = \hat{f}_{b-1}}$
+\item $\hat{f}  \leftarrow \argmin_{f\in\F} \norm{R - f}_2^2$
+
+\script{Projection step, allowing for $\hat{f}$ to be defined at new $X$}
+\item Update: $\hat{f}_b \leftarrow \hat{f}_{b-1} + \lambda \hat{f}$
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{(Functional) Gradient descent}
+Let's look at step \alb{1.} more closely:
+\[
+\frac{\partial \ell(f(X_i),Y_i)}{\partial f}
+ =
+ \frac{\partial (f(X_i) - Y_i)^2}{\partial f}
+  =
+ 2(f(X_i) - Y_i)
+\]
+
+\smallCapGreen{Observation:} These are (twice) the residuals
+
+\script{Hence, as in SVM, usually we use $(f(X) - Y)^2/2$}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{(Functional) Gradient descent}
+\smallCapGreen{Reminder:} Back to boosting.  Fix any $b$
+\vsp
+
+
+\begin{enumerate}
+\item Fit $\hat f_b$ with $M+1$ regions to $\tilde{\data} = \{ (X_1, R_1),\ldots,(X_n,R_n)\}$
+\item Update: $\hat f \leftarrow \hat f + \lambda \hat{f}_b$
+\item Update: $R \leftarrow R - \hat{f}$
+\end{enumerate}
+\vsp
+
+\smallCapGreen{Compare:} Functional gradient descent:
+\begin{enumerate}
+\item $R_i \leftarrow  - \frac{\partial \ell(f(X_i),Y_i)}{\partial f}\bigg|_{f = \hat{f}_{b-1}}
+=
+2 ( Y_i - f(X_i))$
+\item $\hat{f}  \leftarrow \argmin_{f\in\F} \norm{R - f}_2^2$
+
+\script{Projection step, let $\F$ be class of trees with $M+1$ regions}
+\item Update: $\hat{f}_b \leftarrow \hat{f}_{b-1} + \lambda \hat{f}$
+\end{enumerate}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{(Functional) Gradient descent}
+\smallCapGreen{Conclusion:} These approaches are the same!
+
+\vsp
+Boosting is an algorithmic way of fitting a general additive model using data
+
+\vsp
+Now, we need to transfer this insight to classification..
+\end{frame}
+\end{document}

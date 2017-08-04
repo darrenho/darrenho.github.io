@@ -1,0 +1,409 @@
+\documentclass{beamer}
+%\usepackage[usenames,dvipsnames]{xcolor}
+
+\usepackage{_defsAndPackages675notation}
+\usepackage{_defsAndPackages675beamer}
+
+\begin{document}
+
+\title{\alg{Linear Methods for Regression:
+Risk estimation}}
+\subtitle{\classTitle}
+%\author{\alg{Darren Homrighausen, PhD}}
+%\institute{\classTitle}
+\date{}
+
+
+
+\begin{frame}
+\maketitle
+%\titlepage
+%\begin{figure}[h!]
+%  \centering
+%  \includegraphics[width=1in]{.../figures/CSU_logo2.eps}
+%\end{figure}
+%
+\organization
+%
+\end{frame}
+
+\begin{frame}
+\frametitle{Subset selection and regularization}
+For now, let's assume we are doing ordinary least squares, and hence the design (feature) matrix is $\X \in \R^{n \times p}$.
+
+\vsp
+We want to do model selection for at least three reasons:
+\begin{itemize}
+\item \smallCapGreen{Prediction accuracy:} Can essentially {\it always} be improved by introducing some bias 
+\item \smallCapGreen{Interpretation:} A large number of features can sometimes be distilled into a smaller number that comprise the  ``big (little?) picture''
+\item \smallCapGreen{Computation:} A large $p$ can create a huge computational bottleneck.  
+\end{itemize}
+
+\end{frame}
+\begin{frame}
+\frametitle{Subset selection and regularization}
+
+We will address three related ideas 
+\begin{itemize}
+\item \smallCapGreen{Model selection:} Selection of only some of the original $p$ features
+\item \smallCapGreen{Dimension reduction/expansion:} Creation of new features to help with prediction
+\item \smallCapGreen{Regularization:} Add constraints to optimization problems to provide stabilization
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Risk estimation}
+\smallCapGreen{Reminder:}  Prediction risk is
+\[
+R(f) = \P_{Z,\data} \ell_f \leftrightarrow \textrm{Bias} + \textrm{Variance}
+\]
+The overridding theme is that we would like to add a judicious amount of bias to get \alo{lower} risk
+
+\vsp
+As $R$ isn't known, we need to estimate it
+
+\vsp
+As discussed, $\train = \hat\P\ell_f$ isn't very good
+
+\script{In fact, one tends to not add bias when estimating $R$ with $\hat\P\ell_f$}
+
+\vsp
+$\train$ tends to \alo{underestimate} $R$, hence we can call it \alo{optimistic}
+\end{frame}
+
+\begin{frame}
+\frametitle{Risk estimation: a general form}
+Assume that we get a new draw of the training data, $\data^0$, such that $\data \sim \data^0$ and
+\[
+\data = \{(X_1,Y_1), \ldots, (X_n,Y_n)\} \quad \textrm{and} \quad \data^0 = \{(X_1,Y_1^0), \ldots, (X_n,Y_n^0)\}
+\]
+
+\vsp
+If we make a small compromise to risk, we can form a sensible suite of risk estimators
+
+\vsp
+To wit, letting $Y^0 = (Y_1^0,\ldots,Y_n^0)^{\top}$, define 
+
+\[
+R_{in} = \E_{Y^0 | \data}  \hat\P_{\data^0}  \ell_{\hat{f}}= \frac{1}{n} \sum_{i=1}^n \E_{Y^0 | \data} \ell(\hat{f}(X_i),Y_i^0)
+\]
+\vsp
+
+Then the \alg{average optimism} is
+\[
+\opt = \E_Y [ R_{in} - \train]
+\]
+Typically, $\opt$ is positive as $\train$ will underestimate the risk
+\end{frame}
+
+\begin{frame}
+\frametitle{Risk estimation: a general form}
+It turns out for a variety of $\ell$ (such as squared error and 0-1)
+\[
+\opt = \frac{2}{n} \sum_{i=1}^n \textrm{Cov}(\hat f(X_i),Y_i)
+\]
+\vsp
+
+Therefore, we get the following expression of risk
+\[
+ \E_Y R_{in} = \E_Y \train + \frac{2}{n} \sum_{i=1}^n \textrm{Cov}(\hat f(X_i),Y_i),
+\]
+which has unbiased estimator (i.e. $\E_Y \gic =  \E_Y R_{in}$)
+\[
+\gic = \train + \frac{2}{n} \sum_{i=1}^n \textrm{Cov}(\hat f(X_i),Y_i)
+\]
+\end{frame}
+
+\begin{frame}
+\frametitle{Degrees of freedom}
+We call the term (where $\sigma^2 = \V Y_i$)
+\[
+\df = \frac{1}{\sigma^2} \sum_{i=1}^n \textrm{Cov}(\hat f(X_i),Y_i)
+\]
+the \alg{degrees of freedom}
+
+\script{This is really the \alo{effective number of parameters}, with some caveats}
+
+\vsp
+Our task now is to either estimate or compute $\opt$ to produce $\opthat$ and form:
+\[
+\gichat = \train + \opthat
+\]
+
+\vsp
+This leads to Mallows Cp/Stein's unbiased risk estimatior (SURE), as well
+as forms for AIC, BIC, and others
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Degrees of freedom: Example}
+Sometimes the $\df$ is exactly computable.  
+
+\script{In other cases, it needs to be estimated}
+
+\vsp
+Look at least squares regression onto $\X$, with $\V Y_i = \sigma^2$
+
+\vvvsp
+\vvvsp
+
+\vfill
+\end{frame}
+\begin{frame}
+\frametitle{Information criteria}
+Of course, this isn't the usual way to introduce/conceptualize information criteria
+
+\vsp
+For me, thinking of the \alo{training error} as overly \alo{optimistic} and correcting
+for that optimism is conceptually appealing
+
+\vsp
+For others, forming a metric\footnote{It will turn out to be a psuedo-metric; a small detail} on
+probability measures is more appealing
+
+\vsp
+Let's go over this now for completeness
+\end{frame}
+
+\transitionSlide{ Comparing probability measures  }
+
+\begin{frame}
+\frametitle{ Kullback-Leibler}
+
+Suppose we have data $Y$ that comes from the probability density function $f$.
+
+\vsp
+What happens if we use the probability density function $g$ instead?
+
+\vsp
+\smallCapGreen{Example:} Suppose $Y \sim N(\mu,\sigma^2) = f$.  We want to predict a new $Y_*$, but
+we model it as $Y_* \sim N(\mu_*,\sigma^2) = g$
+
+\vsp
+How \alo{far} away are we?  We can either compare $\mu$ to $\mu_*$ or $Y$ to $Y^*$
+
+\script{This is the approach taken via the \alo{optimism}}
+
+\vsp
+Or, we can compute how \alo{far} $f$ is from $g$
+
+\script{\alo{far} indicates we need a notion of distance}
+\end{frame}
+
+\begin{frame}
+\frametitle{ Kullback-Leibler}
+
+
+One central idea is \alg{Kullback-Leibler} discrepancy\footnote{This has many features of a distance, but is not a true distance as $KL(f,g) \neq KL(g,f)$.} 
+
+\begin{align*}
+KL(f,g) & = \int \log\left( \frac{f(y)}{g(y)} \right)f(y) dy \\
+& \propto
+-\int \log (g(y)) f(y) dy \qquad \textrm{(ignore term without $g$)}\\
+& = 
+-\P_f [\log (g(Y))] 
+\end{align*}
+
+This gives us a sense of the \alo{loss} incurred by using $g$ instead of $f$. 
+\end{frame}
+
+\begin{frame}
+\frametitle{ Kullback-Leibler discrepancy  }
+Usually, $g$ will depend on some parameters, call them $\theta$
+\vvsp
+
+\smallCapGreen{Example:}In regression, we can specify $f = N(X^{\top} \beta, \sigma^2)$ for a fixed 
+(true)\footnotemark  $\beta$, and let $g_\theta = N(X^{\top}\beta,\sigma^2)$ over all $\theta \in \R^p\times\R^+$
+
+\vvsp
+As $KL(f,g_\theta) = -\P_f [\log (g_\theta(Y))]$, we minimize this over $\theta$.
+
+\vsp
+Again, $\P_f$ is unknown, so we minimize $-\log (g_\theta(Y))$ instead.  This is the maximum likelihood value
+\[
+\hat{\theta}_{ML} = \argmax_\theta g_\theta(Y)
+\]
+
+\footnotetext{We actually don't need to assume things about a true model nor have it be nested in
+the alternative models.}
+\end{frame}
+
+\begin{frame}
+\frametitle{ Kullback-Leibler discrepancy  }
+Now, to get an operational characterization of the KL divergence at the ML solution
+\[
+-\P_f [\log (g_{\hat\theta_{ML}}(Y))]
+\]
+we need an approximation (don't know $f$, still)
+
+\vsp
+This approximation\footnote{See ``Multimodel Inference'' Burnham, Anderson (2004)} is exactly AIC:
+\[
+\textrm{AIC} = -\log (g_{\hat\theta_{ML}}(Y)) + |\hat\beta_{ML}|
+\]
+
+\emphasis{8.75cm}{Example:}{
+Let $\log(g_{\theta}(y)) = -\frac{n}{2}\log(2\pi\sigma^2) - 
+\frac{1}{2\sigma^2}||Y - \X\beta||_2^2$ 
+
+\smallCapGreen{$\sigma^2$ known:}
+$\hat\beta = \X^{\dagger}Y$
+\[
+\textrm{AIC} \propto n \train/(2\sigma^2) + p =  \train+ 2\sigma^2 n^{-1}p
+\]
+\smallCapGreen{$\sigma^2$ unknown:}
+$\hat\beta = \X^{\dagger}Y$, $n\hat\sigma^2 = (I - \X\X^{\dagger})Y = n\train$}
+\[
+\textrm{AIC} \propto n \log(\train)/2 + p  = \log(\train) + 2n^{-1}p
+\]
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{ Summary }
+
+For $\gichat$:
+\[
+\train + \opthat = \train + 2\sigma^2n^{-1}\df =
+\begin{cases}
+\textrm{AIC, known } \sigma^2 \\
+\textrm{Mallows Cp } & \textrm{if } \hat{f}(X) = X^{\top}\hat\beta_{LS} \\ 
+\textrm{SURE } & \textrm{most } \hat{f}(X)
+\end{cases}
+\]
+Or
+
+\[
+\textrm{IC} = \log (\train) + c_n n^{-1}\df =
+\begin{cases}
+\textrm{AIC, unknown } \sigma^2 & \textrm{if } c_n = 2\\
+\textrm{BIC}& \textrm{if } c_n = \log(n)
+\end{cases}
+\]
+\end{frame}
+\transitionSlide{Cross-validation}
+
+\begin{frame}
+\frametitle{A different approach to risk estimation}
+ Let $(X_0,Y_0)$ be a test
+observation, identically distributed as an element in $\data$, but also \alo{independent} of $\data$.
+\vvsp
+
+\emphasis{7cm}{Prediction risk:}{$R(f) = \E (Y_0 - f(X_0))^2$}
+\vsp
+
+Of course, the quantity $(Y_0 - f(X_0))^2$ is an unbiased estimator of $R(f)$ and hence we could
+estimate $R(f)$
+\vsp
+
+However, \alo{we don't have any such new observation}
+
+\vsp
+Or do we?
+
+\end{frame}
+
+\begin{frame}
+\frametitle{An intuitive idea}
+Let's set aside one observation and predict it
+
+\vsp
+\emphasis{9cm}{For example:}{Set aside $(X_1,Y_1)$ and fit $\hat{f}^{(1)}$ on $(X_2,Y_2),\ldots,(X_n,Y_n)$. }
+
+{\scriptsize (The notation $\hat{f}^{(1)}$
+just symbolizes leaving out the first observation before fitting $\hat{f}$)}
+\[
+R_1(\hat{f}^{(1)}) = (Y_1 - \hat{f}^{(1)}(X_1))^2
+\]
+
+As the left off data point is \alo{independent} of the data points used for estimation, 
+\[
+\E_{(X_1,Y_1)|\data_{(1)}}R_1(\hat{f}^{(1)})  \stackrel{D}{=} R(\hat f(\data_{n-1}) ) \approx R(\hat f(\data))
+\]
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Leave-one-out cross-validation}
+Cycling over all observations and taking the average produces \alg{leave-one-out cross-validation}
+
+\[
+\CV{n}(\hat{f}) =  \frac{1}{n} \sum_{i=1}^n R_i(\hat{f}^{(i)}) = \frac{1}{n} \sum_{i=1}^n (Y_i -  \hat{f}^{(i)}(X_i))^2.
+\]
+
+\end{frame}
+
+\begin{frame}
+\frametitle{More general cross-validation schemes}
+Let $\mathcal{N} = \{1,\ldots,n\}$ be the index set for $\data$
+\vsp
+
+Define a distribution $\VV$ over $\mathcal{N}$ with (random) variable $v$
+\vsp
+ 
+Then, we can form a general \alg{cross-validation} estimator as
+\[
+\CVV(\hat f) =  \E_\VV \hat \P_v \ell_{\hat{f}^{(v)}}
+\]
+\end{frame}
+
+\begin{frame}
+\frametitle{More general cross-validation schemes: Examples}
+\[
+\CVV(\hat f) =  \E_\VV \hat \P_v \ell_{\hat{f}^{(v)}}
+\]
+
+\begin{itemize}
+\item \smallCapGreen{K-fold:} Fix $V = \{ v_1,\ldots,v_K\}$ such that $v_j \cap v_k = \emptyset$ and 
+$\bigcup_j v_j = \mathcal{N}$
+\[
+\CV{K}(\hat f) = \textcolor{redmain}{\frac{1}{K} \sum_{v \in V}} \textcolor{bluemain}{\frac{1}{|v|} \sum_{i \in v}} \textcolor{greenmain}{(Y_i - \hat{f}^{(v)}(X_i))^2}
+\]
+\item \smallCapGreen{Bootstrap:} Let $\VV$ be given by the bootstrap distribution over $\mathcal{N}$
+\script{that is, sampling with replacement many times}
+\item \smallCapGreen{Factorial:} Let $\VV$ be given by all subsets (or a subset of all subsets) of $\mathcal{N}$
+\script{that is, putting mass $1/(2^n-2)$ on each subset}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{More general cross-validation schemes: A comparison}
+\begin{itemize}
+\item $\CV{K}$ gets more computationally demanding as $K \rightarrow n$
+\item The bias of $\CV{K}$ goes down, but the variance increases as $K \rightarrow n$
+\item The factorial version isn't commonly used except when doing a `real' data example for a methods
+paper
+\item  There are many other flavors of CV.  One of them, called ``consistent cross validation'' 
+[\smallCapGreen{Homework}] is a recent addition that is designed to work with \alo{sparsifying} algorithms
+\end{itemize}
+\end{frame}
+
+
+\transitionSlide{Summary time}
+
+\begin{frame}[fragile]
+\frametitle{Risk estimation methods}
+
+\begin{table}
+\begin{tabular}{lp{9.5cm}}
+   \smallCapGreen{CV}  &  Prediction risk consistent (Dudoit, van der Laan (2005)).  Generally selects a model
+   larger than necessary (unproven) \\
+   \smallCapGreen{AIC}  & Minimax optimal risk estimator (Yang, Barron (1998)).  Model selection inconsistent$^*$ \\   
+   \smallCapGreen{BIC}  &  Model selection consistent (Shao (1997) [low dimensional]. Wang, Li, Leng (2009) [high dimensional]).  
+   Slow rate for risk estimation$^*$\\   
+\end{tabular}
+\end{table}
+
+\script{Stone (1977) shows that $\CV{n}$ and AIC are asymptotically equivalent.}
+
+\script{$^*$Yang (2005) gives an impossibility 
+theorem: for a linear regression problem it is impossible for a model selection criterion to be
+both consistent and achieve minimax optimal risk estimation}
+\end{frame}
+\end{document}
+\end{document}
