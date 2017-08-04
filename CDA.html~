@@ -27,10 +27,10 @@ color:green;
 <td width="80%">
 <h1 align="left"> <br><b> <a id="fancy">CDA</a></b> </h1>
 <h2> STAT 645, Spring 2016 </h2>
-<h3> <a href="https://darrenho.github.io.">Darren Homrighausen</a>
+<h3> <a href="http://www.stat.colostate.edu/~darrenho/">Darren Homrighausen</a>
 </h3>
 <h4>
-<b><a href="CDA/syllabus.pdf">Syllabus</a> <br><br> </b>
+<b><a href="http://www.stat.colostate.edu/~darrenho/CDA/syllabus.pdf">Syllabus</a> <br><br> </b>
 </h4>
 </td>
 <td width = "20%" align = "right">
@@ -127,27 +127,27 @@ For this class, notes will be distributed in class only.  This website will serv
 <td colspan = "2"><br>
 <h3> Homeworks:</h3>
 <b>
-<a href="CDA/645hw1.pdf">Homework 1 </a><br>
+<a href="http://www.stat.colostate.edu/~darrenho/CDA/645hw1.pdf">Homework 1 </a><br>
 <UL>
-<LI><a href="CDA/262_hw1_ss.pdf">Solution 1 (pdf)</a><br> </LI>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/CDA/262_hw1_ss.pdf">Solution 1 (pdf)</a><br> </LI>
 </UL>
 <b>
-<a href="CDA/645hw2.pdf">Homework 2 (pdf)</a><br>
+<a href="http://www.stat.colostate.edu/~darrenho/CDA/645hw2.pdf">Homework 2 (pdf)</a><br>
 <UL>
-<LI><a href="CDA/262_hw2_ss.pdf">Solution 2 (pdf)</a><br> </LI>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/CDA/262_hw2_ss.pdf">Solution 2 (pdf)</a><br> </LI>
 </UL>
 <b>
-<a href="CDA/645hw3.pdf">Homework 3 (pdf)</a><br>
+<a href="http://www.stat.colostate.edu/~darrenho/CDA/645hw3.pdf">Homework 3 (pdf)</a><br>
 <UL>
-<LI><a href="CDA/262_hw3_ss.pdf">Solution 3 (pdf)</a><br> </LI>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/CDA/262_hw3_ss.pdf">Solution 3 (pdf)</a><br> </LI>
 </UL>
 <b>
-<a href="CDA/645hw4.pdf">Homework 4 (pdf)</a><br>
+<a href="http://www.stat.colostate.edu/~darrenho/CDA/645hw4.pdf">Homework 4 (pdf)</a><br>
 <UL>
-<LI><a href="CDA/262_hw4_ss.pdf">Solution 4 (pdf)</a><br> </LI>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/CDA/262_hw4_ss.pdf">Solution 4 (pdf)</a><br> </LI>
 </UL>
 <b>
-<a href="CDA/5homework.pdf">Homework 5 (pdf)</a><br>
+<a href="http://www.stat.colostate.edu/~darrenho/CDA/5homework.pdf">Homework 5 (pdf)</a><br>
 
 </td>
 </tr>
@@ -158,9 +158,9 @@ For this class, notes will be distributed in class only.  This website will serv
 <h3> Quiz 2
 </h3>
 <UL>
-<LI><a href="CDA/exam2.pdf"> Quiz 2</a><br> </LI>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/CDA/exam2.pdf"> Quiz 2</a><br> </LI>
 <UL>
-<LI><a href="CDA/5donner.txt"> Donner Data</a><br> </LI>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/CDA/5donner.txt"> Donner Data</a><br> </LI>
 </UL>
 </UL>
 
@@ -169,9 +169,9 @@ For this class, notes will be distributed in class only.  This website will serv
 <h3> Zero Inflated Poisson and Negative Binomial
 </h3>
 <UL>
-<LI><a href="CDA/roots.pdf"> Roots document</a><br> </LI>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/CDA/roots.pdf"> Roots document</a><br> </LI>
 <UL>
-<LI><a href="CDA/rootsZIP.sas"> SAS code</a><br> </LI>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/CDA/rootsZIP.sas"> SAS code</a><br> </LI>
 </UL>
 </UL>
 
@@ -180,9 +180,9 @@ For this class, notes will be distributed in class only.  This website will serv
 <h3> GLIMMIX: Soil Nitrogen
 </h3>
 <UL>
-<LI><a href="CDA/glmNitrogenNestingDisc.sas"> Nested design investigation </a><br> </LI>
-<LI><a href="CDA/glmNitrogen.sas"> Soil Type as Fixed Effect </a><br> </LI>
-<LI><a href="CDA/glmNitrogenMixed.sas"> Soil Type as Random Effect </a><br> </LI>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/CDA/glmNitrogenNestingDisc.sas"> Nested design investigation </a><br> </LI>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/CDA/glmNitrogen.sas"> Soil Type as Fixed Effect </a><br> </LI>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/CDA/glmNitrogenMixed.sas"> Soil Type as Random Effect </a><br> </LI>
 </UL>
 
 <!--
