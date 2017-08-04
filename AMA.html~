@@ -1,0 +1,385 @@
+<html>
+<head>
+<title>Applied Multivariate Analysis STAT 460</title>
+</head>
+
+<!-- font change by Min -->
+<style type="text/css">
+body
+{
+font-family:"Verdana";
+}
+td
+{
+font-size:12px;
+}
+a#fancy
+{
+font-family:"Arial";
+font-size:50px;
+color:green;
+}
+</style>
+
+<table width = "70%" align = "center" border="0" cellpadding = "8">
+
+<tr>
+<td width="80%">
+<h1 align="left"> <br><b> <a id="fancy">Applied Multivariate Analysis</a></b> </h1>
+<h2> STAT 460, Spring 2015 </h2>
+<h3> <a href="http://www.stat.colostate.edu/~darrenho/">Darren Homrighausen</a>
+</h3>
+<h4>
+<b><a href="http://www.stat.colostate.edu/~darrenho/AMA/syllabus.pdf">Syllabus</a> <br><br> </b>
+
+</h4>
+</td>
+<td width = "20%" align = "right">
+</td>
+</tr>
+<br>
+<br>
+
+
+
+<br>
+<br>
+
+<tr>
+<td colspan="2" align="justify" valign="top">
+<table width="100%">
+<tr><td colspan="2" bgcolor="#FF6600"><img src="transparent.gif" height="1" border="0"></td></tr>
+<tr><td colspan="2" bgcolor="#FF6600"><img src="transparent.gif" height="1" border="0"></td></tr>
+
+<tr>
+<td width = "22%" valign="top">
+<br><b>Lecture:</b>
+</td>
+<td align="justify">
+<br>
+<b>Date and Time: </b> Monday, Wednesday, Friday from 10:00 - 10:50 pm<br>
+<b>Location: </b> Engineering 101 B  <br><br>
+</td>
+</tr>
+
+<tr>
+<td width = "22%" valign="top">
+<b> Office hours:</b>
+</td>
+<td align="justify">
+Tuesday 11:00am or by appointment,  Statistics 204
+</td>
+</tr>
+<tr>
+<td width = "22%" valign="top">
+<b> TA:</b>
+</td>
+<td align="justify">
+Paul Harmon: email (use R) paste(c(paste(c('paul','harmon','gj'),collapse=''),'gmail.com'),collapse='@')
+</td>
+</tr>
+
+<tr>
+<td colspan="2" align="center" valign="top"> <br>
+<table width="100%">
+<tr><td  bgcolor="#FF6600"><img src="transparent.gif" height="1" border="0"></td></tr>
+<tr>
+<td align="justify">
+<table width = "100%">
+<tr>
+<td width="32%" align="center">
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</tr>
+
+<!--<tr>
+<td>
+<table>
+<tr>
+  <td width="300px">
+     <a href="about.html"><b> About </b></a>
+  </td>
+  <td width="300px">
+     <a href="project.html"><b> Project </b></a>
+  </td>
+  <td width="300px">
+     <a href="links.html"><b> Links </b></a>
+  </td>
+</tr>
+</table>
+</td>
+</tr>-->
+
+<tr><td colspan="2" bgcolor="#FF6600"><img src="transparent.gif" height="1" border="0"></td></tr>
+
+<tr>
+<td colspan = "2"><br>
+<b>Applied Multivariate Analysis</b>
+involves a good deal of both applied work (programming, problem solving, data analysis) and theoretical work (learning, understanding, and evaluating methodologies). We will try to make the class as applied as possible. However, there are necessary detours into the more technical aspects.<br><br>
+</td>
+</tr>
+
+<tr><td colspan="2" bgcolor="#FF6600"><img src="transparent.gif" height="1" border="0"></td></tr>
+
+<tr>
+<td colspan = "2"><br>
+<h3> Project:</h3>
+<b>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/projectOutline.pdf"> Project Outline</a><br><br>
+
+<h3> Homeworks:</h3>
+<b>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/1_homework.pdf">HOMEWORK 1</a><br>
+<UL>
+<LI>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/1_solution.R"> solution 1 (R code)</a><br>
+</LI>
+</UL>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/2_homework.pdf">HOMEWORK 2 </a><br>
+<UL>
+<LI>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/2_solution.pdf"> solution 2 </a><br>
+</LI>
+<LI>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/2_solution.r"> solution 2 (R code) </a><br>
+</LI>
+</UL>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/3_homework.pdf">HOMEWORK 3 </a><br>
+<UL>
+<LI>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/3_solution.r"> solution 3 (R code) </a><br>
+</LI>
+</UL>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/4_homework.pdf">HOMEWORK 4 </a><br>
+<UL>
+<LI>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/hiv.rda"> HIV data </a><br>
+</LI>
+<LI>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/hivPNASarticle.pdf"> HIV article </a><br>
+</LI>
+<LI>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/4_solution.r"> solution 4 (R code) </a><br>
+</LI>
+</UL>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/5_homework.pdf">HOMEWORK 5 </a><br>
+<UL>
+<LI>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/5_solution.r">solution 5 </a><br>
+</LI>
+</UL>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/6_homework.pdf">HOMEWORK 6 </a><br>
+<UL>
+</UL>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/7_homework.pdf">HOMEWORK 7 </a><br>
+<UL>
+<LI>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/7_solution.r">solution 7 </a><br>
+</LI>
+</UL>
+<b>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/8_homework.pdf">HOMEWORK 8</a><br>
+<UL>
+<LI>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/spam.Rdata"> SPAM data</a><br>
+</LI>
+<LI>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/spambase.DOCUMENTATION"> SPAM documentation</a><br>
+</LI>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/8_solution.r">solution 8 </a><br>
+</UL>
+<b>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/9homework.pdf">HOMEWORK 9</a><br>
+<UL>
+<LI>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/nci.data"> NCI data</a><br>
+</LI>
+<LI>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/nci.info"> NCI info</a><br>
+</LI>
+</UL>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/10homework.pdf">HOMEWORK 10</a><br>
+<UL>
+<LI>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/digits1.txt"> Digit data</a><br>
+</LI>
+</UL>
+
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/textProcessingExample.r">HOMEWORK 11 (r code)</a><br>
+<UL>
+<LI>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/docs.Rdata"> TMNT data</a><br>
+</LI>
+</UL>
+</td>
+</tr>
+
+
+<tr>
+<td colspan = "2"><br>
+<h3> Lectures:</h3>
+<b>
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/TOTD.pdf"> R Tip 'o the Day </a><br><br>
+
+<a href="http://www.stat.colostate.edu/~darrenho/AMA/0_preliminaryMaterials.pdf">PRELIMINARY MATERIALS </a><br><br>
+<b> REGRESSION </b>
+
+<UL>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/AMA/1_regression1.pdf">Regression I: Mean Squared Error and Measuring Quality of Fit </a>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/AMA/1_regression2.pdf">Regression II: Model Selection </a> (<a href="http://www.stat.colostate.edu/~darrenho/AMA/prostate.data"> Prostate data </a>)
+<LI><a href="http://www.stat.colostate.edu/~darrenho/AMA/1_regression3.pdf">Regression III: Computing a Good Estimator with Regularization </a> (<a href="http://www.stat.colostate.edu/~darrenho/AMA/1_CVfunc.r"> 1_CVfunc.r </a>) 
+<UL>
+<LI>
+[Updated: Feb. 6, 2:35 pm, Feb. 8, 20:50 pm, Feb. 12, 4:40 pm]
+</LI>
+</UL>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/AMA/regression4example.pdf">Regression IV: Example </a> 
+<UL>
+<LI>
+[Updated:  Feb. 12, 4:40 pm, Feb. 16, 5:18 pm (updated only after  slide 19)]
+</LI>
+</UL>
+</LI>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/AMA/regression5.pdf">Regression V: Additional Topics </a> 
+<UL>
+<LI>
+[Updated:  Feb. 16, 5:18 pm]
+</LI>
+</UL>
+</LI>
+</UL>
+<b> CLASSIFICATION </b>
+
+<UL>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/AMA/classification1.pdf">Classification I: Introduction and GLMs </a> (<a href="http://www.stat.colostate.edu/~darrenho/AMA/glmLectureHandwritten.pdf"> GLMs </a>, <a href="http://www.stat.colostate.edu/~darrenho/AMA/glmMultilevelResponsehandwritten.pdf"> Multilevel GLMs </a>) 
+<UL>
+<LI>
+[Updated: Feb. 22, 6:00 pm]
+</LI>
+</UL>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/AMA/classification2.pdf">Classification II: LDA </a> 
+<UL>
+<LI>
+[Updated: Feb. 24, 11:00 pm, Feb. 26, 10:45 pm, Mar. 1, 8:25 pm ]
+</LI>
+</UL>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/AMA/classification3.pdf">Classification III: Sparse logistic regression</a> 
+<UL>
+<LI>
+[Updated: Mar. 3, 6:00 pm, Mar. 5, 1:00 pm ]
+</LI>
+</UL>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/AMA/classification5.pdf">Classification IV: Trees</a> 
+<UL>
+<LI>
+[Updated: Mar. 5, 1:00 pm, Mar. 10, 11:00 AM, Mar. 20, 10:00 AM]
+</LI>
+</UL>
+</UL>
+
+<b> DERIVED INPUTS </b>
+<UL>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/AMA/pca.pdf"> PCA </a> 
+<UL>
+<LI>
+[Updated: Mar. 20, 10:00 AM, Mar. 24, 4:30 PM]
+</LI>
+</LI>
+</UL>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/AMA/PCAapplications.pdf"> PCA applications </a> 
+<UL>
+<LI>
+[Updated: Mar. 24, 4:30 PM, Mar. 26, 9:30 PM, Mar. 30, 11:00 AM]
+</LI>
+</LI>
+</UL>
+</UL>
+<b> CLUSTERING </b>
+<UL>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/AMA/clusteringKmeans.pdf"> K-means </a> 
+<UL>
+<LI>
+[Updated: Mar. 30, 5:30 PM]
+</LI>
+</LI>
+</UL>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/AMA/clusteringHierarchical.pdf"> Hierarchical clustering </a> 
+<UL>
+<LI>
+[Updated: Apr. 7, 2:30 PM, Apr. 13 9:00 AM]
+</LI>
+</UL>
+</LI>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/AMA/clusteringGMM.pdf"> Gaussian Mixture Models  </a> 
+<UL>
+<LI>
+[Updated: Apr. 14, 10:30 PM]
+</LI>
+</UL>
+</LI>
+</UL>
+
+<b> FACTOR ANALYSIS </b>
+<UL>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/AMA/factorAnalysis.pdf"> Factor Analysis </a> 
+<UL>
+<LI>
+[Updated: April 16, 5:15 pm]
+</LI>
+</LI>
+</UL>
+</UL>
+
+<b> TEXT PROCESSING </b>
+<UL>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/AMA/textProcessingOverview.pdf"> Text Processing: Overview </a> 
+<UL>
+<LI>
+[Updated: April 22, 8:30 am]
+</LI>
+</LI>
+</UL>
+<LI><a href="http://www.stat.colostate.edu/~darrenho/AMA/textProcessingLSI.pdf"> Text Processing: LSI </a> 
+<UL>
+<LI>
+[Updated: April 22, 8:30 am]
+</LI>
+</LI>
+</UL>
+</UL>
+
+</td>
+</tr>
+
+<tr>
+<td colspan = "2"><br>
+<h3> Test materials: <br> <a href="http://www.stat.colostate.edu/~darrenho/AMA/midtermIdeas.pdf"> Midterm ideas </a> <br> <a href="http://www.stat.colostate.edu/~darrenho/AMA/midterm.pdf"> Midterm </a><br><br>
+</h3>
+</td>
+</tr>
+ 
+<tr>
+<td colspan = "2"><br>
+<h3> R-project Materials:</h3>
+<b>
+<UL>
+<LI><a href="http://cran.r-project.org/doc/manuals/R-intro.html"> An Introduction to R  </a>by the R Core Team</LI>
+<LI><a href="http://www.youtube.com/playlist?list=PLOU2XLYxmsIK9qQfztXeybpHvru-TrqAP"> Intro to R  </a>video series by Google Developers</LI>
+<LI><a href="http://www.rstudio.com/"> R studio  </a>by RStudio</LI>
+<LI><a href="http://cran.r-project.org/doc/contrib/Torfs+Brauer-Short-R-Intro.pdf"> Simpliest introduction </a> to R</LI>
+</UL>
+</td>
+</tr>
+
+</td>
+</tr>
+
+</table>
+
+
+
+</body>
+</html>
