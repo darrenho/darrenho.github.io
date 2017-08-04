@@ -27,10 +27,10 @@ color:green;
 <td width="80%">
 <h1 align="left"> <br><b> <a id="fancy">SML</a></b> </h1>
 <h2> STAT 675, Fall 2015 </h2>
-<h3> <a href="http://www.stat.colostate.edu/~darrenho/">Darren Homrighausen</a>
+<h3> <a href="https://darrenho.github.io.">Darren Homrighausen</a>
 </h3>
 <h4>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/syllabus.pdf">Syllabus</a> <br><br> </b>
+<b><a href="SMLsyllabus.pdf">Syllabus</a> <br><br> </b>
 </h4>
 </td>
 <td width = "20%" align = "right">
@@ -125,44 +125,44 @@ methodology and intuition to help students develop tools for their own research.
 <h3> Homeworks:</h3>
 <b>
 <a href="http://www.stat.colostate.edu/~darrenho/SML/1a_homework.pdf">HOMEWORK 1 Theory (pdf)</a><br>
-<a href="http://www.stat.colostate.edu/~darrenho/SML/1b_homework.pdf">HOMEWORK 1 Applied (pdf)</a><br>
+<a href="SML/1b_homework.pdf">HOMEWORK 1 Applied (pdf)</a><br>
 <UL>
-<LI> <a href="http://www.stat.colostate.edu/~darrenho/SML/polynomial.R">polynomial.R </a></LI>
-<LI> <a href="http://www.stat.colostate.edu/~darrenho/SML/homework1_X.Rdata"> X</a></LI>
-<LI> <a href="http://www.stat.colostate.edu/~darrenho/SML/homework1_Xtest.Rdata">Xtest </a></LI>
-<LI> <a href="http://www.stat.colostate.edu/~darrenho/SML/homework1_Y.Rdata"> Y</a></LI>
-<LI> <a href="http://www.stat.colostate.edu/~darrenho/SML/homework1_Ytest.Rdata">Ytest </a></LI>
+<LI> <a href="SML/polynomial.R">polynomial.R </a></LI>
+<LI> <a href="SML/homework1_X.Rdata"> X</a></LI>
+<LI> <a href="SML/homework1_Xtest.Rdata">Xtest </a></LI>
+<LI> <a href="SML/homework1_Y.Rdata"> Y</a></LI>
+<LI> <a href="SML/homework1_Ytest.Rdata">Ytest </a></LI>
 </UL>
-<!-- <a href="http://www.stat.colostate.edu/~darrenho/SML/1_solution.pdf">Solution 1 </a> <br>
+<!-- <a href="SML/1_solution.pdf">Solution 1 </a> <br>
 -->
 </b>
  <b>
-<a href="http://www.stat.colostate.edu/~darrenho/SML/2_homework.pdf">HOMEWORK 2 (pdf)</a><br>
+<a href="SML/2_homework.pdf">HOMEWORK 2 (pdf)</a><br>
 <UL>
-<LI> <a href="http://www.stat.colostate.edu/~darrenho/SML/Rexample.r"> Code </a></LI>
-<LI> <a href="http://www.stat.colostate.edu/~darrenho/SML/classDemo.r"> Code (ff)</a></LI>
-<LI> <a href="http://www.stat.colostate.edu/~darrenho/SML/readDataLarge.r"> Code (ffbase) </a></LI>
-<LI> <a href="http://www.stat.colostate.edu/~darrenho/SML/inMemoryProcessing.r"> In memory processing </a></LI>
-<LI> <a href="http://www.stat.colostate.edu/~darrenho/SML/outMemoryProcessing.r"> Out of memory processing </a></LI>
-<LI> <a href="http://www.stat.colostate.edu/~darrenho/SML/10-8.pdf"> Notes from whiteboard </a></LI>
-<LI> <a href="http://www.stat.colostate.edu/~darrenho/SML/forwardLogistic.r"> Forward logistic regression </a></LI>
-<LI> <a href="http://www.stat.colostate.edu/~darrenho/SML/inMemoryProcessingTest.r"> Forward logistic regression: Predictions</a></LI>
+<LI> <a href="SML/Rexample.r"> Code </a></LI>
+<LI> <a href="SML/classDemo.r"> Code (ff)</a></LI>
+<LI> <a href="SML/readDataLarge.r"> Code (ffbase) </a></LI>
+<LI> <a href="SML/inMemoryProcessing.r"> In memory processing </a></LI>
+<LI> <a href="SML/outMemoryProcessing.r"> Out of memory processing </a></LI>
+<LI> <a href="SML/10-8.pdf"> Notes from whiteboard </a></LI>
+<LI> <a href="SML/forwardLogistic.r"> Forward logistic regression </a></LI>
+<LI> <a href="SML/inMemoryProcessingTest.r"> Forward logistic regression: Predictions</a></LI>
 
 </UL>
-<a href="http://www.stat.colostate.edu/~darrenho/SML/3_homework.pdf">HOMEWORK 3 (pdf)</a><br>
+<a href="SML/3_homework.pdf">HOMEWORK 3 (pdf)</a><br>
 
-<a href="http://www.stat.colostate.edu/~darrenho/SML/DigitsScript.R"> R code from previous class the might be helpful (ignore parts about SVM and e1071 for now) </a> <br><br>
+<a href="SML/DigitsScript.R"> R code from previous class the might be helpful (ignore parts about SVM and e1071 for now) </a> <br><br>
 
-<a href="http://www.stat.colostate.edu/~darrenho/SML/4_homework.pdf">HOMEWORK 4 (pdf)</a><br>
+<a href="SML/4_homework.pdf">HOMEWORK 4 (pdf)</a><br>
 <UL>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/4_homework.tex">Homework 4 (tex)</a> (use as solution template)<br></LI>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/spam.Rdata"> Spam data</a><br> </LI>
-<LI> <a href="http://www.stat.colostate.edu/~darrenho/SML/spambase.DOCUMENTATION"> Spam documentation</a><br>
+<LI><a href="SML/4_homework.tex">Homework 4 (tex)</a> (use as solution template)<br></LI>
+<LI><a href="SML/spam.Rdata"> Spam data</a><br> </LI>
+<LI> <a href="SML/spambase.DOCUMENTATION"> Spam documentation</a><br>
 </LI>
 </UL>
 <!--
-<a href="http://www.stat.colostate.edu/~darrenho/SML/4_solution.pdf">Solution 4 </a> <br>
-<a href="http://www.stat.colostate.edu/~darrenho/SML/4_solutionRcode.zip">Solution 4 code</a> 
+<a href="SML/4_solution.pdf">Solution 4 </a> <br>
+<a href="SML/4_solutionRcode.zip">Solution 4 code</a> 
 -->
 </td>
 </tr>
@@ -172,50 +172,50 @@ methodology and intuition to help students develop tools for their own research.
 <td colspan = "2"><br>
 <h3> Kaggle: Rossmann Stores
 <UL>
-<LI> <a href="http://www.stat.colostate.edu/~darrenho/SML/randomForest.r"> An adaptation of discussed sample script</a> </LI>
+<LI> <a href="SML/randomForest.r"> An adaptation of discussed sample script</a> </LI>
 </UL>
 <td>
 </tr>
 <tr>
 <td colspan = "2"><br>
 <h3> Scribe:
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/template.tex">Scribe template</a>
-<a href="http://www.stat.colostate.edu/~darrenho/SML/scribeDefinitions.sty">Scribe style file</a> </b>
-<a href="http://www.stat.colostate.edu/~darrenho/SML/references.bib">Scribe references</a> (bibtexing solutions)
+<b><a href="SML/template.tex">Scribe template</a>
+<a href="SML/scribeDefinitions.sty">Scribe style file</a> </b>
+<a href="SML/references.bib">Scribe references</a> (bibtexing solutions)
 <br><br>
 </h3>
 <!--
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/1_scribe.pdf"> LINEAR MODELS 1</a><br> </b>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/2_scribe.pdf"> LINEAR MODELS 2</a><br> </b>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/3_scribe.pdf"> LINEAR MODELS 3</a><br> </b>
+<b><a href="SML/1_scribe.pdf"> LINEAR MODELS 1</a><br> </b>
+<b><a href="SML/2_scribe.pdf"> LINEAR MODELS 2</a><br> </b>
+<b><a href="SML/3_scribe.pdf"> LINEAR MODELS 3</a><br> </b>
 -->
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/2_scribe.pdf"> Scribe 2</a><br> </b>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/3_scribe.pdf"> Scribe 3</a><br> </b>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/4_scribe.pdf"> Scribe 4</a><br> </b>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/5_scribe.pdf"> Scribe 5</a><br> </b>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/6_scribe.pdf"> Scribe 6</a><br> </b>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/7_scribe.pdf"> Scribe 7</a><br> </b>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/8_scribe.pdf"> Scribe 8</a><br> </b>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/9_scribe.pdf"> Scribe 9</a><br> </b>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/10_scribe.pdf"> Scribe 10</a><br> </b>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/11_scribe.pdf"> Scribe 11</a><br> </b>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/12_scribe.pdf"> Scribe 12</a><br> </b>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/13_scribe.pdf"> Scribe 13</a><br> </b>
+<b><a href="SML/2_scribe.pdf"> Scribe 2</a><br> </b>
+<b><a href="SML/3_scribe.pdf"> Scribe 3</a><br> </b>
+<b><a href="SML/4_scribe.pdf"> Scribe 4</a><br> </b>
+<b><a href="SML/5_scribe.pdf"> Scribe 5</a><br> </b>
+<b><a href="SML/6_scribe.pdf"> Scribe 6</a><br> </b>
+<b><a href="SML/7_scribe.pdf"> Scribe 7</a><br> </b>
+<b><a href="SML/8_scribe.pdf"> Scribe 8</a><br> </b>
+<b><a href="SML/9_scribe.pdf"> Scribe 9</a><br> </b>
+<b><a href="SML/10_scribe.pdf"> Scribe 10</a><br> </b>
+<b><a href="SML/11_scribe.pdf"> Scribe 11</a><br> </b>
+<b><a href="SML/12_scribe.pdf"> Scribe 12</a><br> </b>
+<b><a href="SML/13_scribe.pdf"> Scribe 13</a><br> </b>
 
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/14_scribe.pdf"> Scribe 14</a><br> </b>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/15_scribe.pdf"> Scribe 15</a><br> </b>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/16_scribe.pdf"> Scribe 16</a><br> </b>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/17_scribe.pdf"> Scribe 17</a><br> </b>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/18_scribe.pdf"> Scribe 18</a><br> </b>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/19_scribe.pdf"> Scribe 19</a><br> </b>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/20_scribe.pdf"> Scribe 20</a><br> </b>
+<b><a href="SML/14_scribe.pdf"> Scribe 14</a><br> </b>
+<b><a href="SML/15_scribe.pdf"> Scribe 15</a><br> </b>
+<b><a href="SML/16_scribe.pdf"> Scribe 16</a><br> </b>
+<b><a href="SML/17_scribe.pdf"> Scribe 17</a><br> </b>
+<b><a href="SML/18_scribe.pdf"> Scribe 18</a><br> </b>
+<b><a href="SML/19_scribe.pdf"> Scribe 19</a><br> </b>
+<b><a href="SML/20_scribe.pdf"> Scribe 20</a><br> </b>
 
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/21_scribe.pdf"> Scribe 21</a><br> </b>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/23_scribe.pdf"> Scribe 23</a><br> </b>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/24_scribe.pdf"> Scribe 24</a><br> </b>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/25_scribe.pdf"> Scribe 25</a><br> </b>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/26_scribe.pdf"> Scribe 26</a><br> </b>
-<b><a href="http://www.stat.colostate.edu/~darrenho/SML/27_scribe.pdf"> Scribe 27</a><br> </b>
+<b><a href="SML/21_scribe.pdf"> Scribe 21</a><br> </b>
+<b><a href="SML/23_scribe.pdf"> Scribe 23</a><br> </b>
+<b><a href="SML/24_scribe.pdf"> Scribe 24</a><br> </b>
+<b><a href="SML/25_scribe.pdf"> Scribe 25</a><br> </b>
+<b><a href="SML/26_scribe.pdf"> Scribe 26</a><br> </b>
+<b><a href="SML/27_scribe.pdf"> Scribe 27</a><br> </b>
 </td>
 </tr>
 
@@ -223,135 +223,135 @@ methodology and intuition to help students develop tools for their own research.
 <tr>
 <td colspan = "2"><br>
 <h3> Lectures:
-<a href="http://www.stat.colostate.edu/~darrenho/SML/_defsAndPackages675beamer.sty">Lecture formatting .sty</a> 
-<a href="http://www.stat.colostate.edu/~darrenho/SML/_defsAndPackages675notation.sty">Lecture notation .sty</a> (compiling lectures)</b> </h3>
+<a href="SML/_defsAndPackages675beamer.sty">Lecture formatting .sty</a> 
+<a href="SML/_defsAndPackages675notation.sty">Lecture notation .sty</a> (compiling lectures)</b> </h3>
 
 <b>
-<a href="http://www.stat.colostate.edu/~darrenho/SML/preliminaryMaterials.pdf">PRELIMINARY MATERIALS </a><br><br>
+<a href="SML/preliminaryMaterials.pdf">PRELIMINARY MATERIALS </a><br><br>
 
-<a href="http://www.stat.colostate.edu/~darrenho/SML/linearModelIntro.pdf">LINEAR MODEL INTRO </a><br>
+<a href="SML/linearModelIntro.pdf">LINEAR MODEL INTRO </a><br>
 
 <UL>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/linearModelIntro.tex">Linear Model Intro (tex) </a><br>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/linearModelIntroMarkUp.pdf">Linear Model Intro (Marked up) </a><br>
+<LI><a href="SML/linearModelIntro.tex">Linear Model Intro (tex) </a><br>
+<LI><a href="SML/linearModelIntroMarkUp.pdf">Linear Model Intro (Marked up) </a><br>
 </UL>
-<a href="http://www.stat.colostate.edu/~darrenho/SML/linearModelRisk.pdf">LINEAR MODEL Risk </a><br>
+<a href="SML/linearModelRisk.pdf">LINEAR MODEL Risk </a><br>
 <UL>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/linearModelRisk.tex">Linear Model Risk (tex) </a>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/linearModelRiskMarkUp.pdf">Linear Model Risk (Marked up) </a><br>
+<LI><a href="SML/linearModelRisk.tex">Linear Model Risk (tex) </a>
+<LI><a href="SML/linearModelRiskMarkUp.pdf">Linear Model Risk (Marked up) </a><br>
 <br>
 </UL>
-<a href="http://www.stat.colostate.edu/~darrenho/SML/linearModelModelSelection.pdf">LINEAR MODEL: Model Selection </a><br>
+<a href="SML/linearModelModelSelection.pdf">LINEAR MODEL: Model Selection </a><br>
 <UL>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/linearModelModelSelection.tex">Linear Model, Model selection (tex) </a>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/linearModelModelSelectionMarkUp.pdf">Linear Model: Model Selection (Marked up) </a><br>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/1_modelSelection.R">Linear Model: Model Selection (R code) </a><br>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/prostate.data">Linear Model: Model Selection (data) </a><br>
+<LI><a href="SML/linearModelModelSelection.tex">Linear Model, Model selection (tex) </a>
+<LI><a href="SML/linearModelModelSelectionMarkUp.pdf">Linear Model: Model Selection (Marked up) </a><br>
+<LI><a href="SML/1_modelSelection.R">Linear Model: Model Selection (R code) </a><br>
+<LI><a href="SML/prostate.data">Linear Model: Model Selection (data) </a><br>
 <br>
 </UL>
-<a href="http://www.stat.colostate.edu/~darrenho/SML/linearModelRegularization.pdf">LINEAR MODEL: Regularization </a><br>
+<a href="SML/linearModelRegularization.pdf">LINEAR MODEL: Regularization </a><br>
 <UL>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/linearModelRegularization.tex">Linear Model, Regularization (tex) </a>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/linearModelRegularizationMarkUp.pdf">Linear Model, Regularization Mark Up </a>
+<LI><a href="SML/linearModelRegularization.tex">Linear Model, Regularization (tex) </a>
+<LI><a href="SML/linearModelRegularizationMarkUp.pdf">Linear Model, Regularization Mark Up </a>
 <br>
 </UL>
-<a href="http://www.stat.colostate.edu/~darrenho/SML/linearModelAdditionalLassoTopics.pdf">LINEAR MODEL: Additional Topics </a><br>
+<a href="SML/linearModelAdditionalLassoTopics.pdf">LINEAR MODEL: Additional Topics </a><br>
 <UL>
 
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/linearModelAdditionalTopics.tex">Linear Model, Additional Topics (tex) </a>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/linearModelAdditionalTopicsMarkUp.pdf">Linear Model, Additional Topics Mark Up </a>
+<LI><a href="SML/linearModelAdditionalTopics.tex">Linear Model, Additional Topics (tex) </a>
+<LI><a href="SML/linearModelAdditionalTopicsMarkUp.pdf">Linear Model, Additional Topics Mark Up </a>
 <br>
 </UL>
 <!--
-<a href="http://www.stat.colostate.edu/~darrenho/SML/linearModelTheory.pdf">LINEAR MODEL THEORY  </a><br>
+<a href="SML/linearModelTheory.pdf">LINEAR MODEL THEORY  </a><br>
 <UL>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/linearModelTheory.tex">Linear Model theory (tex) </a><br>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/sept30.pdf"> September 30  </a>
+<LI><a href="SML/linearModelTheory.tex">Linear Model theory (tex) </a><br>
+<LI><a href="SML/sept30.pdf"> September 30  </a>
 </UL>
 -->
-<a href="http://www.stat.colostate.edu/~darrenho/SML/classificationIntroduction.pdf"> CLASSIFICATION </a>
+<a href="SML/classificationIntroduction.pdf"> CLASSIFICATION </a>
 <UL>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/classificationIntroduction.tex"> Classification (tex) </a><br>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/classificationIntroductionMarkUp.pdf"> Classification Mark Up </a><br>
+<LI><a href="SML/classificationIntroduction.tex"> Classification (tex) </a><br>
+<LI><a href="SML/classificationIntroductionMarkUp.pdf"> Classification Mark Up </a><br>
 </UL>
-<a href="http://www.stat.colostate.edu/~darrenho/SML/classificationTrees.pdf"> CLASSIFICATION: TREES </a>
+<a href="SML/classificationTrees.pdf"> CLASSIFICATION: TREES </a>
 <UL>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/classificationTrees.tex"> Trees (tex) </a><br>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/classificationTreesMarkUp.pdf"> Classification Tree Mark Up </a><br>
+<LI><a href="SML/classificationTrees.tex"> Trees (tex) </a><br>
+<LI><a href="SML/classificationTreesMarkUp.pdf"> Classification Tree Mark Up </a><br>
 </UL>
-<a href="http://www.stat.colostate.edu/~darrenho/SML/classificationBagging.pdf"> BAGGING</a>
+<a href="SML/classificationBagging.pdf"> BAGGING</a>
 <UL>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/classificationBagging.tex"> Bagging (tex) </a><br>
+<LI><a href="SML/classificationBagging.tex"> Bagging (tex) </a><br>
 </UL>
-<a href="http://www.stat.colostate.edu/~darrenho/SML/classificationSVMs1.pdf"> SVMs 1</a>
+<a href="SML/classificationSVMs1.pdf"> SVMs 1</a>
 <UL>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/classificationSVMs1.tex"> SVM 1 (tex) </a><br>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/classificationSVMs1markUp.pdf"> SVM 1 Mark Up </a><br>
-</UL>
-
-<a href="http://www.stat.colostate.edu/~darrenho/SML/classificationSVMs2.pdf"> SVMs 2</a>
-<UL>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/classificationSVMs2.tex"> SVM 2 (tex) </a><br>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/classificationSVMs2markUp.pdf"> SVM 2 Mark Up </a><br>
+<LI><a href="SML/classificationSVMs1.tex"> SVM 1 (tex) </a><br>
+<LI><a href="SML/classificationSVMs1markUp.pdf"> SVM 1 Mark Up </a><br>
 </UL>
 
+<a href="SML/classificationSVMs2.pdf"> SVMs 2</a>
+<UL>
+<LI><a href="SML/classificationSVMs2.tex"> SVM 2 (tex) </a><br>
+<LI><a href="SML/classificationSVMs2markUp.pdf"> SVM 2 Mark Up </a><br>
+</UL>
 
-<a href="http://www.stat.colostate.edu/~darrenho/SML/classificationBoosting1.pdf"> BOOSTING 1 </a>
+
+<a href="SML/classificationBoosting1.pdf"> BOOSTING 1 </a>
 <UL>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/classificationBoosting1.tex"> Boosting 1 (tex) </a><br>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/classificationBoosting1markUp.pdf"> Boosting 1 Mark up </a><br>
+<LI><a href="SML/classificationBoosting1.tex"> Boosting 1 (tex) </a><br>
+<LI><a href="SML/classificationBoosting1markUp.pdf"> Boosting 1 Mark up </a><br>
 </UL>
-<a href="http://www.stat.colostate.edu/~darrenho/SML/classificationBoosting2.pdf"> BOOSTING 2 </a>
+<a href="SML/classificationBoosting2.pdf"> BOOSTING 2 </a>
 <UL>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/classificationBoosting2.tex"> Boosting 2 (tex) </a><br>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/classificationBoosting2markUp.pdf"> Boosting 2 Mark up </a><br>
+<LI><a href="SML/classificationBoosting2.tex"> Boosting 2 (tex) </a><br>
+<LI><a href="SML/classificationBoosting2markUp.pdf"> Boosting 2 Mark up </a><br>
 </UL>
-<a href="http://www.stat.colostate.edu/~darrenho/SML/classificationBoosting3.pdf"> BOOSTING 3 </a>
+<a href="SML/classificationBoosting3.pdf"> BOOSTING 3 </a>
 <UL>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/classificationBoosting3.tex"> Boosting 3 (tex) </a><br>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/classificationBoosting3markUp.pdf"> Boosting 3 Mark up </a><br>
+<LI><a href="SML/classificationBoosting3.tex"> Boosting 3 (tex) </a><br>
+<LI><a href="SML/classificationBoosting3markUp.pdf"> Boosting 3 Mark up </a><br>
 </UL>
 
 <!--
-<a href="http://www.stat.colostate.edu/~darrenho/SML/concentrationMeasureEmpiricalProcess.pdf"> CONCENTRATION OF MEASURE</a>
+<a href="SML/concentrationMeasureEmpiricalProcess.pdf"> CONCENTRATION OF MEASURE</a>
 <UL>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/concentrationMeasureEmpiricalProcess.tex"> Concentration of measure (tex) </a><br>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/nov6.pdf"> November 6 (concentration of measure)  </a><br>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/nov13.pdf"> November 13 (concentration of measure)  </a><br>
+<LI><a href="SML/concentrationMeasureEmpiricalProcess.tex"> Concentration of measure (tex) </a><br>
+<LI><a href="SML/nov6.pdf"> November 6 (concentration of measure)  </a><br>
+<LI><a href="SML/nov13.pdf"> November 13 (concentration of measure)  </a><br>
 </UL>
 -->
-<a href="http://www.stat.colostate.edu/~darrenho/SML/neuralNetworks1.pdf"> NEURAL NETWORKS 1</a><br>
+<a href="SML/neuralNetworks1.pdf"> NEURAL NETWORKS 1</a><br>
 <UL>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/neuralNetworks1.tex"> Neural Networks 1 (tex) </a><br>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/neuralNetworks1markUp.pdf"> Neural Networks 1 (Mark Up) </a><br>
+<LI><a href="SML/neuralNetworks1.tex"> Neural Networks 1 (tex) </a><br>
+<LI><a href="SML/neuralNetworks1markUp.pdf"> Neural Networks 1 (Mark Up) </a><br>
 </UL>
-<a href="http://www.stat.colostate.edu/~darrenho/SML/neuralNetworks2.pdf"> NEURAL NETWORKS 2</a><br>
+<a href="SML/neuralNetworks2.pdf"> NEURAL NETWORKS 2</a><br>
 <UL>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/neuralNetworks2.tex"> Neural Networks 2 (tex) </a><br>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/neuralNetworks2markUp.pdf"> Neural Networks 2 (Mark Up) </a><br>
+<LI><a href="SML/neuralNetworks2.tex"> Neural Networks 2 (tex) </a><br>
+<LI><a href="SML/neuralNetworks2markUp.pdf"> Neural Networks 2 (Mark Up) </a><br>
 </UL>
-<a href="http://www.stat.colostate.edu/~darrenho/SML/neuralNetworks3.pdf"> NEURAL NETWORKS 3</a><br>
+<a href="SML/neuralNetworks3.pdf"> NEURAL NETWORKS 3</a><br>
 <br>
-<a href="http://www.stat.colostate.edu/~darrenho/SML/nonLinearEmbedding.pdf"> 
+<a href="SML/nonLinearEmbedding.pdf"> 
 NONLINEAR EMBEDDINGS </a><br>
 <UL>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/nonLinearEmbedding.tex"> Nonlinear Embeddings (tex) </a><br>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/nonLinearEmbeddingMarkUp.pdf"> Nonlinear Embeddings (Mark Up) </a><br>
+<LI><a href="SML/nonLinearEmbedding.tex"> Nonlinear Embeddings (tex) </a><br>
+<LI><a href="SML/nonLinearEmbeddingMarkUp.pdf"> Nonlinear Embeddings (Mark Up) </a><br>
 </UL>
 
-<a href="http://www.stat.colostate.edu/~darrenho/SML/clusteringHC.pdf"> 
+<a href="SML/clusteringHC.pdf"> 
 H CLUSTERING </a><br>
 <UL>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/clusteringHC.tex"> H Clustering (tex) </a><br>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/clusteringHCmarkUp.pdf"> H Clustering (mark up) </a><br>
+<LI><a href="SML/clusteringHC.tex"> H Clustering (tex) </a><br>
+<LI><a href="SML/clusteringHCmarkUp.pdf"> H Clustering (mark up) </a><br>
 </UL>
 
-<a href="http://www.stat.colostate.edu/~darrenho/SML/concentrationMeasureEmpiricalProcess.pdf"> 
+<a href="SML/concentrationMeasureEmpiricalProcess.pdf"> 
 Some Theory </a><br>
 <UL>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/concentrationMeasureEmpiricalProcess.tex"> Some theory (tex) </a><br>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/concentrationMeasureEmpiricalProcessMarkUp_1.pdf"> Some Theory 1 (mark up) </a><br>
-<LI><a href="http://www.stat.colostate.edu/~darrenho/SML/concentrationMeasureEmpiricalProcessMarkUp_2.pdf"> Some Theory 2 (mark up) </a><br>
+<LI><a href="SML/concentrationMeasureEmpiricalProcess.tex"> Some theory (tex) </a><br>
+<LI><a href="SML/concentrationMeasureEmpiricalProcessMarkUp_1.pdf"> Some Theory 1 (mark up) </a><br>
+<LI><a href="SML/concentrationMeasureEmpiricalProcessMarkUp_2.pdf"> Some Theory 2 (mark up) </a><br>
 </UL>
 </b>
 
@@ -360,19 +360,19 @@ Some Theory </a><br>
 
 <tr>
 <td colspan = "2"><br>
-<h3> Short Presentations: (Example: <a href="http://www.stat.colostate.edu/~darrenho/SML/LSLasso.pdf"> Refitted Lasso </a>)</h3>
+<h3> Short Presentations: (Example: <a href="SML/LSLasso.pdf"> Refitted Lasso </a>)</h3>
 
 <UL>
-<LI> <b> <a href="http://www.stat.colostate.edu/~darrenho/SML/woodburyidentity.pdf"> Woodbury Identity </a> </b>  </a></LI>
-<LI> <b> <a href="http://www.stat.colostate.edu/~darrenho/SML/pca.R"> PCA code </a> </b>  </a></LI>
-<LI> <b> <a href="http://www.stat.colostate.edu/~darrenho/SML/DANN.pdf"> DANN </a> </b>  </a></LI>
-<LI> <b> <a href="http://www.stat.colostate.edu/~darrenho/SML/kmeans.pdf"> K-means </a> </b>  </a></LI>
-<LI> <b> <a href="http://www.stat.colostate.edu/~darrenho/SML/adaptivebaggin.pdf"> Adaptive Bagging </a> </b>  </a></LI>
-<LI> <b> <a href="http://www.stat.colostate.edu/~darrenho/SML/Gap Statistic.pdf"> Gap Statistic </a> </b>  </a></LI>
-<LI> <b> <a href="http://www.stat.colostate.edu/~darrenho/SML/Nonnegative Garrote.pdf"> Nonnegative Garrote</a> </b>  </a></LI>
-<LI> <b> <a href="http://www.stat.colostate.edu/~darrenho/SML/presentation_2.pdf"> Archetypal Analysis</a> </b>  </a></LI>
-<LI> <b> <a href="http://www.stat.colostate.edu/~darrenho/SML/presentation 1.pdf"> Multicollinearity and Flavors of Ridge Regression</a> </b>  </a></LI>
-<LI> <b> <a href="http://www.stat.colostate.edu/~darrenho/SML/presentation 2.pdf"> Model Selection Consistency of Lasso</a> </b>  </a></LI>
+<LI> <b> <a href="SML/woodburyidentity.pdf"> Woodbury Identity </a> </b>  </a></LI>
+<LI> <b> <a href="SML/pca.R"> PCA code </a> </b>  </a></LI>
+<LI> <b> <a href="SML/DANN.pdf"> DANN </a> </b>  </a></LI>
+<LI> <b> <a href="SML/kmeans.pdf"> K-means </a> </b>  </a></LI>
+<LI> <b> <a href="SML/adaptivebaggin.pdf"> Adaptive Bagging </a> </b>  </a></LI>
+<LI> <b> <a href="SML/Gap Statistic.pdf"> Gap Statistic </a> </b>  </a></LI>
+<LI> <b> <a href="SML/Nonnegative Garrote.pdf"> Nonnegative Garrote</a> </b>  </a></LI>
+<LI> <b> <a href="SML/presentation_2.pdf"> Archetypal Analysis</a> </b>  </a></LI>
+<LI> <b> <a href="SML/presentation 1.pdf"> Multicollinearity and Flavors of Ridge Regression</a> </b>  </a></LI>
+<LI> <b> <a href="SML/presentation 2.pdf"> Model Selection Consistency of Lasso</a> </b>  </a></LI>
 </td>
 </tr>
 <!--
