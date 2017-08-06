@@ -1,0 +1,69 @@
+\documentclass[10pt]{article}
+
+% Include statements
+\usepackage{graphicx}
+\usepackage{amsfonts,amssymb,amsmath,amsthm}
+\usepackage[numbers,square]{natbib}
+\usepackage[left=1in,top=1in,right=1in,bottom=1in,nohead]{geometry}
+\usepackage{hyperref}
+\hypersetup{backref,colorlinks=true,citecolor=blue,linkcolor=blue,urlcolor=blue}
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{10pt}
+%\bibliographystyle{mybibsty}
+
+% Theorem environments (\autoref compatible)
+\usepackage{aliascnt}
+
+\newtheorem{theorem}{Theorem}[section]
+
+\newaliascnt{result}{theorem}
+\newtheorem{result}[theorem]{Result}
+\aliascntresetthe{result}
+\providecommand*{\resultautorefname}{Result}
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\providecommand*{\lemmaautorefname}{Lemma}
+\newaliascnt{prop}{theorem}
+\newtheorem{proposition}[prop]{Proposition}
+\aliascntresetthe{prop}
+\providecommand*{\propautorefname}{Proposition}
+\newaliascnt{cor}{theorem}
+\newtheorem{corollary}[cor]{Corollary}
+\aliascntresetthe{cor}
+\providecommand*{\corautorefname}{Corollary}
+\newaliascnt{conj}{theorem}
+\newtheorem{conjecture}[conj]{Conjecture}
+\aliascntresetthe{conj}
+\providecommand*{\conjautorefname}{Corollary}
+\newaliascnt{def}{theorem}
+\newtheorem{definition}[def]{Definition}
+\aliascntresetthe{def}
+\providecommand*{\defautorefname}{Definition}
+\newaliascnt{ex}{theorem}
+\newtheorem{example}[ex]{Example}
+\aliascntresetthe{ex}
+\providecommand*{\exautorefname}{Example}
+
+
+
+% To be entered
+\newcommand{\lecture}{Prof.\ Homrighausen}
+\newcommand{\scribe}{Your name}
+\newcommand{\chtitle}{Lecture title}
+\newcommand{\lecdate}{Date}
+
+
+\begin{document}
+\rule{6.5in}{1pt}
+
+\textsc{Statistical Machine Learning
+  \hfill 4 --- \chtitle
+  \hfill \lecdate}
+
+\textsc{Lecturer: \lecture \hfill Scribe: \scribe}
+\rule{6.5in}{1pt}
+
+
+\bibliography{AllReferences}
+\end{document}

@@ -34,7 +34,7 @@
 	</tr>
 	<tr>
 	  <td>
-	    <a href="http://www.smu.edu" style="font-size:15pt"><b>Southern Metodist University</b></a>
+	    <a href="http://www.smu.edu" style="font-size:15pt"><b>Southern Methodist University</b></a>
 	  </td>
 	</tr>
 	<tr>
@@ -131,11 +131,9 @@ For publications, click
 <tr>
 <ul>
 <li>
-<a href="https://github.com/darrenho/Data-Science" 
-target="_blank">STAT 6306: Introduction to Data Science</a>
+STAT 6306: Introduction to Data Science
 </li>
-<a href="https://github.com/darrenho/Data-Science" 
-target="_blank">STAT 630?: Introduction to Data Science 2</a>
+STAT 630?: Introduction to Data Science 2
 </li>
 </ul>
 </tr>

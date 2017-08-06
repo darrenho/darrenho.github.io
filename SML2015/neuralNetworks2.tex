@@ -1,0 +1,1145 @@
+\documentclass[12pt]{beamer}
+%\usepackage[usenames,dvipsnames]{xcolor}
+
+\usepackage{_defsAndPackages577notation}
+\usepackage{_defsAndPackages577beamer}
+
+%\DeclareMathSizes{12}{12}{5}{12}
+\newcommand{\parenthetical}[2]{#1  \scriptstyle \alr{( #2)}}
+\date{}
+
+\begin{document}
+
+\title{\alg{Neural Networks and Deep Learning 2}}
+\subtitle{\classTitle}
+
+\begin{frame}
+\maketitle
+%\titlepage
+%\begin{figure}[h!]
+%  \centering
+%  \includegraphics[width=1in]{.../figures/CSU_logo2.eps}
+%\end{figure}
+%
+\organization
+%
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Neural networks: General form}
+Generalizing to multi-layer neural networks, we can specify any number of hidden units:
+
+\script{I'm eliminating the bias term for simplicity}
+\begin{align*}
+\textrm{0 Layer :} & = \sigma( \alpha_{\textrm{lowest}}^{\top}X) \\
+\textrm{1 Layer:} &  = \sigma( \alpha_{\textrm{lowest} + 1}^{\top}(\textrm{0 Layer})) \\
+\vdots & \\
+\textrm{Top Layer :} &  = \sigma( \alpha_{\textrm{Top} }^{\top}(\textrm{Top - 1 Layer})) \\
+L(\mu_g(X)) & = \beta_{g0} + \beta_g^{\top}(\textrm{Top Layer}) \parenthetical{\quad}{g = 1, \ldots G}
+\end{align*}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Neural networks: General form}
+Some comments on adding layers:
+\begin{itemize}
+\item It has been shown that one hidden layer is sufficient to approximate any piecewise continuous
+function
+
+\script{However, this may take a huge number of hidden units (i.e. $K >> 1$)}
+\item By including multiple layers, we can have fewer hidden units per layer.  Also, we can encode (in)dependencies 
+that can speed computations
+\end{itemize}
+\end{frame}
+
+\transitionSlide{Returning to Doppler function}
+
+\begin{frame}[fragile]
+\frametitle{Neural networks: Example}
+We can try to fit it with a single layer NN with different levels of hidden units $K$
+
+\vsp
+A notable difference with B-splines is that `wiggliness' doesn't necessarily increase with $K$ 
+due to regularization
+
+\vsp
+Some specifics:
+\begin{itemize}
+\item I used the \alr{R} package \alr{neuralnet}
+
+\script{This uses the \alo{resilient backpropagation} version of the gradient descent}
+\item I regularized via a stopping criterion ($\norm{\partial \ell}_{\infty} < 0.01$)
+\item I did 3 replications
+
+\script{This means I did three starting values and then averaged the results}
+
+\item The layers and hidden units are specified like 
+\[
+(\textrm{\# Hidden Units on Layer 1})\,  (\textrm{\# Hidden Units on Layer 2}) ...
+\]
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Neural networks: Example}
+\begin{figure}
+\centering
+\includegraphics[width=2.2in,trim=0 0 0 55,clip]{../figures/nnExampleResults.pdf}
+\includegraphics[width=2.2in,trim=0 0 0 55,clip]{../figures/nonparametricExampleResults.pdf}
+\caption{Single layer NN vs. B-splines}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Neural networks: Risk}
+
+\[
+\textrm{What's the estimation equality? }\textrm{MSE} = \E(\hat{f}(X) - f_*(X))^2
+\]
+\begin{figure}
+\centering
+\includegraphics[width=2in,trim=30 0 0 55,clip]{../figures/nonparametricExampleNnIMSE.pdf}
+\includegraphics[width=2in,trim=30 0 0 55,clip]{../figures/nonparametricExampleSplinesIMSE.pdf}
+\caption{3 layer NN\footnote{The numbers mean (\#(layer 1) \#(layer 2) \#(layer 3))} vs. B-splines}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Neural networks: Example}
+\begin{figure}
+\centering
+\includegraphics[width=2.2in,trim=0 0 0 55,clip]{../figures/nnExampleResultsIMSEmin.pdf}
+\caption{Optimal NNs vs. Optimal B-spline fit}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Neural networks: Code for Example}
+\begin{blockcode}
+trainingdata  = cbind(x,Y)
+colnames(trainingdata) = c("Input","Output")
+testdata      = xTest
+
+require("neuralnet")
+K          = c(10,5,15)
+nRep       = 3
+nn.out     = neuralnet(Output~Input,trainingdata, 
+                       hidden=K, threshold=0.01,
+                       rep=nRep)
+nn.results = matrix(0,nrow=length(testdata),ncol=nRep)                       
+for(reps in 1:nRep){
+  pred.obj = compute(nn.out, testdata,rep=reps)
+  nn.results[,reps] = pred.obj$net.result
+}
+Yhat = apply(nn.results,1,mean)
+\end{blockcode}
+
+\end{frame}
+
+\transitionSlide{Hierarchical view}
+
+\begin{frame}[fragile]
+\frametitle{Hierarchical view}
+\begin{figure}
+\centering
+\includegraphics[width=3in]{../figures/neuralNetHiddenLayer.pdf}
+\caption{\smallCapGreen{Recall:} 
+Single hidden layer neural network.  Note the similarity to latent factor models}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Hierarchical from example }
+\begin{figure}
+\centering
+\includegraphics[width=2in,trim=0 0 0 0,clip]{../figures/nnExampleResultsHierarchicalPlot.pdf}
+\caption*{ This is a \alg{directed acyclic graph} (DAG)}
+\end{figure}
+\begin{blockcode}
+nn.out = neuralnet(Output~Input,trainingdata, 
+                   hidden=c(3,4))
+plot(nn.out)
+\end{blockcode}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Neural networks: Localization}
+One of the main curses/benefits of neural networks is the ability to \alo{localize}
+
+\vsp
+This makes neural networks very customizable, but commits the data analyst to intensively examining the data
+
+\vsp
+Suppose we are using 1 input and we want to restrict the implicit DAG
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Neural networks: Localization}
+That is, we might want to constrain  some of the weights to 0
+\begin{figure}
+\centering
+\includegraphics[width=2.3in,trim=0 70 0 0,clip]{../figures/nnExampleResultsHierarchicalPlot1.pdf}
+\caption{Unconstrained neural network}
+\end{figure}
+\begin{blockcode}
+nn.out = neuralnet(Output~Input,trainingdata, 
+                   hidden=c(2,2))
+\end{blockcode}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Neural networks: Localization}
+We can do this in \alr{neuralnet} via the \alr{exclude} parameter
+
+\vsp
+To use it, do the following:
+\begin{blockcode}
+exclude = matrix(1,nrow=2,ncol=3)
+exclude[1,] = c(2,2,2)
+exclude[2,] = c(2,3,1)
+nn.out = neuralnet(Output~Input,trainingdata, 
+                   hidden=c(2,2), threshold=0.01,
+                   exclude=exclude)
+\end{blockcode}
+\vsp
+
+\alr{exclude} is a $E \times 3$ matrix, with $E$  the number of \alo{exclusions}
+
+\vsp
+\begin{itemize}
+\item first column stands for the layer
+\item the second column for the input neuron 
+\item the third column for the output neuron 
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Neural networks: Localization}
+\begin{figure}
+\centering
+\includegraphics[width=2.1in,trim=0 0 -10 0,clip]{../figures/nnExampleResultsHierarchicalPlot1.pdf}
+\includegraphics[width=2.1in,trim=0 0 -10 0,clip]{../figures/nnExampleResultsHierarchicalPlot2.pdf}
+\caption{Not-constrained vs. constrained}
+\end{figure}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Neural networks: Crime data}
+
+\begin{blockcode}
+M
+percentage of males aged 14Ð24.
+So
+indicator variable for a Southern state.
+Ed
+mean years of schooling.
+Po1
+police expenditure in 1960.
+LF
+labour force participation rate.
+M.F
+number of males per 1000 females.
+...
+y
+rate of crimes in a particular category per capita
+\end{blockcode}
+\end{frame}
+%NW
+%number of non-whites per 1000 people.
+%
+%U1
+%unemployment rate of urban males 14Ð24.
+%
+%U2
+%unemployment rate of urban males 35Ð39.
+%
+%GDP
+%gross domestic product per head.
+%
+%Ineq
+%income inequality.
+%
+%Prob
+%probability of imprisonment.
+%
+%Time
+%average time served in state prisons.
+%
+%y
+%rate of crimes in a particular category per head of population.
+%
+\begin{frame}[fragile]
+\frametitle{Neural networks: Crime data}
+
+\begin{figure}
+\centering
+\includegraphics[width=2.3in,trim=0 0 0 0,clip]{../figures/nnExampleResultsHierarchicalPlotUScrime.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Neural networks: Crime data}
+We may want to constrain the neural network to have neurons specifically about
+\begin{itemize}
+\item Demographic variables 
+\item Police expenditure
+\item Economics
+\end{itemize}
+This type of prior information can be encoded via \alr{exclude}
+
+\script{This is, in my opinion, when neural networks work well}
+\end{frame}
+%
+%\transitionSlide{Projection pursuit}
+%\begin{frame}[fragile]
+%\frametitle{Projection pursuit}
+%The \alg{projection pursuit} idea came out of wanting to do nonparametrics in higher dimensions
+%
+%\vsp
+%For a covariate $X$, we form an additive model, but using univariate nonparametric smoothers of linear combinations
+%of the covariates:
+%
+%\[
+%F(X) = \sum_{j=1}^J f_j(\alpha_j^{\top} X)
+%\]
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%\frametitle{Projection pursuit}
+%The scalar variables $Z_j = \alpha_j^{\top} X$ are the projections of the covariates onto the direction $\alpha_j$
+%
+%\script{Hence the name}
+%
+%Any nonparametric smoother can be used for estimating $f_j$, however ones that gives easy derivative estimates (e.g. splines)
+%are generally used
+%
+%\vsp
+%The $f_j$'s can be fit via back fitting, but the weights $\alpha_j$ are generally only fit once
+%
+%\script{See Friedman, Tukey (1974) for an early implementation and Friedman (1987) for an interesting application}
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%\frametitle{Projection pursuit}
+%Neural networks are an extended/restricted version of projection pursuit
+%
+%\begin{itemize}
+%\item \smallCapGreen{Extended:} Projection pursuit would correspond to a neural network with 1 layer
+%\item \smallCapGreen{Restricted:} Projection pursuit allows for an arbitrary smoother of $Z_i$, whereas neural networks have a
+%particular parametric form
+%\end{itemize}
+%\end{frame}
+%
+\transitionSlide{Tuning parameters}
+
+%\begin{frame}[fragile]
+%\frametitle{Neural networks: Tuning parameters}
+%The  NN's from this example are quite similar, even with \alo{substantially} different structure
+%\vsp
+%
+%Hence the degrees of freedom (df) of a NN is probably substantially \alo{less} than the number of parameters
+%\vsp
+%
+%In fact, observe the PAC bound shown in Bartlett (1998):
+%\vsp
+%
+%Let 
+%\begin{itemize}
+%\item $Y \in \{-1,1\}$
+%\item $\ell$ is squared error loss
+%\item $\F$ be the set of single Layer NN with $1\leq J\leq n$
+%\item $f_*$ be such that $\min_{f \in \F} \P \ell_f$
+%\item $\hat R_\tau = \frac{1}{n} |\{i: Y_i f(X_i) < \tau\}|$
+%
+%\script{This is the \alg{training error with margin $\tau$}}
+%\item $B \geq 1$ is a constant such that $\norm{\beta}_1 \leq B$
+%\end{itemize}
+%
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%\frametitle{Neural networks: Tuning parameters}
+%\smallCapGreen{Barlett (1998):} With probability at least $1-\eta$, for each $f \in \F$
+%\[
+%\P \ell_f \leq \hat R_{\tau}  + C\sqrt{\frac{1}{n}\left( \frac{\alr{B}^2p}{\tau^2}\log(\alr{B}/\tau)\log^2(n) - \log(\eta)\right)}
+%\]
+%\smallCapGreen{Important:} 
+%\begin{itemize}
+%\item This PAC bound \alo{does not depend on $J$}
+%\item It does depend on the \alo{size} of the coefficients $(\alr{B})$
+%\end{itemize}
+%\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Neural networks: Tuning parameters}
+The most common recommendation I've seen is to take the 3 tuning parameters: The number of hidden units, the number
+of layers, and the regularization parameter $\lambda$ 
+
+\script{or a stopping criterion $\lambda$ for the iterative solver}
+
+\vsp
+Either choose $\lambda = 0$ and use risk estimation to choose the number of hidden units
+
+\script{This could be quite computationally intensive as we would need a reasonable 2-d grid over units $\times$ layers}
+
+\vsp
+Or, fix a large number of layers and hidden units and choose $\lambda$ via risk estimation
+
+\script{This is the preferred method}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Neural networks: Tuning parameters}
+We can use a GIC method:
+\vsp
+\[
+\textrm{AIC} = \textrm{training error} + 2\hat{df}\hat\sigma^2
+\]
+\script{This is reported by \alr{neuralnet}, by setting \alr{likelihood = T}}
+\vsp
+
+Or via cross-validation
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Neural networks: Tuning parameters}
+Unfortunately, \alr{neuralnet} provides a somewhat bogus measure of AIC/BIC
+
+\vsp
+Here is the relevant part of the code
+\begin{blockcode}
+if (likelihood) {
+  synapse.count = length(weights) - length(exclude) 
+  aic = 2 * error + (2 * synapse.count)
+  bic = 2 * error + log(nrow(response))*synapse.count
+}
+\end{blockcode}
+They use the number of parameters for the degrees of freedom!
+\end{frame}
+\end{document}
+%
+%\begin{frame}[fragile]
+%\frametitle{Neural networks: Tuning parameters}
+%After doing a bit of a literature search, it appears the literature has been dominated by a series
+%of papers by Ingrassia, Morlini
+%
+%\vsp
+%In Ingrassia, Morlini (2005), they propose to use the effective degrees of freedom
+%
+%\vsp
+%Their's is a perhaps overly simplistic take on the usual linear smoother intuition\footnote{I appear to have lost my 
+%slides outlining their approach.  I don't have the heart to retype them now, so I'll just refer you to the very readable
+%document ``Neural Network Modeling for Small Datasets''}
+%\end{frame}
+%
+%%
+%\begin{frame}[fragile]
+%\frametitle{Neural networks: Tuning parameters}
+%While writing up these notes, it strikes me that a reasonable research direction is to follow the approach we covered
+%in the first homework: \alo{use Stein's method}
+%
+%\vsp
+%We know that for any well behaved prediction algorithm $\hat{f}(X_i) = \hat Y_i$, that the degrees of freedom are
+%\[
+%\frac{1}{n\sigma^2} \sum_{i=1}^n Cov(Y_i,\hat{Y}_i)
+%\]
+%This equals
+%\[
+%\E \nabla \cdot g(y),
+%\]
+%where $y$ is the response vector.  This is known as the expected divergence
+%
+%\vsp
+%\smallCapGreen{Challenge:} Can you calculate this for neural networks?
+%\end{frame}
+
+\transitionSlide{Representation learning}
+
+\begin{frame}[fragile]
+\frametitle{Overview}
+\alg{Representation learning} is the idea that performance of ML methods is highly dependent on the choice
+of \alo{data representation}
+
+\vsp
+For this reason, much of ML is geared towards transforming the data into the relevant \alo{features} and
+then using these as inputs
+
+\vsp
+This idea is as old as statistics itself, really, 
+
+\script{E.g. Pearson (1901), where PCA was first introduced}
+
+\vsp
+However, the idea is constantly revisited in a variety of fields and contexts
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Overview}
+Representation learning can be broken up into two philosophies 
+
+\begin{itemize}
+\item \smallCapGreen{Unsupervised:} Here, we use the covariates only\footnote{These methods are called
+semisupervised when these inputs are used to train a prediction algorithm} to estimate what are hopefully relevant \alo{features} of $p(X)$, the joint distribution of $X$
+
+\script{E.g. PCA, Laplacian eigenmaps, clustering, sparse coding, ...}
+\item \smallCapGreen{Supervised:}  We form feature maps that take into account the nature of the joint distribution
+$p(X,Y)$
+
+\script{E.g. partial least squares, LDA, neural networks, linear regression}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Overview}
+Commonly, these learned representations capture `low level' information like overall shape types
+
+\vsp
+Other sharp features, such as images, aren't captured
+
+\vsp
+It is possible to quantify this intuition for PCA at least
+
+\end{frame}
+%
+%\begin{frame}[fragile]
+%\frametitle{Overview}
+%
+%Suppose the signals are the result of $f + \epsilon$, where $\epsilon \sim (0,C)$ is a random field
+%with correlation $C$.  Suppose that $C(x,x') = C(x-x')$
+%
+%\script{That is, the covariance is stationary}
+%
+%\vsp
+%Then the \alo{eigenfunctions} of the operator induced by $C$ are the \alo{fourier basis}
+%
+%\[
+%\int C(x-t) \phi_j(t)dt = c_j \phi_j(x)
+%\]
+%where $\phi_j(x) = e^{-i2\pi x}$
+%
+%\vsp
+%Therefore, when we are getting the first few principal components, we really are getting the \alo{low frequency}
+%part of $f$
+%\[
+%f_j = \int f \phi_j
+%\]
+%\end{frame}
+%
+%\begin{frame}[fragile]
+%\frametitle{Overview}
+%A reasonable trichotomy of representation methods would be
+%\begin{itemize}
+%\item \smallCapGreen{Probabilistic methods:} Presumes to model the joint distribution of $p(X,Z)$, where $Z$
+%are latent variables, and form the \alo{posterior} $p(Z|X)$ 
+%
+%\script{A major example of this approach is \alg{graphical models}}
+%\item \smallCapGreen{Auto-encoders:} Creates a `bottle-neck' in which a nonlinear function is sandwiched between
+%a linear map and its transpose
+%\item \smallCapGreen{Manifold learning:} Posits a lower-dimensional (but possibly nonlinear) manifold which the data live
+%on or near and attempts to estimate it
+%\end{itemize}
+%
+%\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Overview}
+Before covering these topics (and deep learning in particular), it will be helpful to cover two special cases
+
+\begin{itemize}
+\item \smallCapGreen{PCA:} Principal components can be phrased as an optimization problem
+over the \alg{Stiefel} manifold of orthogonal matrices.  This generalizes nicely to a version of deep learning
+
+\item \smallCapGreen{Sparse coding:} Leverages the intution that a good basis should allow for the 
+features to be sparsely decomposable
+\end{itemize}
+\end{frame}
+
+\transitionSlide{PCA}
+\begin{frame}[fragile]
+\frametitle{PCA}
+\smallCapGreen{Reminder:} Principal components is an (unsupervised) dimension reduction technique
+
+\vsp
+It solves various equivalent optimization problems
+
+\script{Maximize variance, minimize $L_2$ distortions, find closest subspace of a given rank,...}
+
+\vsp
+At its core, we are finding linear combinations of the original (centered) covariates
+\[
+Z_{ij} = \alpha_j^{\top} X_i
+\]
+
+\vsp
+This is expressed algorithmically as the SVD $\X = UDV^{\top}$ and
+\[
+Z_i = \X v_i = u_i d_i
+\]
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{PCA}
+If we want to find the first $q$ principal components,
+the relevant optimization program  is:
+\[
+\min_{\mu,(\lambda_i),V_q} \sum_{i=1}^n \norm{X_i - \mu - V_q \lambda_i}^2
+\]
+We can partially optimize for $\mu$ and $(\lambda_i)$ to find
+\begin{itemize}
+\item $\hat\mu = \overline{X}$
+\item $\hat\lambda_i = V_q^{\top}(X_i - \hat \mu)$
+\end{itemize}
+\vsp
+
+Now, we optimize
+\[
+\min_{V \in \mathcal{S}_q} \sum_{i=1}^n \norm{(X_i - \hat\mu) - V V^{\top}(X_i - \hat\mu)}^2
+\]
+where $ \mathcal{S}_q$ is the \alg{Steifel manifold} of rank-$q$ orthogonal matrices
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{PCA}
+Principal components can be viewed as coming from all three representation learning paradigms
+
+\begin{itemize}
+\item \smallCapGreen{Probabilistic methods:} The leading eigenvectors of the covariance operator of the 
+generative model
+\item \smallCapGreen{Auto-encoders:} It is a \alo{linear} auto-encoder
+\item \smallCapGreen{Manifold learning:} Characterizing a lower-dimensional region in the covariate space where
+the data density is peaked
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Images}
+\begin{itemize}
+\item There are 575 total images
+\item Each image is 92 $\times$ 112 pixels and grey scale
+\item These images come from the Sheffield face database 
+
+\script{See {\tt http://www.face-rec.org/databases/} for this and other databases.  See my rcode
+for how to read the images into \alr{R}}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Faces}
+\begin{figure}
+\centering
+\includegraphics[width=1.2in,trim=30 30 30 50,clip]{../figures/sparseCodeExample1.pdf}
+\includegraphics[width=1.2in,trim=30 30 30 50,clip]{../figures/sparseCodeExample3.pdf}
+\includegraphics[width=1.2in,trim=30 30 30 50,clip]{../figures/sparseCodeExample5.pdf}\\
+\includegraphics[width=1.2in,trim=30 30 30 50,clip]{../figures/sparseCodeExample10.pdf}
+\includegraphics[width=1.2in,trim=30 30 30 50,clip]{../figures/sparseCodeExample50.pdf}
+\includegraphics[width=1.2in,trim=30 30 30 50,clip]{../figures/sparseCodeExample100.pdf} \\
+\includegraphics[width=1.2in,trim=30 30 30 50,clip]{../figures/sparseCodeExample200.pdf}
+\includegraphics[width=1.2in,trim=30 30 30 50,clip]{../figures/sparseCodeExample201.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Faces}
+Regardless of how you formulate the optimization problem for PCA, it can be done in \alr{R} by:
+\begin{blockcode}
+svd.out   = svd(scale(X,scale=F))
+pc.basis  = svd.out$v
+pc.scores = X %*% pc.basis
+\end{blockcode}
+\vsp
+
+Let's apply this to the faces
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Faces: PC basis}
+\begin{figure}
+\centering
+\includegraphics[width=2.5in]{../figures/spectralFaceOnly.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Faces: PC projections}
+\[
+\textrm{Varying levels of $J$:} \quad \tilde{X} = \sum_{j=1}^J d_j u_j v_j^{\top} + \overline{X}
+\]
+\begin{figure}
+\centering
+\includegraphics[width=2.5in]{../figures/realFaceOnly.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Faces: PC projections and basis}
+\begin{figure}
+\centering
+\includegraphics[width=3in]{../figures/spectralFaceAndRealFace.pdf}
+\end{figure}
+\end{frame}
+
+
+\transitionSlide{Sparse coding}
+\begin{frame}[fragile]
+\frametitle{Sparse coding}
+From the same neurological background as neural nets, sparse coding was supposed
+to represent the workings of the mammalian visual-cortex 
+
+\script{See Olshausen, Field (1997) for the original ({\scriptsize unreadable}) paper and Marial et al. (2009) for
+a more SML take}
+
+\vsp
+The idea is that we have adapted to certain types of images (such as forests) and can view
+them using only a \alo{few neurons}
+
+\vsp
+\smallCapGreen{Mathematically:} We possess (or have learned) a \alo{basis} of neurons that permits
+certain types of images to be expressed \alo{sparsely}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Sparse coding}
+We can represent the full image (\alo{left}) on a computer using $92 \times 112 = 10304$ numbers
+
+\begin{figure}
+\centering
+\includegraphics[width=2.2in,trim=30 30 30 50,clip]{../figures/sparseCodeExample1.pdf}
+\includegraphics[width=2.2in,trim=30 30 30 50,clip]{../figures/sparseCodeExampleEar.pdf}
+\end{figure}
+
+It is reasonable to assume that we can represent this image meaningfully using far less information
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Sparse coding}
+The underlying presumption is that for $X \in \R^p$, suppose there is a \alg{dictionary} $\Phi$
+such that
+\[
+X = \Phi\alpha
+\]
+\script{Let's ignore noise for now}
+
+\vsp
+Furthermore, presume that $\alpha$ is \alo{sparse} in the sense of having few non-zero coefficients
+
+\vsp
+Lastly, the dictionary $\Phi \in \R^{p \times K}$ is such that $K > p$ and composed of \alg{atoms} $\phi_K$
+
+\script{The statement $K > p$ is known as \alg{overcomplete}}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Sparse coding}
+Operationally, we take the idea of \alg{basis pursuit} and convert it to generating a basis that can
+sparsely represent the signals we wish to decompose
+
+\vsp
+\smallCapGreen{Basis pursuit:} This is effectively the lasso, but with the `covariates' being some
+sort of basis.  Let $\Phi = [\phi_1,\ldots,\phi_k]$ be such a matrix
+
+\script{An example would be $\phi_1,\ldots,\phi_n$ being a wavelet basis, and $\phi_{n+1},\ldots,\phi_{2n}$
+being a Fourier basis}
+
+\vsp
+Then, for a response $Y$ (typically a signal such as an image)
+\[
+\min_{\alpha} \norm{Y - \Phi\alpha}_2^2 + \lambda \norm{\alpha}_1
+\]
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Sparse coding}
+Using the deviation-type inequalities, a tuning parameter $\lambda$ can be set
+\[
+\lambda_* = \sigma\sqrt{2\log(K)}
+\]
+\script{Assuming the basis elements are $\ell_2$ normalized}
+\vsp 
+
+\smallCapGreen{Motivation:} If $\Phi$ is orthogonal and $\tilde{Y} = \Phi^{\top}Y$ and
+\[
+\hat{\alpha}_\lambda = \textrm{sgn}(\tilde{Y})(|\tilde{Y}| - \lambda)_+ \parenthetical{\quad}{\textrm{Interpreted component-wise}}
+\]
+
+Now, under certain assumptions about the noise, this is a normal means problem and $\hat{\alpha}_\lambda$
+is the solution to the lasso Lagrangian
+
+\vsp
+The series of papers by Donoho, Johnstone on wavelets  imply that the $\lambda_*$ choice is an optimal asymptotic MSE
+choice of the tuning parameter
+
+\script{even when $\Phi$ is overcomplete}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Sparse coding}
+\alg{Sparse coding} takes this idea and \alo{learns} the basis $\Phi$ as well
+
+\vsp
+Now, the problem is
+\begin{align*}
+& \min_{\Phi,\alpha\in\R^{k \times n}} \sum_{i=1}^n(\norm{X_i - \Phi\alpha_i}_2^2 + \lambda\norm{\alpha_i})\\
+\textrm{subject to } & \norm{\Phi} \leq c
+\end{align*}
+
+A natural approach to this problem is to alternate between solving for $\alpha$ and $\Phi$
+
+\script{Both of these optimizations are constrained}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Sparse coding algorithm}
+A stochastic gradient descent approach tends to work well, where a random $X_i$ is drawn,
+and the optimization is done with this example only
+
+\vsp
+This alternation-based approach consists of
+\begin{itemize}
+\item \smallCapGreen{Easy:} Find $\alpha$.  This consists of doing a lasso-type solve.  Usually this is done 
+with a homotopy-type algorthm such as \alr{lars}
+\item \smallCapGreen{Hard:} Find $\Phi$. This depends on the nature of the constraint.  There are varying methods
+for this
+
+\script{See Lee et al. (2007) for efficient algorithms based on the Lagrange dual.  For online approaches that 
+don't involve matrix inversion see  Marial et al. (2009)}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Sparse coding algorithm (online)}
+To solve for $\Phi$, a classical, fast approach is a \alg{projected first-order stochastic gradient descent} method
+\[
+D_t = \Pi\left[ D_{t-1} - \frac{\rho}{t} \nabla_\Phi \sum_{i=1}^n\norm{X_i - \Phi\alpha_i}_2^2 \right]
+\]
+where
+\begin{align*}
+ \nabla_\Phi \sum_{i=1}^n\norm{X_i - \Phi\alpha_i}_2^2 
+ & = 
+ \nabla_\Phi \left( \tr(\Phi^{\top}\Phi A) -  \tr(\Phi^{\top} B)\right) \\
+ & = 
+ 2\Phi A + B
+\end{align*}
+where $A =\sum_{i=1}^n  \alpha_i\alpha_i^{\top}$ and $B = \sum_{i=1}^n  X_i\alpha_i^{\top}$
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{Sparse coding algorithm}
+\begin{figure}
+\centering
+\includegraphics[width=2.8in]{../figures/sparseCodeAlg.pdf}
+\end{figure}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Sparse coding: Images}
+\begin{figure}
+\centering
+\includegraphics[width=3.3in]{../figures/sparseCodeFace.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Sparse coding: Images}
+Some comments:
+\begin{itemize}
+
+\item See \alr{\tt http://www.cs.tau.ac.il/$\sim$wolf/ytfaces/} for a database of unaligned faces
+\item I got this panel of faces from \alr{\tt http://charles.cadieu.us/?p=184}.  
+
+\script{See the website and Olshausen et al. (2009) for details}
+
+\end{itemize}
+
+\end{frame}
+
+\transitionSlide{Deep learning}
+
+\begin{frame}[fragile]
+\frametitle{Deep learning: Overview\footnote{These notes are largely from a conversation with Rob Tibshirani.  The ideas 
+contained herein are partially his, and will appear in a future book  `L1 methods \\and the Lasso'}}
+Neural networks are models for supervised learning
+
+\vsp
+Linear combinations of features are fed through nonlinear functions repeatedly
+
+\vsp
+At the top layer, the resulting latent factor is fed into a linear/logistic regression
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Deep learning: Overview}
+As far as I can tell, deep learning is a new way of fitting neural nets
+
+\vsp
+ The central idea is referred to as \alg{greedy layerwise unsupervised pre-training}
+ \script{Terminology appeared in Bengio et al. (2007)}
+ 
+ \vsp
+ Here, we wish to learn a hierarchy of features one level at a time, using 
+ \begin{enumerate}
+ \item  unsupervised feature learning to learn a new transformation at each level
+ \item which gets composed with the previously learned transformations
+ \end{enumerate}
+ 
+ \vsp
+Essentially, each iteration of unsupervised feature learning adds one layer of weights to a deep neural network
+
+\vsp
+The top layer is used to initialize a  (supervised) neural network 
+
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Deep learning: Overview}
+
+
+\vsp
+Traditionally, a neural net is fit to all \alo{labelled} data in one operation, with weights
+randomly chosen near zero
+
+\vsp
+Due to the nonconvexity of the objective function, the final solution can get `caught' in poor local minima
+
+\vsp
+\alo{Deep learning} seeks to find a good starting value, while allowing for:
+
+\begin{itemize}
+\item  ...modeling the joint distribution of the covariates separately
+\item  ...use of unlabeled data (included the test covariates)
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Auto-encoders}
+In neural networks the idea of a \alg{auto encoder} generalizes the ideas of PCA and sparse coding by
+\begin{itemize}
+\item Using multiple hidden layers, leading to a hierarchy of dictionaries
+
+\script{As PCA is linear, composing multiple layers adds no generality. Sparse coding provides
+only 1 layer between covariates and the representation}
+\item applying the encoding models to local patches of an image, commonly with weight sharing where
+constraint weights are enforced to be equal across an image
+
+\script{This is the so-called convolutional neural network framework}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Auto-encoders}
+An \alg{auto-encoder} is comprised of 
+\script{LeCun (1987); Hinton, Zemel (1994)}:
+\vsp
+
+\begin{itemize}
+\item \smallCapGreen{Feature-extracting function:} This function $h: \R^p \rightarrow \R^K$ 
+maps the covariates to a new representation
+and is also known as the \alg{encoder} 
+\item \smallCapGreen{Reconstruction function:} This 
+function\footnote{I've labeled this function
+$h^{-1}$ to be suggestive, but I don't mean that $h^{-1}(h(x)) = x$} 
+$h^{-1}: \R^K \rightarrow \R^p$ 
+is also known as the \alg{decoder} and it maps the
+representation back into the original space
+\end{itemize}
+\vsp
+
+\smallCapGreen{Goal:} Optimize any free parameters in the encoder/decoder pair that minimizes reconstruction
+error
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Auto-encoders}
+Of course this means some sort of implicit or explicit constraint need be imposed to not learn the identity 
+function
+
+\vsp
+This comes about via a combination of
+\begin{itemize}
+\item ... Regularization
+
+\script{Usually called a regularized auto-encoder}
+\item ... Dimensional constraint
+
+\script{Usually called a classical auto-encoder}
+\end{itemize}
+All flavors essentially reduce to solving the following optimization problem (perhaps with constraints)
+\[
+\min \sum_{i=1}^n \ell(X_i, h^{-1} h(X_i))
+\]
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Classic auto-encoder}
+As auto-encoders were first presented in the context on neural networks, they tend to have
+the following linear\footnote{Really, it is affine with the inclusion of a bias term} form:
+
+\vsp
+Let $W \in \R^{p \times K}$ (with $K < p$) be a matrix of weights
+
+\vsp
+Each linear combination of an input vector $X$ is fed through a nonlinear function $\sigma$, creating
+\[
+h(X) = \sigma(W^{\top}X)\in \R^K
+\]
+
+\vsp
+The output layer is then modeled as a linear combination of these inputs\footnote{There is no restriction that
+the same matrix to be used in $h$ and $h^{-1}$.  Keeping them the same is known as \alg{weight-tying}}
+\[
+h^{-1}(h(X)) = Wh(X) = W\sigma(W^{\top}X) \in \R^p
+\]
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Deep learning}
+Given inputs $X_1,\ldots,X_n$, the weight matrix $W$ is estimated by solving the (non convex) optimization problem:
+\[
+\min_{W \in \R^{p\times K}} \sum_{i=1}^n \norm{X_i -Wh(X_i)}^2
+\]
+If $\sigma(X) \equiv X$, then $h(X) = W^{\top}X$ and we've recovered the PCA program
+
+\script{In the sense that we've recovered the same subspace}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Deep learning}
+The framework is determined by the relative sizes of $K$ and $p$
+\begin{itemize}
+\item If $K < p$, 
+the rank constraint provides a \alo{bottleneck} in the network that forces the learning of structure
+
+\script{e.g. PCA}
+\item If $K > p$, the representation is overcomplete and some regularization is needed
+
+\script{e.g. sparse coding}
+
+Regularization comes about in several ways
+\begin{itemize}
+\item Adding a regularization term on the \alo{parameters} to the objective function
+\item Corrupting the inputs before auto-encoding and comparing to uncorrupted inputs 
+
+\script{This is known as a \alg{denoising auto-encoder}}
+\item Adding a regularization term on the \alo{Jacobian} of the encoder to the objective function
+
+\script{This is known as a \alg{contractive auto-encoder}}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Deep learning schematic}
+A rank constrained deep learning implementation might look like:
+\begin{figure}
+\centering
+\includegraphics[width=2.3in]{../figures/deepLearningRob.pdf}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Deep learning}
+Modern deep learning generalize the previous definition in several ways
+
+\script{See Le, Ranzato, Monga, Devin, Chen, Dean, Ng (2012) for details}
+\begin{itemize}
+\item They use multiple hidden layers, leading to a hierarchy of dictionaries
+\item Include nonlinearities that can be computed faster (such as $\sigma(x) = x_+$
+\item The encoding is applied to local patches of images (or signals) and these patches might
+be forced to have the same weights, imposing \alg{weight-sharing} or a \alo{convolutional} structure
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Deep learning}
+The following is one of the most state-of-the-art implementation of deep learning I'm aware of
+
+\script{Le, Ranzato, Monga, Devin, Chen, Dean, Ng (2012)}
+
+\vsp
+It has about 1 billion trainable parameters and uses advanced parallelism to make computation feasible
+
+\vsp
+It also uses a decoupled encoder-decoder pair, plus regularization and a linear activation
+\[
+\min_{W_1,W_2} \sum_{i=1}^n 
+\left( \norm{W_2 W_1^{\top} X_i - X_i}_2^2 + \lambda \sum_{k=1}^K \sqrt{ h_k(W_1^{\top} X_i)^2}\right)
+\]
+where $h_k$ are the pooling weights
+
+\script{These are usually not optimized over and set to uniform weighting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Deep learning schematic}
+A regularized deep learning implementation might look like:
+\begin{figure}
+\centering
+\includegraphics[width=2.3in]{../figures/lePaperDiagram.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Deep learning}
+This has three important ingredients
+\begin{itemize}
+\item \smallCapGreen{Local receptive fields:} Grab each patch in input image and transform into feature in second
+layer
+
+\script{If convolutional or weight-sharing these maps will all have the same weights}
+\item \smallCapGreen{Pooling:} To achieve invariance to local structures, take the $\sqrt{ (\cdot)^2}$ of its inputs
+\item \smallCapGreen{Local contrast normalization:} This locally standardizes each neuron and is usually interpreted as measure
+of \alo{fitness}
+
+\script{It is motivated by computational neuroscience models (e.g. Pinto, Cox, DiCarlo (2008) and has been shown empirically to improve results (Jarrett et al (2009))}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Deep learning results}
+If we look at every neuron (that is, hidden unit) in the network and take the output for a given body of test images
+
+\vsp
+Maximize the classification rate of taking the $\textrm{sign}(\cdot)$, they find:
+\begin{figure}
+\centering
+\includegraphics[width=2.3in]{../figures/deepLearningHist.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Deep learning results}
+The test images with maximum activation of that optimal neuron
+\begin{figure}
+\centering
+\includegraphics[width=2.3in]{../figures/deepLearningFaces.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Deep learning results}
+Finding the pixel wise maximizing input:
+\begin{figure}
+\centering
+\includegraphics[width=2.3in]{../figures/deepLearningOptFace.pdf}
+\end{figure}
+\end{frame}
+
+\end{document}

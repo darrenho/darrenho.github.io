@@ -1,0 +1,649 @@
+<html>
+<head>
+<title>Statistical Machine Learning STAT 675</title>
+</head>
+
+<!-- font change by Min -->
+<style type="text/css">
+body
+{
+font-family:"Verdana";
+}
+td
+{
+font-size:12px;
+}
+a#fancy
+{
+font-family:"Arial";
+font-size:50px;
+color:green;
+}
+</style>
+
+<table width = "70%" align = "center" border="0" cellpadding = "8">
+
+<tr>
+<td width="80%">
+<h1 align="left"> <br><b> <a id="fancy">SML</a></b> </h1>
+<h2> STAT 675, Fall 2015 </h2>
+<h3> <a href="https://darrenho.github.io.">Darren Homrighausen</a>
+</h3>
+<h4>
+<b><a href="SMU/syllabus.pdf">Syllabus</a> <br><br> </b>
+</h4>
+</td>
+<td width = "20%" align = "right">
+</td>
+</tr>
+<br>
+<br>
+
+
+
+<br>
+<br>
+
+<tr>
+<td colspan="2" align="justify" valign="top">
+<table width="100%">
+<tr><td colspan="2" bgcolor="#FF6600"><img src="transparent.gif" height="1" border="0"></td></tr>
+<tr><td colspan="2" bgcolor="#FF6600"><img src="transparent.gif" height="1" border="0"></td></tr>
+
+<tr>
+<td width = "22%" valign="top">
+<br><b>Lecture:</b>
+</td>
+<td align="justify">
+<br>
+<b>Date and Time: </b> Tuesday and Thursday, 2:00 - 3:15 pm<br>
+<b>Location: </b> Statistics 006  <br><br>
+</td>
+</tr>
+
+<tr>
+<td width = "22%" valign="top">
+<b> Office hours:</b>
+</td>
+<td align="justify">
+By appointment (please don't hesitate to ask),  Statistics 204
+</td>
+</tr>
+
+<tr>
+<td colspan="2" align="center" valign="top"> <br>
+<table width="100%">
+<tr><td  bgcolor="#FF6600"><img src="transparent.gif" height="1" border="0"></td></tr>
+<tr>
+<td align="justify">
+<table width = "100%">
+<tr>
+<td width="32%" align="center">
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</tr>
+
+<!--<tr>
+<td>
+<table>
+<tr>
+  <td width="300px">
+     <a href="about.html"><b> About </b></a>
+  </td>
+  <td width="300px">
+     <a href="project.html"><b> Project </b></a>
+  </td>
+  <td width="300px">
+     <a href="links.html"><b> Links </b></a>
+  </td>
+</tr>
+</table>
+</td>
+</tr>-->
+
+<tr><td colspan="2" bgcolor="#FF6600"><img src="transparent.gif" height="1" border="0"></td></tr>
+
+<tr>
+<td colspan = "2"><br>
+<b>Statistical Machine Learning</b>
+ combines methodology with theoretical
+foundations and computational aspects. Though one person's theory
+is another person's application, we will try and preferentially focus on applications and methodology.
+Theorems will be presented selectively together with practical aspects of
+methodology and intuition to help students develop tools for their own research.
+<br><br>
+</td>
+</tr>
+
+<tr><td colspan="2" bgcolor="#FF6600"><img src="transparent.gif" height="1" border="0"></td></tr>
+
+<tr>
+<td colspan = "2"><br>
+<h3> Homeworks:</h3>
+<b>
+<a href="SML2015/1a_homework.pdf">HOMEWORK 1 Theory (pdf)</a><br>
+<a href="SML/1b_homework.pdf">HOMEWORK 1 Applied (pdf)</a><br>
+<UL>
+<LI> <a href="SML2015/polynomial.R">polynomial.R </a></LI>
+<LI> <a href="SML2015/homework1_X.Rdata"> X</a></LI>
+<LI> <a href="SML2015/homework1_Xtest.Rdata">Xtest </a></LI>
+<LI> <a href="SML2015/homework1_Y.Rdata"> Y</a></LI>
+<LI> <a href="SML2015/homework1_Ytest.Rdata">Ytest </a></LI>
+</UL>
+<!-- <a href="SML2015/1_solution.pdf">Solution 1 </a> <br>
+-->
+</b>
+ <b>
+<a href="SML2015/2_homework.pdf">HOMEWORK 2 (pdf)</a><br>
+<UL>
+<LI> <a href="SML2015/Rexample.r"> Code </a></LI>
+<LI> <a href="SML2015/classDemo.r"> Code (ff)</a></LI>
+<LI> <a href="SML2015/readDataLarge.r"> Code (ffbase) </a></LI>
+<LI> <a href="SML2015/inMemoryProcessing.r"> In memory processing </a></LI>
+<LI> <a href="SML2015/outMemoryProcessing.r"> Out of memory processing </a></LI>
+<LI> <a href="SML2015/10-8.pdf"> Notes from whiteboard </a></LI>
+<LI> <a href="SML2015/forwardLogistic.r"> Forward logistic regression </a></LI>
+<LI> <a href="SML2015/inMemoryProcessingTest.r"> Forward logistic regression: Predictions</a></LI>
+
+</UL>
+<a href="SML2015/3_homework.pdf">HOMEWORK 3 (pdf)</a><br>
+
+<a href="SML2015/DigitsScript.R"> R code from previous class the might be helpful (ignore parts about SVM and e1071 for now) </a> <br><br>
+
+<a href="SML2015/4_homework.pdf">HOMEWORK 4 (pdf)</a><br>
+<UL>
+<LI><a href="SML2015/4_homework.tex">Homework 4 (tex)</a> (use as solution template)<br></LI>
+<LI><a href="SML2015/spam.Rdata"> Spam data</a><br> </LI>
+<LI> <a href="SML2015/spambase.DOCUMENTATION"> Spam documentation</a><br>
+</LI>
+</UL>
+<!--
+<a href="SML2015/4_solution.pdf">Solution 4 </a> <br>
+<a href="SML2015/4_solutionRcode.zip">Solution 4 code</a> 
+-->
+</td>
+</tr>
+
+
+<tr>
+<td colspan = "2"><br>
+<h3> Kaggle: Rossmann Stores
+<UL>
+<LI> <a href="SML2015/randomForest.r"> An adaptation of discussed sample script</a> </LI>
+</UL>
+<td>
+</tr>
+<tr>
+<td colspan = "2"><br>
+<h3> Scribe:
+<b><a href="SML2015/template.tex">Scribe template</a>
+<a href="SML2015/scribeDefinitions.sty">Scribe style file</a> </b>
+<a href="SML2015/references.bib">Scribe references</a> (bibtexing solutions)
+<br><br>
+</h3>
+<!--
+<b><a href="SML2015/1_scribe.pdf"> LINEAR MODELS 1</a><br> </b>
+<b><a href="SML2015/2_scribe.pdf"> LINEAR MODELS 2</a><br> </b>
+<b><a href="SML2015/3_scribe.pdf"> LINEAR MODELS 3</a><br> </b>
+-->
+<b><a href="SML2015/2_scribe.pdf"> Scribe 2</a><br> </b>
+<b><a href="SML2015/3_scribe.pdf"> Scribe 3</a><br> </b>
+<b><a href="SML2015/4_scribe.pdf"> Scribe 4</a><br> </b>
+<b><a href="SML2015/5_scribe.pdf"> Scribe 5</a><br> </b>
+<b><a href="SML2015/6_scribe.pdf"> Scribe 6</a><br> </b>
+<b><a href="SML2015/7_scribe.pdf"> Scribe 7</a><br> </b>
+<b><a href="SML2015/8_scribe.pdf"> Scribe 8</a><br> </b>
+<b><a href="SML2015/9_scribe.pdf"> Scribe 9</a><br> </b>
+<b><a href="SML2015/10_scribe.pdf"> Scribe 10</a><br> </b>
+<b><a href="SML2015/11_scribe.pdf"> Scribe 11</a><br> </b>
+<b><a href="SML2015/12_scribe.pdf"> Scribe 12</a><br> </b>
+<b><a href="SML2015/13_scribe.pdf"> Scribe 13</a><br> </b>
+
+<b><a href="SML2015/14_scribe.pdf"> Scribe 14</a><br> </b>
+<b><a href="SML2015/15_scribe.pdf"> Scribe 15</a><br> </b>
+<b><a href="SML2015/16_scribe.pdf"> Scribe 16</a><br> </b>
+<b><a href="SML2015/17_scribe.pdf"> Scribe 17</a><br> </b>
+<b><a href="SML2015/18_scribe.pdf"> Scribe 18</a><br> </b>
+<b><a href="SML2015/19_scribe.pdf"> Scribe 19</a><br> </b>
+<b><a href="SML2015/20_scribe.pdf"> Scribe 20</a><br> </b>
+
+<b><a href="SML2015/21_scribe.pdf"> Scribe 21</a><br> </b>
+<b><a href="SML2015/23_scribe.pdf"> Scribe 23</a><br> </b>
+<b><a href="SML2015/24_scribe.pdf"> Scribe 24</a><br> </b>
+<b><a href="SML2015/25_scribe.pdf"> Scribe 25</a><br> </b>
+<b><a href="SML2015/26_scribe.pdf"> Scribe 26</a><br> </b>
+<b><a href="SML2015/27_scribe.pdf"> Scribe 27</a><br> </b>
+</td>
+</tr>
+
+
+<tr>
+<td colspan = "2"><br>
+<h3> Lectures:
+<a href="SML2015/_defsAndPackages675beamer.sty">Lecture formatting .sty</a> 
+<a href="SML2015/_defsAndPackages675notation.sty">Lecture notation .sty</a> (compiling lectures)</b> </h3>
+
+<b>
+<a href="SML2015/preliminaryMaterials.pdf">PRELIMINARY MATERIALS </a><br><br>
+
+<a href="SML2015/linearModelIntro.pdf">LINEAR MODEL INTRO </a><br>
+
+<UL>
+<LI><a href="SML2015/linearModelIntro.tex">Linear Model Intro (tex) </a><br>
+<LI><a href="SML2015/linearModelIntroMarkUp.pdf">Linear Model Intro (Marked up) </a><br>
+</UL>
+<a href="SML2015/linearModelRisk.pdf">LINEAR MODEL Risk </a><br>
+<UL>
+<LI><a href="SML2015/linearModelRisk.tex">Linear Model Risk (tex) </a>
+<LI><a href="SML2015/linearModelRiskMarkUp.pdf">Linear Model Risk (Marked up) </a><br>
+<br>
+</UL>
+<a href="SML2015/linearModelModelSelection.pdf">LINEAR MODEL: Model Selection </a><br>
+<UL>
+<LI><a href="SML2015/linearModelModelSelection.tex">Linear Model, Model selection (tex) </a>
+<LI><a href="SML2015/linearModelModelSelectionMarkUp.pdf">Linear Model: Model Selection (Marked up) </a><br>
+<LI><a href="SML2015/1_modelSelection.R">Linear Model: Model Selection (R code) </a><br>
+<LI><a href="SML2015/prostate.data">Linear Model: Model Selection (data) </a><br>
+<br>
+</UL>
+<a href="SML2015/linearModelRegularization.pdf">LINEAR MODEL: Regularization </a><br>
+<UL>
+<LI><a href="SML2015/linearModelRegularization.tex">Linear Model, Regularization (tex) </a>
+<LI><a href="SML2015/linearModelRegularizationMarkUp.pdf">Linear Model, Regularization Mark Up </a>
+<br>
+</UL>
+<a href="SML2015/linearModelAdditionalLassoTopics.pdf">LINEAR MODEL: Additional Topics </a><br>
+<UL>
+
+<LI><a href="SML2015/linearModelAdditionalTopics.tex">Linear Model, Additional Topics (tex) </a>
+<LI><a href="SML2015/linearModelAdditionalTopicsMarkUp.pdf">Linear Model, Additional Topics Mark Up </a>
+<br>
+</UL>
+<!--
+<a href="SML2015/linearModelTheory.pdf">LINEAR MODEL THEORY  </a><br>
+<UL>
+<LI><a href="SML2015/linearModelTheory.tex">Linear Model theory (tex) </a><br>
+<LI><a href="SML2015/sept30.pdf"> September 30  </a>
+</UL>
+-->
+<a href="SML2015/classificationIntroduction.pdf"> CLASSIFICATION </a>
+<UL>
+<LI><a href="SML2015/classificationIntroduction.tex"> Classification (tex) </a><br>
+<LI><a href="SML2015/classificationIntroductionMarkUp.pdf"> Classification Mark Up </a><br>
+</UL>
+<a href="SML2015/classificationTrees.pdf"> CLASSIFICATION: TREES </a>
+<UL>
+<LI><a href="SML2015/classificationTrees.tex"> Trees (tex) </a><br>
+<LI><a href="SML2015/classificationTreesMarkUp.pdf"> Classification Tree Mark Up </a><br>
+</UL>
+<a href="SML2015/classificationBagging.pdf"> BAGGING</a>
+<UL>
+<LI><a href="SML2015/classificationBagging.tex"> Bagging (tex) </a><br>
+</UL>
+<a href="SML2015/classificationSVMs1.pdf"> SVMs 1</a>
+<UL>
+<LI><a href="SML2015/classificationSVMs1.tex"> SVM 1 (tex) </a><br>
+<LI><a href="SML2015/classificationSVMs1markUp.pdf"> SVM 1 Mark Up </a><br>
+</UL>
+
+<a href="SML2015/classificationSVMs2.pdf"> SVMs 2</a>
+<UL>
+<LI><a href="SML2015/classificationSVMs2.tex"> SVM 2 (tex) </a><br>
+<LI><a href="SML2015/classificationSVMs2markUp.pdf"> SVM 2 Mark Up </a><br>
+</UL>
+
+
+<a href="SML2015/classificationBoosting1.pdf"> BOOSTING 1 </a>
+<UL>
+<LI><a href="SML2015/classificationBoosting1.tex"> Boosting 1 (tex) </a><br>
+<LI><a href="SML2015/classificationBoosting1markUp.pdf"> Boosting 1 Mark up </a><br>
+</UL>
+<a href="SML2015/classificationBoosting2.pdf"> BOOSTING 2 </a>
+<UL>
+<LI><a href="SML2015/classificationBoosting2.tex"> Boosting 2 (tex) </a><br>
+<LI><a href="SML2015/classificationBoosting2markUp.pdf"> Boosting 2 Mark up </a><br>
+</UL>
+<a href="SML2015/classificationBoosting3.pdf"> BOOSTING 3 </a>
+<UL>
+<LI><a href="SML2015/classificationBoosting3.tex"> Boosting 3 (tex) </a><br>
+<LI><a href="SML2015/classificationBoosting3markUp.pdf"> Boosting 3 Mark up </a><br>
+</UL>
+
+<!--
+<a href="SML2015/concentrationMeasureEmpiricalProcess.pdf"> CONCENTRATION OF MEASURE</a>
+<UL>
+<LI><a href="SML2015/concentrationMeasureEmpiricalProcess.tex"> Concentration of measure (tex) </a><br>
+<LI><a href="SML2015/nov6.pdf"> November 6 (concentration of measure)  </a><br>
+<LI><a href="SML2015/nov13.pdf"> November 13 (concentration of measure)  </a><br>
+</UL>
+-->
+<a href="SML2015/neuralNetworks1.pdf"> NEURAL NETWORKS 1</a><br>
+<UL>
+<LI><a href="SML2015/neuralNetworks1.tex"> Neural Networks 1 (tex) </a><br>
+<LI><a href="SML2015/neuralNetworks1markUp.pdf"> Neural Networks 1 (Mark Up) </a><br>
+</UL>
+<a href="SML2015/neuralNetworks2.pdf"> NEURAL NETWORKS 2</a><br>
+<UL>
+<LI><a href="SML2015/neuralNetworks2.tex"> Neural Networks 2 (tex) </a><br>
+<LI><a href="SML2015/neuralNetworks2markUp.pdf"> Neural Networks 2 (Mark Up) </a><br>
+</UL>
+<a href="SML2015/neuralNetworks3.pdf"> NEURAL NETWORKS 3</a><br>
+<br>
+<a href="SML2015/nonLinearEmbedding.pdf"> 
+NONLINEAR EMBEDDINGS </a><br>
+<UL>
+<LI><a href="SML2015/nonLinearEmbedding.tex"> Nonlinear Embeddings (tex) </a><br>
+<LI><a href="SML2015/nonLinearEmbeddingMarkUp.pdf"> Nonlinear Embeddings (Mark Up) </a><br>
+</UL>
+
+<a href="SML2015/clusteringHC.pdf"> 
+H CLUSTERING </a><br>
+<UL>
+<LI><a href="SML2015/clusteringHC.tex"> H Clustering (tex) </a><br>
+<LI><a href="SML2015/clusteringHCmarkUp.pdf"> H Clustering (mark up) </a><br>
+</UL>
+
+<a href="SML2015/concentrationMeasureEmpiricalProcess.pdf"> 
+Some Theory </a><br>
+<UL>
+<LI><a href="SML2015/concentrationMeasureEmpiricalProcess.tex"> Some theory (tex) </a><br>
+<LI><a href="SML2015/concentrationMeasureEmpiricalProcessMarkUp_1.pdf"> Some Theory 1 (mark up) </a><br>
+<LI><a href="SML2015/concentrationMeasureEmpiricalProcessMarkUp_2.pdf"> Some Theory 2 (mark up) </a><br>
+</UL>
+</b>
+
+</td>
+</tr>
+
+<tr>
+<td colspan = "2"><br>
+<h3> Short Presentations: (Example: <a href="SML2015/LSLasso.pdf"> Refitted Lasso </a>)</h3>
+
+<UL>
+<LI> <b> <a href="SML2015/woodburyidentity.pdf"> Woodbury Identity </a> </b>  </a></LI>
+<LI> <b> <a href="SML2015/pca.R"> PCA code </a> </b>  </a></LI>
+<LI> <b> <a href="SML2015/DANN.pdf"> DANN </a> </b>  </a></LI>
+<LI> <b> <a href="SML2015/kmeans.pdf"> K-means </a> </b>  </a></LI>
+<LI> <b> <a href="SML2015/adaptivebaggin.pdf"> Adaptive Bagging </a> </b>  </a></LI>
+<LI> <b> <a href="SML2015/Gap Statistic.pdf"> Gap Statistic </a> </b>  </a></LI>
+<LI> <b> <a href="SML2015/Nonnegative Garrote.pdf"> Nonnegative Garrote</a> </b>  </a></LI>
+<LI> <b> <a href="SML2015/presentation_2.pdf"> Archetypal Analysis</a> </b>  </a></LI>
+<LI> <b> <a href="SML2015/presentation 1.pdf"> Multicollinearity and Flavors of Ridge Regression</a> </b>  </a></LI>
+<LI> <b> <a href="SML2015/presentation 2.pdf"> Model Selection Consistency of Lasso</a> </b>  </a></LI>
+</td>
+</tr>
+<!--
+<tr>
+<td colspan = "2"><br>
+<h3> Homework Schedule:</h3>
+</tr>
+</td>
+<tr>
+<td>
+<table>
+<tr>
+<td>
+HW 1:
+</td>
+<td> 
+Aaron, Ben, and Henry
+</td>
+</tr>
+<tr>
+<td>
+HW 2:
+</td>
+<td> 
+Miranda, Lei, and Charlie
+</td>
+</tr>
+<tr>
+<td>
+HW 3:
+</td>
+<td> 
+Ryan, Zach, and Aaron
+</td>
+</tr>
+<tr>
+<td>
+HW 4:
+</td>
+<td> 
+Miranda, Ben, and Lei
+</td>
+</tr>
+</table>
+</td>
+</tr>
+-->
+<tr>
+<td colspan = "2"><br>
+<h3> Scribe Schedule:</h3>
+</tr>
+</td>
+<tr>
+<td>
+<table>
+<tr>
+<td>
+Lecture 2:
+</td>
+<td>
+<b> Zeke</b>
+</td>
+</tr>
+
+<tr>
+<td>
+Lecture 3:
+</td>
+<td>
+<b> Ahmed </b>
+</td>
+</tr>
+<tr>
+<td>
+Lecture 4:
+</td>
+<td>
+<b> Soo Young </b>
+</td>
+</tr>
+<tr>
+<td>
+Lecture 5:
+</td>
+<td>
+<b> Veronica </b>
+</td>
+</tr>
+<tr>
+<td>
+Lecture 6:
+</td>
+<td>
+<b> Ryan </b>
+</td>
+</tr>
+<tr>
+<td>
+Lecture 7:
+</td>
+<td>
+<b> Yewon </b>
+</td>
+</tr>
+<tr>
+<td>
+Lecture 8:
+</td>
+<td>
+<b> Lyuou </b>
+</td>
+</tr>
+<tr>
+<td>
+Lecture 9:
+</td>
+<td>
+<b> Ahmed </b>
+</td>
+</tr>
+<tr>
+<td>
+Lecture 10:
+</td>
+<td>
+<b> Ryan </b>
+</td>
+</tr>
+<tr>
+<td>
+Lecture 11:
+</td>
+<td>
+<b> Veronica </b>
+</td>
+</tr>
+<tr>
+<td>
+Lecture 12:
+</td>
+<td>
+<b>Zeke</b>
+</td>
+</tr>
+<tr>
+<td>
+Lecture 13:
+</td>
+<td>
+<b> Soo Young </b>
+</td>
+</tr>
+<tr>
+<td>
+Lecture 14:
+</td>
+<td>
+<b> Yewon <b>
+</td>
+</tr>
+<tr>
+<td>
+Lecture 15:
+</td>
+<td>
+<b>Zeke</b>
+</td>
+</tr>
+<tr>
+<td>
+Lecture 16:
+</td>
+<td>
+<b> Veronica </b>
+</td>
+</tr>
+</tr>
+</td>
+<tr>
+<td>
+Lecture 17:
+</td>
+<td>
+<b> Ryan </b>
+</td>
+</tr>
+<tr>
+<td>
+Lecture 18:
+</td>
+<td>
+<b> Soo Young </b>
+</td>
+</tr>
+<tr>
+<td>
+Lecture 19:
+</td>
+<td>
+<b> Ahmed </b>
+</td>
+</tr>
+<tr>
+<td>
+Lecture 20:
+</td>
+<td>
+<b> Lyuou </b>
+</td>
+</tr>
+<tr>
+<td>
+Lecture 21:
+</td>
+<td>
+<b> Veronica </b>
+</td>
+</tr>
+<tr>
+<td>
+Lecture 22:
+</td>
+<td>
+Zeke
+</td>
+</tr>
+<tr>
+<td>
+Lecture 23:
+</td>
+<td>
+<b> Soo Young </b>
+</td>
+</tr>
+<tr>
+<td>
+Lecture 24:
+</td>
+<td>
+<b> Yewon </b>
+</td>
+</tr>
+<tr>
+<td>
+Lecture 25:
+</td>
+<td>
+<b> Lyuou </b>
+</td>
+</tr>
+<tr>
+<td>
+Lecture 26:
+</td>
+<td>
+<b> Ryan </b>
+</td>
+</tr>
+<tr>
+<td>
+Lecture 27:
+</td>
+<td>
+<b> Ahmed </b>
+</td>
+</tr>
+
+</tr>
+</table>
+
+
+
+</body>
+</html>
