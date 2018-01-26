@@ -1,11 +1,11 @@
 if (!require('shiny')){install.packages("shiny");require(shiny)}
 ###
-# Class Example
+# More complicated design
 ###
 if (!require('ggplot2')) install.packages("ggplot2")
 
 ui = fluidPage(
-  titlePanel("Central Limit Theorem"),
+  
   # User input: number of bins for histogram
   sidebarLayout(
     sidebarPanel(
@@ -13,20 +13,6 @@ ui = fluidPage(
       #   The first two arguments are always 
       #      - inputId: A unique character 
       #      - label:  what does the user see as a description?
-      sliderInput(inputId = "nReps",
-                  label = "Number of replications:",
-                  min = 1,
-                  max = 100,
-                  value = 1),
-      sliderInput(inputId = "nObs",
-                  label = "Number of observations:",
-                  min = 1,
-                  max = 100,
-                  value = 30),
-      radioButtons(inputId     = "distType",
-                  label        = "Population Distribution:",
-                  choiceNames  = c('Normal','Exponential'),
-                  choiceValues = c('normal','exponential')),
       sliderInput(inputId = "bins",
                   label = "Number of bins:",
                   min = 1,
@@ -54,22 +40,12 @@ server = function(input, output) {
   #            chosen by the user w/ widget
   #   output:  The UI directs the user input to be displayed at "distPlot"
   output$distPlot = renderPlot({
-    if(input$distType == 'normal'){
-      sampAndMeanF = function(nObs){
-        return(mean(rnorm(nObs)))
-      }
-    }
-    if(input$distType == 'exponential'){
-      sampAndMeanF = function(nObs){
-        return(mean(rexp(nObs)))
-      }
-    }
-    nRepsGrid        = rep(input$nObs,input$nReps)
-    sampleMeans      = sapply(nRepsGrid,sampAndMeanF)
-    sampleMeans_df   = data.frame('sampleMeans'=sampleMeans)
-    ggplot(sampleMeans_df,aes(x = sampleMeans)) +    
+    
+    ggplot(faithful, aes(x = waiting)) +
       geom_histogram(bins = input$bins, colour = "white")
+    
   })
+  
 }
 
 shinyApp(ui = ui, server = server,
